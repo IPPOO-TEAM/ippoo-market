@@ -1,0 +1,46 @@
+[Hydrated]
+463cafdbff9a694c3abcbf236d3a72a8b9238c41.js:29976 [Intervention] Blocked call to navigator.vibrate because user hasn't tapped on the frame or any embedded frame yet: https://www.chromestatus.com/feature/5644273861001216.
+Zs @ 463cafdbff9a694c3abcbf236d3a72a8b9238c41.js:29976Understand this error
+61bc9a92-2142-4e30-b5d8-5c4589ffc703:1 Manifest: property 'start_url' ignored, URL is invalid.Understand this warning
+61bc9a92-2142-4e30-b5d8-5c4589ffc703:1 Manifest: property 'scope' ignored, URL is invalid.Understand this warning
+61bc9a92-2142-4e30-b5d8-5c4589ffc703:1 Manifest: property 'src' ignored, URL is invalid.Understand this warning
+61bc9a92-2142-4e30-b5d8-5c4589ffc703:1 Manifest: property 'src' ignored, URL is invalid.Understand this warning
+61bc9a92-2142-4e30-b5d8-5c4589ffc703:1 Manifest: property 'src' ignored, URL is invalid.Understand this warning
+463cafdbff9a694c3abcbf236d3a72a8b9238c41.js:97272 [IPPOO ErrorBoundary] NotFoundError: Failed to execute 'removeChild' on 'Node': The node to be removed is not a child of this node.
+    at dC (sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8:26066)
+    at Nn (sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8:27356)
+    at EC (sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8:27816)
+    at Nn (sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8:27506)
+    at EC (sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8:27816)
+    at Nn (sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8:27506)
+    at EC (sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8:27619)
+    at Nn (sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8:27506)
+    at EC (sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8:27816)
+    at Nn (sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8:27506)
+AB @ 463cafdbff9a694c3abcbf236d3a72a8b9238c41.js:97272Understand this error
+sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8 NotFoundError: Failed to execute 'removeChild' on 'Node': The node to be removed is not a child of this node.
+    at dC (sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8:26066)
+    at Nn (sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8:27356)
+    at EC (sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8:27816)
+    at Nn (sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8:27506)
+    at EC (sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8:27816)
+    at Nn (sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8:27506)
+    at EC (sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8:27619)
+    at Nn (sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8:27506)
+    at EC (sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8:27816)
+    at Nn (sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8:27506)
+Yh @ sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8Understand this error
+463cafdbff9a694c3abcbf236d3a72a8b9238c41.js:3778 React Router caught the following error during render NotFoundError: Failed to execute 'removeChild' on 'Node': The node to be removed is not a child of this node.
+    at dC (sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8:26066)
+    at Nn (sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8:27356)
+    at EC (sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8:27816)
+    at Nn (sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8:27506)
+    at EC (sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8:27816)
+    at Nn (sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8:27506)
+    at EC (sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8:27619)
+    at Nn (sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8:27506)
+    at EC (sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8:27816)
+    at Nn (sites-runtime.a640916c3abc2cd0125c14de3c7208f67e8829ab366df7e07eeda36e85477eff.js:8:27506)
+componentDidCatch @ 463cafdbff9a694c3abcbf236d3a72a8b9238c41.js:3778Understand this error
+wallet:1 The resource https://ippoomarket.figma.site/_json/abab2739-fcff-462d-b0c3-4bd3dae01cbc/_index.json was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.Understand this warning
+wallet:1 The resource https://ippoomarket.figma.site/_json/abab2739-fcff-462d-b0c3-4bd3dae01cbc/_index.json was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.

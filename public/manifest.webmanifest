@@ -1,0 +1,90 @@
+{
+  "name": "IPPOO Market",
+  "short_name": "IPPOO",
+  "description": "Marketplace B2B de gros pour l'Afrique de l'Ouest — commandez en gros, payez en mobile money, suivez vos livraisons.",
+  "id": "/?source=pwa",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui", "browser"],
+  "orientation": "any",
+  "background_color": "#FFFFFF",
+  "theme_color": "#E11D2E",
+  "lang": "fr",
+  "dir": "ltr",
+  "categories": ["shopping", "business", "marketplace", "finance"],
+  "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7",
+  "prefer_related_applications": false,
+  "launch_handler": { "client_mode": ["navigate-existing", "auto"] },
+  "handle_links": "preferred",
+  "edge_side_panel": { "preferred_width": 480 },
+  "icons": [
+    { "src": "/icons/ippoo-logo.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/ippoo-logo.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/ippoo-logo-maskable.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icons/ippoo-logo-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "screenshots": [
+    {
+      "src": "/icons/screenshot-narrow.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Accueil IPPOO Market sur mobile"
+    },
+    {
+      "src": "/icons/screenshot-wide.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Tableau de bord IPPOO sur ordinateur"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Mes commandes",
+      "short_name": "Commandes",
+      "description": "Consulter vos commandes en cours",
+      "url": "/commandes",
+      "icons": [{ "src": "/icons/ippoo-logo.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Panier",
+      "short_name": "Panier",
+      "description": "Finaliser votre commande",
+      "url": "/panier",
+      "icons": [{ "src": "/icons/ippoo-logo.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Catalogue",
+      "short_name": "Catalogue",
+      "description": "Parcourir toutes les catégories",
+      "url": "/catalogue",
+      "icons": [{ "src": "/icons/ippoo-logo.png", "sizes": "192x192" }]
+    }
+  ],
+  "share_target": {
+    "action": "/partage-recu",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url",
+      "files": [{ "name": "files", "accept": ["image/*"] }]
+    }
+  },
+  "protocol_handlers": [
+    { "protocol": "web+ippoo", "url": "/?deeplink=%s" }
+  ],
+  "permissions": [
+    "geolocation",
+    "notifications",
+    "camera",
+    "microphone",
+    "contacts",
+    "clipboard-read",
+    "clipboard-write",
+    "persistent-storage"
+  ]
+}

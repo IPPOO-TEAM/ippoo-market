@@ -1,0 +1,260 @@
+/* === Native app shell === */
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --tap-highlight: transparent;
+  --app-vh: 100vh;
+}
+
+@supports (height: 100dvh) {
+  :root { --app-vh: 100dvh; }
+}
+
+html, body {
+  overscroll-behavior-y: contain;
+  -webkit-tap-highlight-color: var(--tap-highlight);
+  -webkit-touch-callout: none;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: var(--app-vh);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Allow selection in inputs and content-rich areas */
+input, textarea, [contenteditable], [data-selectable] {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+#root {
+  width: 100%;
+  position: relative;
+}
+
+/* Native-feel momentum scroll */
+.native-scroll {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+.native-scroll::-webkit-scrollbar { display: none; }
+
+/* Disable pull-to-refresh on body, only enable on tagged surfaces */
+.allow-pull-refresh { overscroll-behavior-y: auto; }
+
+/* Safe-area helpers */
+.pt-safe { padding-top: var(--safe-top); }
+.pb-safe { padding-bottom: var(--safe-bottom); }
+.pl-safe { padding-left: var(--safe-left); }
+.pr-safe { padding-right: var(--safe-right); }
+.mt-safe { margin-top: var(--safe-top); }
+.mb-safe { margin-bottom: var(--safe-bottom); }
+
+.h-screen-native { height: var(--app-vh); }
+.min-h-screen-native { min-height: var(--app-vh); }
+
+/* Prevent text from being selected on tap & disable iOS callout menus */
+button, a, [role="button"], [role="tab"], [role="switch"] {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+}
+
+/* Native button press feedback */
+.press-feedback {
+  transition: transform 80ms ease, opacity 80ms ease;
+}
+.press-feedback:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+
+/* iOS-style page transitions */
+@keyframes native-page-in {
+  from { transform: translateX(12%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+@keyframes native-page-out {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(-8%); opacity: 0.6; }
+}
+.native-page-enter { animation: native-page-in 260ms cubic-bezier(.32,.72,0,1) both; }
+
+/* Bottom sheet */
+@keyframes sheet-in {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+@keyframes sheet-out {
+  from { transform: translateY(0); }
+  to { transform: translateY(100%); }
+}
+.sheet-enter { animation: sheet-in 280ms cubic-bezier(.32,.72,0,1) both; }
+.sheet-exit { animation: sheet-out 220ms cubic-bezier(.32,.72,0,1) both; }
+
+/* Status-bar overlay (when app is installed) */
+.native-status-bar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: var(--safe-top);
+  background: var(--status-bar-bg, #FFFFFF);
+  z-index: 100;
+  pointer-events: none;
+}
+
+/* Prevent double-tap zoom on interactive elements only */
+button, a, [role="button"], [role="tab"], [role="switch"], input[type="checkbox"], input[type="radio"] {
+  touch-action: manipulation;
+}
+
+/* Inputs feel native */
+input, textarea, select {
+  font-size: 16px; /* prevents iOS zoom on focus */
+}
+
+/* Skeletal "splash" while JS boots */
+.app-splash {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: #FFFFFF;
+  z-index: 9999;
+}
+
+/* ═══════════════════════════════════════════
+   IPPOO — Native-app style Sonner toasts
+   Bright, animated, with glow + accent stripe.
+   ═══════════════════════════════════════════ */
+[data-sonner-toaster] {
+  --width: 360px;
+  font-family: 'Poppins', -apple-system, system-ui, sans-serif;
+}
+[data-sonner-toaster] [data-sonner-toast].ippoo-toast {
+  border-radius: 22px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.92);
+  -webkit-backdrop-filter: saturate(180%) blur(22px);
+  backdrop-filter: saturate(180%) blur(22px);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.9) inset,
+    0 12px 32px -10px rgba(15, 23, 42, 0.22),
+    0 4px 12px -2px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+  position: relative;
+  animation: ippoo-toast-in 520ms cubic-bezier(0.34, 1.56, 0.5, 1) both;
+}
+@keyframes ippoo-toast-in {
+  0%   { transform: translateY(-22px) scale(0.85); opacity: 0; }
+  55%  { transform: translateY(3px)   scale(1.04); opacity: 1; }
+  78%  { transform: translateY(-1px)  scale(0.99); }
+  100% { transform: translateY(0)     scale(1);    opacity: 1; }
+}
+[data-sonner-toaster] [data-sonner-toast].ippoo-toast::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(120% 60% at 0% 0%, rgba(255, 107, 0, 0.08), transparent 60%);
+}
+.ippoo-toast .ippoo-toast-title {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  font-size: 13.5px;
+  line-height: 18px;
+  color: #0F172A;
+  letter-spacing: -0.1px;
+}
+.ippoo-toast .ippoo-toast-desc {
+  font-size: 12px;
+  line-height: 16px;
+  color: #64748B;
+  margin-top: 2px;
+}
+.ippoo-toast [data-icon] {
+  width: 36px; height: 36px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  margin-right: 10px;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #FFEDD5, #FFE4E6);
+  color: #E11D2E;
+  box-shadow: 0 2px 6px -2px rgba(225, 29, 46, 0.35);
+  animation: ippoo-toast-icon 520ms cubic-bezier(0.22, 1.4, 0.36, 1) both;
+}
+@keyframes ippoo-toast-icon {
+  0%   { transform: scale(0.4) rotate(-12deg); opacity: 0; }
+  100% { transform: scale(1)   rotate(0);      opacity: 1; }
+}
+.ippoo-toast .ippoo-toast-close {
+  background: rgba(15, 23, 42, 0.05) !important;
+  border: none !important;
+  color: #64748B !important;
+  width: 22px !important; height: 22px !important;
+  border-radius: 999px !important;
+  opacity: 0; transition: opacity 160ms;
+  top: 10px !important; right: 10px !important;
+  left: auto !important;
+}
+[data-sonner-toast]:hover .ippoo-toast-close { opacity: 1; }
+.ippoo-toast .ippoo-toast-action,
+.ippoo-toast .ippoo-toast-cancel {
+  border-radius: 12px !important;
+  font-weight: 700 !important;
+  font-size: 12px !important;
+  padding: 6px 12px !important;
+}
+.ippoo-toast .ippoo-toast-action {
+  background: linear-gradient(90deg, #E11D2E, #F97316) !important;
+  color: #fff !important;
+}
+
+/* Variants */
+.ippoo-toast.ippoo-toast-success [data-icon] {
+  background: linear-gradient(135deg, #DCFCE7, #BBF7D0);
+  color: #16A34A;
+  box-shadow: 0 2px 6px -2px rgba(22, 163, 74, 0.35);
+}
+.ippoo-toast.ippoo-toast-success::after {
+  background: radial-gradient(120% 60% at 0% 0%, rgba(22, 163, 74, 0.10), transparent 60%);
+}
+
+.ippoo-toast.ippoo-toast-error [data-icon] {
+  background: linear-gradient(135deg, #FFE4E6, #FECDD3);
+  color: #E11D2E;
+  box-shadow: 0 2px 6px -2px rgba(225, 29, 46, 0.4);
+}
+.ippoo-toast.ippoo-toast-error::after {
+  background: radial-gradient(120% 60% at 0% 0%, rgba(225, 29, 46, 0.10), transparent 60%);
+}
+
+.ippoo-toast.ippoo-toast-info [data-icon] {
+  background: linear-gradient(135deg, #DBEAFE, #BFDBFE);
+  color: #2563EB;
+  box-shadow: 0 2px 6px -2px rgba(37, 99, 235, 0.35);
+}
+.ippoo-toast.ippoo-toast-info::after {
+  background: radial-gradient(120% 60% at 0% 0%, rgba(37, 99, 235, 0.10), transparent 60%);
+}
+
+.ippoo-toast.ippoo-toast-warning [data-icon] {
+  background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+  color: #B45309;
+  box-shadow: 0 2px 6px -2px rgba(245, 158, 11, 0.35);
+}
+.ippoo-toast.ippoo-toast-warning::after {
+  background: radial-gradient(120% 60% at 0% 0%, rgba(245, 158, 11, 0.10), transparent 60%);
+}
+
+.ippoo-toast.ippoo-toast-loading [data-icon] {
+  background: linear-gradient(135deg, #F1F5F9, #E2E8F0);
+  color: #475569;
+}

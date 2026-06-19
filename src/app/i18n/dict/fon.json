@@ -1,0 +1,23 @@
+{
+  "_meta": {
+    "language": "Fon",
+    "code": "fon",
+    "iso639_3": "fon",
+    "region": "Bénin, Togo",
+    "status": "draft",
+    "note": "Dictionnaire à compléter par un locuteur natif. Sources actuelles: Glosbe (à vérifier).",
+    "contributors": []
+  },
+  "Accueil": "",
+  "Explorer": "",
+  "Panier": "",
+  "Profil": "",
+  "Paramètres": "",
+  "Connexion": "",
+  "Inscription": "",
+  "Déconnexion": "",
+  "Bienvenue": "",
+  "Merci": "",
+  "Oui": "Ɛɛn",
+  "Non": "Eǒ"
+}
