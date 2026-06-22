@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Effets sonores de notification (WebAudio)
+   IPPOO - Effets sonores de notification (WebAudio)
    Bips ludiques générés à la volée : arpèges, glissandos,
    accords joyeux + vibration native synchronisée. Aucun
    fichier audio à charger.
@@ -184,14 +184,14 @@ function playBlop(opts: {
 
 /* ──────────────── Mélodies ──────────────── */
 
-/** Notification standard — un "blop" suivi d'une cloche douce. */
+/** Notification standard - un "blop" suivi d'une cloche douce. */
 function meloNormal() {
   playBlop({ freq: 720, delay: 0, gain: 0.45 });
   playBell({ freq: 880, delay: 0.09, duration: 1.4, gain: 0.45 });
   vibrate(VIBRATE_NORMAL);
 }
 
-/** Urgent — triple blip métallique + cloche claire. */
+/** Urgent - triple blip métallique + cloche claire. */
 function meloHigh() {
   playBlip({ freq: 1400, delay: 0,    gain: 0.4 });
   playBlip({ freq: 1700, delay: 0.07, gain: 0.42 });
@@ -201,7 +201,7 @@ function meloHigh() {
   vibrate(VIBRATE_HIGH);
 }
 
-/** Récompense — carillon ascendant Do-Mi-Sol-Do. */
+/** Récompense - carillon ascendant Do-Mi-Sol-Do. */
 function meloWin() {
   const notes: Array<[number, number]> = [
     [523.25, 0],
@@ -216,7 +216,7 @@ function meloWin() {
   vibrate(VIBRATE_WIN);
 }
 
-/** Promo — séquence rapide de blips style notif UI moderne. */
+/** Promo - séquence rapide de blips style notif UI moderne. */
 function meloPromo() {
   playBlip({ freq: 900,  delay: 0,    gain: 0.42 });
   playBlip({ freq: 1100, delay: 0.07, gain: 0.42 });
@@ -225,7 +225,7 @@ function meloPromo() {
   vibrate(VIBRATE_PROMO);
 }
 
-/** Cadeau / bienvenue — double cloche cristalline en accord majeur. */
+/** Cadeau / bienvenue - double cloche cristalline en accord majeur. */
 function meloGift() {
   playBlop({ freq: 600, delay: 0, gain: 0.35 });
   playBell({ freq: 783.99, delay: 0.08, duration: 2.0, gain: 0.5 });

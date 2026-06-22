@@ -1,6 +1,6 @@
 import { logger } from "../lib/logger";
 /* ═══════════════════════════════════════════
-   IPPOO Market — Wizard d'inscription multi-étapes
+   IPPOO Market - Wizard d'inscription multi-étapes
    Couvre toutes les sections : identité, pro, logistique, paiements,
    documents. Les étapes pro/logistique/docs sont sautées pour les
    acheteurs. À la fin, déclenche le cadeau de bienvenue.
@@ -387,7 +387,7 @@ export function SignupWizard() {
             </motion.div>
           </AnimatePresence>
 
-          {/* Navigation sticky en bas — z-[60] pour passer au-dessus de la bottom nav globale (z-50) */}
+          {/* Navigation sticky en bas - z-[60] pour passer au-dessus de la bottom nav globale (z-50) */}
           <div
             className="fixed left-0 right-0 z-[60] bg-white/95 backdrop-blur border-t border-[#F3F4F6] px-4 py-3"
             style={{ bottom: "calc(env(safe-area-inset-bottom, 0px) + 56px)" }}

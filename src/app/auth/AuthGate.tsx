@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Garde d'authentification
+   IPPOO - Garde d'authentification
    Bloque l'accès aux pages privées si l'utilisateur n'est pas connecté.
    Redirige vers /connexion en mémorisant la destination pour revenir
    automatiquement après login.

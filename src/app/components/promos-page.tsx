@@ -650,7 +650,7 @@ export function PromosPage() {
               ))}
             </div>
 
-            {/* Code input — composant unifié, branché sur le store de paiement */}
+            {/* Code input - composant unifié, branché sur le store de paiement */}
             <div className="mt-5">
               <CouponInput title="Saisir un code promo" />
             </div>

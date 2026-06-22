@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Pages légales
+   IPPOO - Pages légales
    Conditions générales d'utilisation et politique
    de confidentialité. Pages publiques accessibles
    depuis le signup, le footer et les paramètres.
@@ -95,7 +95,7 @@ const DOCS: Record<Doc["kind"], Doc> = {
       },
       {
         title: "4. Partage des données",
-        body: "Vos données ne sont jamais vendues. Elles peuvent être partagées avec : les vendeurs (nom, adresse, téléphone — strict nécessaire à la livraison), les partenaires logistiques (livreurs), les prestataires de paiement (MTN, Moov, Celtiis, banques), les autorités sur réquisition légale.",
+        body: "Vos données ne sont jamais vendues. Elles peuvent être partagées avec : les vendeurs (nom, adresse, téléphone - strict nécessaire à la livraison), les partenaires logistiques (livreurs), les prestataires de paiement (MTN, Moov, Celtiis, banques), les autorités sur réquisition légale.",
       },
       {
         title: "5. Conservation",

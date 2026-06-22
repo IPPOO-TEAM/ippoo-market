@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — PromoPopupHost
+   IPPOO - PromoPopupHost
    Affiche le popup courant émis par notifications/popups.ts.
    Inspiré des popups "rewards" Tokopedia / Temu : header dégradé,
    tickets coupon en grille, CTA principal + secondaire.

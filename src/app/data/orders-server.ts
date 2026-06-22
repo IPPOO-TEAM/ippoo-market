@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Synchronisation serveur des commandes
+   IPPOO - Synchronisation serveur des commandes
    Source unique pour acheteur (mes commandes),
    vendeur (commandes reçues) et admin (toutes
    les commandes). Cache localStorage + abonnements
@@ -27,6 +27,7 @@ export type OrderShipping = {
 };
 
 export type OrderPaymentMethod = "wallet" | "cod" | "card" | "mobile-money";
+export type MobileProvider = "mtn" | "moov" | "orange" | "wave" | "celtis";
 
 export type OrderStatus =
   | "pending"
@@ -43,6 +44,10 @@ export type OrderRecord = {
   items: OrderItem[];
   shippingAddress: OrderShipping;
   paymentMethod: OrderPaymentMethod;
+  mobileProvider?: MobileProvider;
+  currency?: string;
+  vat?: number;
+  invoiceNumber?: string;
   total: number;
   commission: number;
   vendorShares: Record<string, number>;
@@ -112,6 +117,8 @@ export async function createOrder(input: {
   items: OrderItem[];
   shippingAddress: OrderShipping;
   paymentMethod: OrderPaymentMethod;
+  mobileProvider?: MobileProvider;
+  currency?: string;
 }): Promise<OrderRecord> {
   const j = await apiFetch<{ order: OrderRecord }>("/orders", { method: "POST", body: input });
   buyerStore.set([j.order, ...buyerStore.get().filter((o) => o.id !== j.order.id)]);

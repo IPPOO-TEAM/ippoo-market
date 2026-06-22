@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Promotions vendeur (codes & remises)
+   IPPOO - Promotions vendeur (codes & remises)
    Store local indexé par shopSlug. Permet aux vendeurs
    de créer des codes promo applicables à leurs propres
    produits, avec un % de remise, une période de validité,
@@ -7,6 +7,7 @@
    ═══════════════════════════════════════════ */
 
 import { scopedGetItem, scopedSetItem } from "../lib/scoped-storage";
+import { getUserKv, setUserKv } from "./user-kv";
 
 export type PromoType = "percent" | "amount";
 
@@ -43,6 +44,28 @@ function emit() {
   listeners.forEach((l) => l());
 }
 
+/** Pousse les promos vendeur vers user-kv (best-effort). */
+function pushServer() {
+  setUserKv("my-promos", items).catch(() => undefined);
+}
+
+/** Récupère l'état serveur et fusionne (le plus récent par id gagne). */
+export async function refreshMyPromos(): Promise<void> {
+  try {
+    const remote = await getUserKv<MyPromo[]>("my-promos");
+    if (!Array.isArray(remote)) return;
+    const byId = new Map<string, MyPromo>();
+    for (const p of items) if (p?.id) byId.set(p.id, p);
+    for (const p of remote) {
+      if (!p?.id) continue;
+      const local = byId.get(p.id);
+      if (!local || (p.updatedAt ?? 0) >= (local.updatedAt ?? 0)) byId.set(p.id, p);
+    }
+    items = Array.from(byId.values());
+    emit();
+  } catch { /* hors-ligne : cache local conservé */ }
+}
+
 export function hydrateMyPromos() {
   if (hydrated || typeof window === "undefined") return;
   hydrated = true;
@@ -52,6 +75,8 @@ export function hydrateMyPromos() {
   } catch { items = []; }
   snapshot = JSON.stringify(items);
   listeners.forEach((l) => l());
+  // Synchronisation serveur en arrière-plan.
+  refreshMyPromos().catch(() => undefined);
 }
 
 export function subscribe(fn: () => void): () => void {
@@ -79,6 +104,7 @@ export function addMyPromo(input: Omit<MyPromo, "id" | "createdAt" | "updatedAt"
   };
   items = [p, ...items];
   emit();
+  pushServer();
   return p;
 }
 
@@ -89,11 +115,13 @@ export function updateMyPromo(id: string, patch: Partial<MyPromo>) {
     updatedAt: Date.now(),
   } : p);
   emit();
+  pushServer();
 }
 
 export function deleteMyPromo(id: string) {
   items = items.filter((p) => p.id !== id);
   emit();
+  pushServer();
 }
 
 export function isPromoActive(p: MyPromo): boolean {

@@ -20,7 +20,7 @@ Nom du produit : en gras, taille 16-18 px pour lisibilité mobile.
 
 Prix et lot : prix unitaire en haut, prix lot juste en dessous avec un badge couleur (ex : vert ou bleu).
 
-Stock / MOQ : petite ligne discrète sous le prix, par exemple “50 unités disponibles – Commande min 20”.
+Stock / MOQ : petite ligne discrète sous le prix, par exemple “50 unités disponibles - Commande min 20”.
 
 Options livraison : icônes simples (camion, éclair) alignées horizontalement, très visibles.
 

@@ -44,7 +44,7 @@ Groupements d’informels / Communautés IPPOO
 Vous faites partie d’un groupement, ou vous voulez en créer un, parce que vous avez compris une règle qui change tout, seul on achète, ensemble on négocie, on économise et on sécurise. Sur IPPOO, les communautés sont de vrais groupements organisés autour d’un avantage concret, acheter mieux, obtenir des prix par volume, sécuriser des quantités, organiser la livraison, et accéder à des conditions qui deviennent possibles dès que la demande est regroupée. Votre place dans la chaîne est stratégique, parce que vous partez des besoins du quotidien, puis vous transformez ces besoins en volumes capables d’attirer de meilleurs vendeurs, de meilleures offres et des conditions plus stables, ce qui vous donne plus de pouvoir, plus de régularité et moins de stress dans les achats. IPPOO vous facilite la vie avec des rubriques classifiées, des règles simples, des profils structurés, et une méthode qui permet de lancer un achat groupé proprement, en fixant les produits, les quantités, les délais, les conditions, et une organisation lisible pour tous, afin que chacun sache quoi faire, quand payer, quand récupérer, et comment suivre la commande.
 
 
-Menu du site IPPOO Market + arborescence (pages / sous-pages) – incluant toutes les fonctionnalités
+Menu du site IPPOO Market + arborescence (pages / sous-pages) - incluant toutes les fonctionnalités
 1) Accueil
 •	Présentation IPPOO Market
 •	Catégories principales
@@ -365,7 +365,7 @@ IPPOO Market peut aller plus loin avec des mécaniques qui n’étaient pas expl
 •	Tombola “facture gagnante” : participation automatique dès qu’une facture dépasse un certain montant, avec tirage transparent.
 
 
-Charge graphique IPPOO Market (Direction artistique UI) — Mobile First, semi 3D, très vif
+Charge graphique IPPOO Market (Direction artistique UI) - Mobile First, semi 3D, très vif
 1) Intention visuelle (ADN)
 IPPOO Market doit afficher une identité énergique, populaire et premium à la fois, inspirée des marchés africains (abondance, couleurs, mouvement) tout en restant lisible et moderne. L’interface doit être mobile-first, avec de grands titres, des boutons très visibles, des icônes colorées, et un style semi 3D (cartes en relief, ombres douces, pictos légèrement volumétriques). L’objectif est que l’utilisateur comprenne en un coup d’œil où cliquer, quoi acheter et comment payer, même avec un téléphone d’entrée de gamme.
 ________________________________________
@@ -385,13 +385,13 @@ ________________________________________
 •	Titres (H1/H2) : une typo forte et moderne (ex. Poppins, Montserrat, Sora).
 •	Texte UI : une typo lisible (ex. Inter, Roboto).
 •	Règles mobile-first :
-•	H1 très large (28–34px mobile), H2 (20–24px), texte (14–16px).
+•	H1 très large (28-34px mobile), H2 (20-24px), texte (14-16px).
 •	Beaucoup d’espace (padding généreux) + interlignage confortable.
 •	Style : titres en majuscule partielle, très courts, orientés action (“ACHETER EN GROS”, “PAIEMENT SÉCURISÉ”, “JOUR DE MARCHÉ”).
 ________________________________________
 4) Style semi 3D (cartes, boutons, icônes)
 Look semi 3D : pas du “3D lourd”, mais un relief moderne :
-•	Cartes (cards) avec ombre douce, légère perspective, bord arrondi (12–18px).
+•	Cartes (cards) avec ombre douce, légère perspective, bord arrondi (12-18px).
 •	Boutons “pillow” (effet coussin) : dégradé subtil + ombre portée.
 •	Icônes colorées en style 3D soft (type “clay icons” / “isometric lite”) pour les catégories, paiements, livraison, cadeaux, wallet.
 •	Badges “Doré/VIP” avec effet métallisé (dégradé doré léger).

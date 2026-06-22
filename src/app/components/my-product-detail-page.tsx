@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Fiche produit (côté vendeur)
+   IPPOO - Fiche produit (côté vendeur)
    Aperçu complet d'un produit de la boutique :
    galerie multi-images + vidéos, description,
    points-clés, paliers, logistique. Reflète
@@ -270,7 +270,7 @@ export function MyProductDetailPage() {
                 </div>
                 {product.paliers.map((t, i) => {
                   const next = product.paliers![i + 1];
-                  const range = next ? `${t.qty} – ${next.qty - 1} ${product.unit}` : `${t.qty}+ ${product.unit}`;
+                  const range = next ? `${t.qty} - ${next.qty - 1} ${product.unit}` : `${t.qty}+ ${product.unit}`;
                   return (
                     <div key={i} className="flex items-center justify-between px-3 py-2 border-t border-border" style={{ fontSize: 13 }}>
                       <span>{range}</span>

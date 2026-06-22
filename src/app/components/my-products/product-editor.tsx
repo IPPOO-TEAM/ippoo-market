@@ -358,7 +358,7 @@ export function ProductEditor({
 
               <div>
                 <div className="mb-1.5" style={{ fontFamily: "Poppins", fontWeight: 600, fontSize: 12 }}>
-                  Points-clés <span className="text-muted-foreground" style={{ fontWeight: 500 }}>(1 par ligne — apparaissent en bullets sur la fiche)</span>
+                  Points-clés <span className="text-muted-foreground" style={{ fontWeight: 500 }}>(1 par ligne - apparaissent en bullets sur la fiche)</span>
                 </div>
                 <textarea
                   value={highlights}

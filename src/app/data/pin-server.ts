@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — PIN serveur (Edge Function)
+   IPPOO - PIN serveur (Edge Function)
    Le hash et la vérification se font côté serveur (SHA-256 + sel
    aléatoire, lock 15 min après 5 échecs).
    ═══════════════════════════════════════════ */

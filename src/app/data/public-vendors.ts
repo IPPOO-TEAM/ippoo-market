@@ -1,6 +1,6 @@
 import { logger } from "../lib/logger";
 /* ═══════════════════════════════════════════
-   IPPOO — Annuaire public des vendeurs
+   IPPOO - Annuaire public des vendeurs
    Store léger (cache localStorage + abonnés) qui interroge
    l'endpoint serveur `vendors/public`. Chaque vendeur publie
    son propre enregistrement à la fin du signup et peut le
@@ -10,6 +10,7 @@ import { logger } from "../lib/logger";
 import { projectId, publicAnonKey } from "/utils/supabase/info";
 import { getAccessToken } from "../auth/supabase";
 import { safeGetItem, safeSetItem } from "../lib/safe-storage";
+import { isBackendOffline, isNetworkError, markBackendOffline } from "../lib/backend-health";
 
 const BASE = `https://${projectId}.supabase.co/functions/v1/make-server-cc347259`;
 const CACHE_KEY = "ippoo:public-vendors:v1";
@@ -73,6 +74,7 @@ export const SERVER_SNAPSHOT: PublicVendor[] = [];
 
 /** Récupère la liste (réseau) et met à jour le cache. Idempotent. */
 export async function refreshPublicVendors(force = false): Promise<PublicVendor[]> {
+  if (isBackendOffline()) return cache;
   if (!force && Date.now() - lastFetch < REFRESH_MS && cache.length) return cache;
   if (inflight) return inflight;
   inflight = (async () => {
@@ -91,7 +93,8 @@ export async function refreshPublicVendors(force = false): Promise<PublicVendor[
       emit();
       return cache;
     } catch (e) {
-      logger.warn(`vendors/public GET error: ${e}`);
+      if (isNetworkError(e)) markBackendOffline("vendors/public", e);
+      else logger.warn(`vendors/public GET error: ${e}`);
       return cache;
     } finally {
       inflight = null;

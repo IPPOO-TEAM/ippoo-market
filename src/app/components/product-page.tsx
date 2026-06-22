@@ -92,7 +92,7 @@ const categoryGalleryImages: Record<string, string[]> = {
 };
 
 // ─── Conditionnement data ───
-const getConditionnement = (product: typeof allProducts[0]) => {
+const getConditionnement = (product: { unit: string; moq: number }) => {
   const unitSingular = product.unit.endsWith("s") ? product.unit.slice(0, -1) : product.unit;
   const moq = product.moq;
   return {
@@ -160,7 +160,7 @@ export function ProductPage() {
     }
   }, [sp, setSp]);
 
-  const currentPrice = product.paliers
+  const currentPrice = (product.paliers ?? [])
     .slice()
     .reverse()
     .find((p) => quantity >= p.qty)?.price || product.price;
@@ -293,7 +293,7 @@ export function ProductPage() {
                 </div>
               )}
             </div>
-            {/* Thumbnails — masquées s'il n'y a qu'une seule image */}
+            {/* Thumbnails - masquées s'il n'y a qu'une seule image */}
             <div className={`flex gap-2 px-4 mt-3 lg:px-0 ${galleryImages.length <= 1 ? "hidden" : ""}`}>
               {galleryImages.map((img, i) => (
                 <button
@@ -312,7 +312,7 @@ export function ProductPage() {
 
             {/* ═══ 1. EN-TÊTE DU PRODUIT ═══ */}
 
-            {/* Fournisseur — lien vers la boutique émettrice */}
+            {/* Fournisseur - lien vers la boutique émettrice */}
             <button
               onClick={() => {
                 const shopId = (product as { shopId?: string }).shopId;
@@ -433,10 +433,10 @@ export function ProductPage() {
                 <span>Prix unitaire</span>
               </div>
               <div className="space-y-0">
-                {product.paliers.map((p, i) => {
-                  const nextQty = product.paliers[i + 1]?.qty;
+                {(product.paliers ?? []).map((p, i) => {
+                  const nextQty = (product.paliers ?? [])[i + 1]?.qty;
                   const rangeLabel = nextQty
-                    ? `${p.qty} – ${nextQty - 1} ${product.unit}`
+                    ? `${p.qty} - ${nextQty - 1} ${product.unit}`
                     : `${p.qty} ${product.unit} et +`;
                   return (
                     <div

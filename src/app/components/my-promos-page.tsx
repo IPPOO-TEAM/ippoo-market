@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Promotions vendeur
+   IPPOO - Promotions vendeur
    CRUD des codes promo applicables à la boutique active.
    ═══════════════════════════════════════════ */
 
@@ -199,7 +199,7 @@ function PromoRow({
           )}
         </div>
         <div className="text-muted-foreground truncate" style={{ fontSize: 11 }}>
-          {promo.label || "—"}
+          {promo.label || "-"}
           {period && ` · ${period}`}
           {promo.maxUses != null && ` · ${promo.usedCount}/${promo.maxUses}`}
         </div>

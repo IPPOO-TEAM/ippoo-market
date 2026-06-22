@@ -87,8 +87,8 @@ export function platformAccounting(period: VendorPeriod = "30d") {
   for (const inv of invoices) {
     for (const l of inv.lines ?? []) {
       unitsSold += l.quantity;
-      const key = l.vendorId ?? l.vendorName ?? "—";
-      const cur = vendorAgg.get(key) ?? { vendorId: key, vendorName: l.vendorName ?? "—", revenue: 0, units: 0 };
+      const key = l.vendorId ?? l.vendorName ?? "-";
+      const cur = vendorAgg.get(key) ?? { vendorId: key, vendorName: l.vendorName ?? "-", revenue: 0, units: 0 };
       cur.revenue += l.total;
       cur.units += l.quantity;
       vendorAgg.set(key, cur);

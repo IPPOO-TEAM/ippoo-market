@@ -26,6 +26,8 @@ export function AdminProductsPage() {
   const [q, setQ] = useState("");
   const [filter, setFilter] = useState<Filter>("all");
   const [pending, setPending] = useState<string | null>(null);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [bulkBusy, setBulkBusy] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -76,6 +78,38 @@ export function AdminProductsPage() {
     } finally {
       setPending(null);
     }
+  }
+
+  const toggleOne = (id: string) => {
+    setSelected((s) => {
+      const next = new Set(s);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  };
+  const allOnPage = filtered.length > 0 && filtered.every((p) => selected.has(String(p.id || "")));
+  const toggleAll = () => {
+    setSelected((s) => {
+      const next = new Set(s);
+      if (allOnPage) for (const p of filtered) next.delete(String(p.id || ""));
+      else for (const p of filtered) { const id = String(p.id || ""); if (id) next.add(id); }
+      return next;
+    });
+  };
+  const clearSelection = () => setSelected(new Set());
+
+  async function bulkSetHidden(hidden: boolean) {
+    const ids = Array.from(selected);
+    if (ids.length === 0) return;
+    setBulkBusy(true);
+    const results = await Promise.allSettled(ids.map((id) => hideProduct(id, hidden)));
+    const ok = results.filter((r) => r.status === "fulfilled").length;
+    const ko = results.length - ok;
+    if (ok > 0) toast.success(`${ok} produit(s) ${hidden ? "masqué(s)" : "publié(s)"}`);
+    if (ko > 0) toast.error(`${ko} échec(s)`);
+    clearSelection();
+    await load();
+    setBulkBusy(false);
   }
 
   function exportCsv() {
@@ -140,11 +174,46 @@ export function AdminProductsPage() {
         </div>
       )}
 
+      {selected.size > 0 && (
+        <div className="sticky top-3 z-10 mb-3 flex flex-wrap items-center gap-2 px-4 py-2.5 rounded-2xl bg-[#0F172A] text-white shadow-lg">
+          <span style={{ fontSize: 13, fontWeight: 700 }}>{selected.size} produit(s) sélectionné(s)</span>
+          <button
+            onClick={() => bulkSetHidden(false)}
+            disabled={bulkBusy}
+            className="ml-auto inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#16A34A] disabled:opacity-60"
+            style={{ fontSize: 12, fontWeight: 700 }}
+          >
+            {bulkBusy ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Eye className="w-3.5 h-3.5" />}
+            Publier tout
+          </button>
+          <button
+            onClick={() => bulkSetHidden(true)}
+            disabled={bulkBusy}
+            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#E11D2E] disabled:opacity-60"
+            style={{ fontSize: 12, fontWeight: 700 }}
+          >
+            {bulkBusy ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <EyeOff className="w-3.5 h-3.5" />}
+            Masquer tout
+          </button>
+          <button onClick={clearSelection} className="text-white/70 hover:text-white px-2" style={{ fontSize: 11 }}>
+            Désélectionner
+          </button>
+        </div>
+      )}
+
       <Card className="overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr>
+                <Th>
+                  <input
+                    type="checkbox"
+                    checked={allOnPage}
+                    onChange={toggleAll}
+                    aria-label="Tout sélectionner"
+                  />
+                </Th>
                 <Th>Produit</Th>
                 <Th>Catégorie</Th>
                 <Th>Prix</Th>
@@ -156,12 +225,12 @@ export function AdminProductsPage() {
             </thead>
             <tbody>
               {loading && (
-                <tr><Td className="text-center text-muted-foreground" colSpan={7 as any}>
+                <tr><Td className="text-center text-muted-foreground" colSpan={8 as any}>
                   <Loader2 className="w-4 h-4 inline-block animate-spin mr-2" /> Chargement…
                 </Td></tr>
               )}
               {!loading && filtered.length === 0 && (
-                <tr><Td className="text-center" colSpan={7 as any}>
+                <tr><Td className="text-center" colSpan={8 as any}>
                   <EmptyState title="Aucun produit" description="Aucun résultat pour ces filtres" />
                 </Td></tr>
               )}
@@ -172,15 +241,23 @@ export function AdminProductsPage() {
                 return (
                   <tr key={id || `${p.name}-${p.createdAt ?? Math.random()}`} className="hover:bg-muted/40">
                     <Td>
+                      <input
+                        type="checkbox"
+                        checked={selected.has(id)}
+                        onChange={() => toggleOne(id)}
+                        aria-label={`Sélectionner ${p.name || id}`}
+                      />
+                    </Td>
+                    <Td>
                       <div className="flex items-center gap-2 min-w-0">
                         <Package className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
-                        <span className="truncate"><strong>{p.name || "—"}</strong></span>
+                        <span className="truncate"><strong>{p.name || "-"}</strong></span>
                       </div>
                       <div className="text-muted-foreground truncate" style={{ fontSize: 11 }}>
                         {p.ownerId || id}
                       </div>
                     </Td>
-                    <Td className="text-muted-foreground">{p.category || "—"}</Td>
+                    <Td className="text-muted-foreground">{p.category || "-"}</Td>
                     <Td>{formatPrice(p.price ?? 0)} FCFA</Td>
                     <Td className={stock === 0 ? "text-[#E11D2E]" : ""}>{stock}</Td>
                     <Td>
@@ -191,7 +268,7 @@ export function AdminProductsPage() {
                           : <StatusBadge status="active" />}
                     </Td>
                     <Td className="text-muted-foreground">
-                      {p.createdAt ? fmtRelative(p.createdAt) : "—"}
+                      {p.createdAt ? fmtRelative(p.createdAt) : "-"}
                     </Td>
                     <Td>
                       <div className="flex items-center gap-1">

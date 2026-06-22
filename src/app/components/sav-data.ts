@@ -42,10 +42,10 @@ export const savCategories: SavCategory[] = [
     image: IMG.tailor,
     description: "Pour vos achats textile, wax, bazin, prêt-à-porter, nous vous orientons vers des couturiers et retoucheurs vérifiés, afin que votre article tombe bien, dure plus longtemps et corresponde exactement à vos attentes.",
     services: [
-      { name: "Retouche simple", desc: "Ourlet, ajustement taille, raccourcissement", price: "1 500 – 5 000 FCFA", delay: "24-48h" },
-      { name: "Retouche complexe", desc: "Transformation, ajout poches, modification coupe", price: "5 000 – 15 000 FCFA", delay: "48-72h" },
-      { name: "Couture sur mesure", desc: "Confection complète à partir de tissu acheté", price: "8 000 – 35 000 FCFA", delay: "3-7 jours" },
-      { name: "Broderie & Personnalisation", desc: "Broderie, marquage, décorations sur commande", price: "3 000 – 12 000 FCFA", delay: "2-5 jours" },
+      { name: "Retouche simple", desc: "Ourlet, ajustement taille, raccourcissement", price: "1 500 - 5 000 FCFA", delay: "24-48h" },
+      { name: "Retouche complexe", desc: "Transformation, ajout poches, modification coupe", price: "5 000 - 15 000 FCFA", delay: "48-72h" },
+      { name: "Couture sur mesure", desc: "Confection complète à partir de tissu acheté", price: "8 000 - 35 000 FCFA", delay: "3-7 jours" },
+      { name: "Broderie & Personnalisation", desc: "Broderie, marquage, décorations sur commande", price: "3 000 - 12 000 FCFA", delay: "2-5 jours" },
     ],
   },
   {
@@ -59,8 +59,8 @@ export const savCategories: SavCategory[] = [
     description: "Pour vos biens de consommation et équipements du quotidien, électronique, électroménager, outillage, nous vous guidons vers des réparateurs fiables, des pièces de rechange authentiques et des prestataires capables d'intervenir correctement.",
     services: [
       { name: "Diagnostic gratuit", desc: "Évaluation de la panne ou du défaut, devis transparent", price: "Gratuit", delay: "Immédiat" },
-      { name: "Réparation standard", desc: "Écran, batterie, connecteur, composant courant", price: "5 000 – 25 000 FCFA", delay: "1-3 jours" },
-      { name: "Remplacement de pièce", desc: "Pièce détachée certifiée + main-d'œuvre", price: "8 000 – 50 000 FCFA", delay: "2-5 jours" },
+      { name: "Réparation standard", desc: "Écran, batterie, connecteur, composant courant", price: "5 000 - 25 000 FCFA", delay: "1-3 jours" },
+      { name: "Remplacement de pièce", desc: "Pièce détachée certifiée + main-d'œuvre", price: "8 000 - 50 000 FCFA", delay: "2-5 jours" },
       { name: "Échange standard", desc: "Remplacement de l'article si réparation impossible", price: "Selon article", delay: "3-7 jours" },
     ],
   },
@@ -74,10 +74,10 @@ export const savCategories: SavCategory[] = [
     image: IMG.maintenance,
     description: "Pour vos besoins plus techniques, maintenance d'équipements, entretiens suivis, installations, IPPOO vous oriente vers des professionnels qualifiés afin de prolonger la durée de vie de vos achats et de mieux rentabiliser votre dépense.",
     services: [
-      { name: "Maintenance préventive", desc: "Entretien planifié, nettoyage, contrôle régulier", price: "10 000 – 30 000 FCFA", delay: "Sur RDV" },
-      { name: "Installation & Mise en service", desc: "Pose, raccordement, paramétrage, test de bon fonctionnement", price: "15 000 – 45 000 FCFA", delay: "24-72h" },
+      { name: "Maintenance préventive", desc: "Entretien planifié, nettoyage, contrôle régulier", price: "10 000 - 30 000 FCFA", delay: "Sur RDV" },
+      { name: "Installation & Mise en service", desc: "Pose, raccordement, paramétrage, test de bon fonctionnement", price: "15 000 - 45 000 FCFA", delay: "24-72h" },
       { name: "Contrat d'entretien", desc: "Suivi trimestriel ou semestriel, interventions incluses", price: "À partir de 25 000 FCFA/trim.", delay: "Planifié" },
-      { name: "Intervention urgente", desc: "Dépannage rapide, panne critique, situation bloquante", price: "20 000 – 60 000 FCFA", delay: "4-12h" },
+      { name: "Intervention urgente", desc: "Dépannage rapide, panne critique, situation bloquante", price: "20 000 - 60 000 FCFA", delay: "4-12h" },
     ],
   },
   {
@@ -90,10 +90,10 @@ export const savCategories: SavCategory[] = [
     image: IMG.mechanic,
     description: "Pour vos achats de pièces auto, accessoires ou équipements de transport, nous vous connectons à des mécaniciens, électriciens auto et carrossiers de confiance pour une pose et un suivi professionnels.",
     services: [
-      { name: "Montage pièces", desc: "Pose de pièces achetées sur IPPOO (freins, filtres, batterie...)", price: "5 000 – 30 000 FCFA", delay: "1-4h" },
-      { name: "Diagnostic mécanique", desc: "Bilan complet véhicule, identification des pannes", price: "10 000 – 20 000 FCFA", delay: "1-2h" },
-      { name: "Entretien périodique", desc: "Vidange, contrôle niveaux, filtres, rotation pneus", price: "15 000 – 40 000 FCFA", delay: "2-4h" },
-      { name: "Électricité auto", desc: "Câblage, alternateur, démarreur, éclairage", price: "10 000 – 50 000 FCFA", delay: "2-8h" },
+      { name: "Montage pièces", desc: "Pose de pièces achetées sur IPPOO (freins, filtres, batterie...)", price: "5 000 - 30 000 FCFA", delay: "1-4h" },
+      { name: "Diagnostic mécanique", desc: "Bilan complet véhicule, identification des pannes", price: "10 000 - 20 000 FCFA", delay: "1-2h" },
+      { name: "Entretien périodique", desc: "Vidange, contrôle niveaux, filtres, rotation pneus", price: "15 000 - 40 000 FCFA", delay: "2-4h" },
+      { name: "Électricité auto", desc: "Câblage, alternateur, démarreur, éclairage", price: "10 000 - 50 000 FCFA", delay: "2-8h" },
     ],
   },
   {
@@ -106,10 +106,10 @@ export const savCategories: SavCategory[] = [
     image: IMG.plumber,
     description: "Pour les achats liés à l'habitat, plomberie, électricité, menuiserie, peinture, IPPOO vous met en relation avec des artisans locaux qualifiés pour la pose, l'installation et la finition.",
     services: [
-      { name: "Plomberie", desc: "Installation, réparation, raccordement sanitaire", price: "10 000 – 40 000 FCFA", delay: "24-48h" },
-      { name: "Électricité", desc: "Installation, dépannage, mise aux normes", price: "8 000 – 35 000 FCFA", delay: "24-48h" },
-      { name: "Menuiserie", desc: "Montage meubles, étagères, aménagements", price: "10 000 – 50 000 FCFA", delay: "1-3 jours" },
-      { name: "Peinture & Finition", desc: "Application, préparation murs, finitions décoratives", price: "15 000 – 60 000 FCFA", delay: "1-5 jours" },
+      { name: "Plomberie", desc: "Installation, réparation, raccordement sanitaire", price: "10 000 - 40 000 FCFA", delay: "24-48h" },
+      { name: "Électricité", desc: "Installation, dépannage, mise aux normes", price: "8 000 - 35 000 FCFA", delay: "24-48h" },
+      { name: "Menuiserie", desc: "Montage meubles, étagères, aménagements", price: "10 000 - 50 000 FCFA", delay: "1-3 jours" },
+      { name: "Peinture & Finition", desc: "Application, préparation murs, finitions décoratives", price: "15 000 - 60 000 FCFA", delay: "1-5 jours" },
     ],
   },
 ];

@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Authentification biométrique (WebAuthn)
+   IPPOO - Authentification biométrique (WebAuthn)
    - registerBiometric : associe une empreinte/Face ID à un profil minimal
    - loginBiometric    : redonne ce profil minimal (nom, prénom, organisation)
    - confirmBiometric  : sert pour valider un paiement (présence utilisateur)
@@ -19,7 +19,7 @@ export type BioPublicProfile = {
 };
 
 type StoredProfile = BioPublicProfile & {
-  // jamais retourné par loginBiometric — réservé à l'app
+  // jamais retourné par loginBiometric - réservé à l'app
   email?: string;
   phone?: string;
 };

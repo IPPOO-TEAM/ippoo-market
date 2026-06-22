@@ -96,7 +96,7 @@ export function AdminUsersPage() {
         u.id,
         u.email || "",
         u.createdAt ? fmtDate(new Date(u.createdAt).getTime()) : "",
-        u.lastSignInAt ? fmtDate(new Date(u.lastSignInAt).getTime()) : "—",
+        u.lastSignInAt ? fmtDate(new Date(u.lastSignInAt).getTime()) : "-",
         u.emailConfirmed ? "oui" : "non",
         u.isAdmin ? "oui" : "non",
       ]),
@@ -181,14 +181,14 @@ export function AdminUsersPage() {
                     <Td>
                       <div className="flex items-center gap-2 min-w-0">
                         <Mail className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
-                        <span className="truncate"><strong>{u.email || "—"}</strong></span>
+                        <span className="truncate"><strong>{u.email || "-"}</strong></span>
                       </div>
                       <div className="text-muted-foreground truncate" style={{ fontFamily: "ui-monospace, monospace", fontSize: 10 }}>
                         {u.id}
                       </div>
                     </Td>
                     <Td className="text-muted-foreground">
-                      {u.createdAt ? fmtRelative(new Date(u.createdAt).getTime()) : "—"}
+                      {u.createdAt ? fmtRelative(new Date(u.createdAt).getTime()) : "-"}
                     </Td>
                     <Td className="text-muted-foreground">
                       {u.lastSignInAt ? fmtRelative(new Date(u.lastSignInAt).getTime()) : "Jamais"}
@@ -208,7 +208,7 @@ export function AdminUsersPage() {
                     <Td>
                       <div className="flex items-center gap-1">
                         {u.isAdmin ? (
-                          <span className="text-muted-foreground" style={{ fontSize: 11 }}>—</span>
+                          <span className="text-muted-foreground" style={{ fontSize: 11 }}>-</span>
                         ) : u.banned ? (
                           <IconBtn icon={isPending ? Loader2 : Play} label="Réactiver" onClick={() => onUnban(u)} color="#16A34A" />
                         ) : (

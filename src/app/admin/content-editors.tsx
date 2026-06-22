@@ -43,7 +43,7 @@ export function BannersEditor({ banners, onChange }: { banners: Banner[]; onChan
           <div key={b.id} className="rounded-xl border border-border p-4">
             <div className="flex items-center justify-between mb-3">
               <div className="rounded-lg px-3 py-2 text-white" style={{ background: b.bgColor, fontSize: 12, fontWeight: 700 }}>
-                {b.title || "Aperçu"} — {b.subtitle}
+                {b.title || "Aperçu"} - {b.subtitle}
               </div>
               <div className="flex items-center gap-1">
                 <button

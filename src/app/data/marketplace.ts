@@ -308,7 +308,7 @@ function buildProducts(): MarketplaceProduct[] {
           v === 0
             ? `Lot ${moq} ${unit}`
             : `${brand} · ${color} · ${size} · ${weightKg}kg`;
-        const name = `${leaf.name} — ${variantTag}`;
+        const name = `${leaf.name} - ${variantTag}`;
         // Priorité : (1) image curatée par leaf, (2) image sémantique du
         // nœud catalogue (issue du dictionnaire mots-clés), (3) pool générique
         // de la catégorie. On élimine picsum.photos qui renvoyait des paysages

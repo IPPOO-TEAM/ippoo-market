@@ -126,7 +126,7 @@ export function ThemedProductRow({
 
 /* ────────────────────────────────────────────
    Tuile publicitaire intégrée à la grille
-   (col-span-2 — occupe l'emplacement de 2 produits)
+   (col-span-2 - occupe l'emplacement de 2 produits)
    ──────────────────────────────────────────── */
 export type AdSlide = {
   title: string;
@@ -141,9 +141,9 @@ export type AdSlide = {
 
 const DEFAULT_AD_SLIDES: AdSlide[] = [
   {
-    // photo_3 — petit électroménager argenté/noir sur plan de travail bois
+    // photo_3 - petit électroménager argenté/noir sur plan de travail bois
     title: "ÉQUIPEZ VOTRE CUISINE PRO",
-    subtitle: "Mixeurs, cafetières, grille-pain — tarifs grossistes garantis",
+    subtitle: "Mixeurs, cafetières, grille-pain - tarifs grossistes garantis",
     cta: "Voir le rayon",
     bg: "from-[#0F172A] to-[#334155]",
     link: "/explorer?cat=Maison",
@@ -152,9 +152,9 @@ const DEFAULT_AD_SLIDES: AdSlide[] = [
     imageAlt: "Petit électroménager de cuisine en inox",
   },
   {
-    // photo_5 — bijouterie luxe sur satin doré
+    // photo_5 - bijouterie luxe sur satin doré
     title: "COLLECTION OR & FINESSE",
-    subtitle: "Colliers, bagues et bracelets — directement importateur",
+    subtitle: "Colliers, bagues et bracelets - directement importateur",
     cta: "Découvrir",
     bg: "from-[#78350F] to-[#B45309]",
     link: "/explorer?cat=Bijoux",
@@ -163,7 +163,7 @@ const DEFAULT_AD_SLIDES: AdSlide[] = [
     imageAlt: "Bijoux dorés sur tissu de satin",
   },
   {
-    // photo_8 — sneakers New Balance roses sur marbre, ambiance féminine
+    // photo_8 - sneakers New Balance roses sur marbre, ambiance féminine
     title: "SNEAKERS LIFESTYLE FEMME",
     subtitle: "Modèles tendance, prix de gros dès 6 paires",
     cta: "Je shoppe",
@@ -174,8 +174,8 @@ const DEFAULT_AD_SLIDES: AdSlide[] = [
     imageAlt: "Sneakers New Balance roses sur sol en marbre",
   },
   {
-    // photo_10 — étalage de bracelets en or massif
-    title: "BRACELETS OR — STOCK BOUTIQUE",
+    // photo_10 - étalage de bracelets en or massif
+    title: "BRACELETS OR - STOCK BOUTIQUE",
     subtitle: "Réassort vendeurs : modèles plaqués & massifs disponibles",
     cta: "Voir les lots",
     bg: "from-[#7C2D12] to-[#92400E]",
@@ -185,9 +185,9 @@ const DEFAULT_AD_SLIDES: AdSlide[] = [
     imageAlt: "Bracelets en or exposés en boutique",
   },
   {
-    // photo_13 — Nike Dunk Low orange sur fond orange vif
-    title: "SNEAKERS STREET — ARRIVAGE",
-    subtitle: "Modèles Dunk, Air & Co. en quantité — prix dégressif",
+    // photo_13 - Nike Dunk Low orange sur fond orange vif
+    title: "SNEAKERS STREET - ARRIVAGE",
+    subtitle: "Modèles Dunk, Air & Co. en quantité - prix dégressif",
     cta: "J'en profite",
     bg: "from-[#EA580C] to-[#C2410C]",
     link: "/explorer?cat=Mode",
@@ -196,9 +196,9 @@ const DEFAULT_AD_SLIDES: AdSlide[] = [
     imageAlt: "Sneakers Nike Dunk Low orange et blanches",
   },
   {
-    // photo_15 — sneakers New Balance vert/bleu/jaune, ton studio doux
+    // photo_15 - sneakers New Balance vert/bleu/jaune, ton studio doux
     title: "RUNNING & URBAN MIX",
-    subtitle: "Coloris exclusifs — idéal pour boutiques multimarques",
+    subtitle: "Coloris exclusifs - idéal pour boutiques multimarques",
     cta: "Commander",
     bg: "from-[#166534] to-[#1E40AF]",
     link: "/explorer?cat=Mode",
@@ -207,9 +207,9 @@ const DEFAULT_AD_SLIDES: AdSlide[] = [
     imageAlt: "Sneakers New Balance vertes et bleues",
   },
   {
-    // photo_21 — boutique prêt-à-porter, rack coloré + étagère chaussures
+    // photo_21 - boutique prêt-à-porter, rack coloré + étagère chaussures
     title: "RÉASSORT BOUTIQUE PRÊT-À-PORTER",
-    subtitle: "Chemises, robes et chaussures — lots mixtes pour revendeurs",
+    subtitle: "Chemises, robes et chaussures - lots mixtes pour revendeurs",
     cta: "Voir les lots",
     bg: "from-[#1E3A8A] to-[#312E81]",
     link: "/explorer?cat=Mode",

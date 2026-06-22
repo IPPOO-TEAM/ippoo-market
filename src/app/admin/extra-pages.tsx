@@ -68,8 +68,8 @@ function Th({ children, className = "" }: { children?: React.ReactNode; classNam
   );
 }
 
-function Td({ children, className = "", style }: { children?: React.ReactNode; className?: string; style?: React.CSSProperties }) {
-  return <td className={`px-4 py-3 border-b border-[#F3F4F6] ${className}`} style={{ fontSize: 13, ...style }}>{children}</td>;
+function Td({ children, className = "", style, colSpan }: { children?: React.ReactNode; className?: string; style?: React.CSSProperties; colSpan?: number }) {
+  return <td colSpan={colSpan} className={`px-4 py-3 border-b border-[#F3F4F6] ${className}`} style={{ fontSize: 13, ...style }}>{children}</td>;
 }
 
 function Badge({ children, color }: { children: React.ReactNode; color: string }) {
@@ -596,7 +596,7 @@ export function AdminPayoutsPage() {
             <label style={{ fontSize: 12 }}>
               <span className="text-muted-foreground block mb-1">Vendeur</span>
               <select value={vendorId} onChange={(e) => setVendorId(e.target.value)} className="w-full px-3 py-2 rounded-xl border border-border outline-none" style={{ fontSize: 13 }}>
-                <option value="">—</option>
+                <option value="">-</option>
                 {admin.vendors.filter((v) => v.status === "approved").map((v) => <option key={v.id} value={v.id}>{v.name}</option>)}
               </select>
             </label>
@@ -635,7 +635,7 @@ export function AdminPayoutsPage() {
                   <Td className="capitalize">{p.method === "momo" ? "Mobile Money" : p.method === "bank" ? "Virement" : "Wallet"}</Td>
                   <Td><Badge color={PAYOUT_COLORS[p.status]}>{PAYOUT_LABELS[p.status]}</Badge></Td>
                   <Td className="text-muted-foreground">{fmtDate(p.createdAt)}</Td>
-                  <Td className="text-muted-foreground">{p.reference || "—"}</Td>
+                  <Td className="text-muted-foreground">{p.reference || "-"}</Td>
                   <Td>
                     <div className="flex items-center gap-1">
                       {(p.status === "pending" || p.status === "processing") && (
@@ -733,14 +733,14 @@ export function AdminAuditPage() {
                 <tr key={e.id} className="hover:bg-muted/40">
                   <Td className="text-muted-foreground">{fmtTime(e.ts)}</Td>
                   <Td>
-                    <strong>{e.adminEmail || "—"}</strong>
+                    <strong>{e.adminEmail || "-"}</strong>
                     <div className="text-muted-foreground" style={{ fontFamily: "ui-monospace, monospace", fontSize: 10 }}>{e.adminId}</div>
                   </Td>
                   <Td><code style={{ fontFamily: "ui-monospace, monospace", fontSize: 12, color: "#E11D2E" }}>{e.action}</code></Td>
                   <Td className="text-muted-foreground" style={{ fontSize: 11 }}>
                     {e.meta && Object.keys(e.meta).length > 0
                       ? <code style={{ fontFamily: "ui-monospace, monospace" }}>{JSON.stringify(e.meta)}</code>
-                      : "—"}
+                      : "-"}
                   </Td>
                 </tr>
               ))}

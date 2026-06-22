@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Identifiant utilisateur unique + payload QR signé
+   IPPOO - Identifiant utilisateur unique + payload QR signé
    - Chaque utilisateur reçoit un ID 12 chiffres unique sur cet appareil
      (en backend réel, l'unicité serait garantie côté serveur).
    - Le QR encode un payload signé HMAC-like avec une clé statique :

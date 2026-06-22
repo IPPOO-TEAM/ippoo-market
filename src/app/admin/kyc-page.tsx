@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Admin · KYC
+   IPPOO - Admin · KYC
    Liste les dossiers KYC en attente et permet d'approuver / rejeter.
    ═══════════════════════════════════════════ */
 
@@ -82,7 +82,7 @@ export function AdminKycPage() {
 
       <ul className="space-y-2">
         {items.map((k) => {
-          const uid = k.userId ?? "—";
+          const uid = k.userId ?? "-";
           return (
             <li key={uid} className="rounded-2xl border border-border bg-card p-4">
               <div className="flex items-center justify-between gap-3 flex-wrap">

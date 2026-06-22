@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — CRM léger vendeur · Mes clients
+   IPPOO - CRM léger vendeur · Mes clients
    Agrège les commandes du vendeur par acheteur
    (userId + nom de livraison) pour produire des
    fiches client avec total dépensé, nb commandes,

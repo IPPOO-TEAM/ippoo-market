@@ -1,8 +1,8 @@
-Plateforme de Cotation – Présentation et Structure Fonctionnelle
+Plateforme de Cotation - Présentation et Structure Fonctionnelle
 
 Une plateforme de cotation est un espace numérique dédié à la consultation, l’analyse et la mise à jour en temps réel des valeurs, prix, indices et cotations d’un marché donné (produits, services, actions, matières premières, etc.). Elle centralise des données fiables et les restitue dans une interface organisée, intuitive et accessible.
 
-1. Page d’accueil – Vue d’ensemble des cotations
+1. Page d’accueil - Vue d’ensemble des cotations
 
 Page principale donnant une vision globale et immédiate des tendances du marché.
 Contenu possible :

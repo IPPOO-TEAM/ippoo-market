@@ -1,6 +1,6 @@
 import type { SVGProps } from "react";
 
-/* Icône WhatsApp officielle (logo brand) — utilisée partout où l'on cite
+/* Icône WhatsApp officielle (logo brand) - utilisée partout où l'on cite
    WhatsApp comme canal de contact ou de partage. */
 export function WhatsAppIcon({
   size = 16,

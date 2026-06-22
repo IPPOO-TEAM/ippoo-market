@@ -86,7 +86,7 @@ function defaultState(): ContentState {
       phone: "+229 99 00 00 00",
       whatsapp: "+229 99 00 00 00",
       address: "Cotonou, Bénin",
-      hours: "Lun – Sam, 8h – 19h",
+      hours: "Lun - Sam, 8h - 19h",
     },
     social: {
       facebook: "https://facebook.com/ippoo.market",
@@ -132,7 +132,7 @@ function defaultState(): ContentState {
       orderConfirmBody: "Bonjour {{nom}},\n\nVotre commande {{orderId}} d'un montant de {{total}} FCFA a bien été enregistrée.\n\nSuivi : ippoo.market/commande/{{orderId}}",
     },
     seo: {
-      title: "IPPOO Market — Marketplace B2B de l'Afrique de l'Ouest",
+      title: "IPPOO Market - Marketplace B2B de l'Afrique de l'Ouest",
       description: "Achetez en gros, vendez en confiance. Plus de 5 000 produits B2B livrés en 24-72h dans toute l'UEMOA.",
       keywords: "marketplace, B2B, Afrique, UEMOA, grossiste, IPPOO",
       ogImageUrl: "",

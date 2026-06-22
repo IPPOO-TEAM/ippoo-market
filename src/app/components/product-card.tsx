@@ -18,7 +18,7 @@ interface Palier {
   price: number;
 }
 
-interface ProductCardProps {
+export interface ProductCardProps {
   id: number | string;
   name: string;
   image: string;
@@ -29,7 +29,7 @@ interface ProductCardProps {
   rating: number;
   category: string;
   inStock: boolean;
-  paliers: Palier[];
+  paliers?: Palier[];
   reference?: string;
   variant?: "grid" | "list";
 }
@@ -49,7 +49,7 @@ export function ProductCard({
   variant = "grid",
 }: ProductCardProps) {
   const navigate = useNavigate();
-  const lotPrice = paliers.length > 0 ? paliers[0] : null;
+  const lotPrice = paliers && paliers.length > 0 ? paliers[0] : null;
 
   return (
     <motion.div
@@ -88,7 +88,7 @@ export function ProductCard({
         </div>
       </div>
 
-      {/* Content — compact Alibaba style */}
+      {/* Content - compact Alibaba style */}
       <div className="p-2 flex flex-col flex-1 gap-1">
         {/* Prix */}
         <div className="flex items-baseline gap-1">

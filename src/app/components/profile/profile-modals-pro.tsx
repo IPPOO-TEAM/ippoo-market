@@ -55,7 +55,7 @@ export function EditProModal({
             className="w-full px-3 py-2.5 rounded-xl bg-[#F3F4F6] border-none focus:ring-2 focus:ring-[#E11D2E]/30 focus:outline-none"
             style={{ fontSize: 13 }}
           >
-            <option value="">— Sélectionner —</option>
+            <option value="">- Sélectionner -</option>
             {JURIDICAL_FORMS.map((f) => (
               <option key={f.id} value={f.id}>{f.label}</option>
             ))}
@@ -73,7 +73,7 @@ export function EditProModal({
             className="w-full px-3 py-2.5 rounded-xl bg-[#F3F4F6] border-none focus:ring-2 focus:ring-[#E11D2E]/30 focus:outline-none"
             style={{ fontSize: 13 }}
           >
-            <option value="">— Sélectionner un secteur —</option>
+            <option value="">- Sélectionner un secteur -</option>
             {SECTORS.map((s) => (
               <option key={s.id} value={s.id}>{s.icon} {s.label}</option>
             ))}
@@ -88,7 +88,7 @@ export function EditProModal({
               className="w-full px-3 py-2.5 rounded-xl bg-[#F3F4F6] border-none focus:ring-2 focus:ring-[#E11D2E]/30 focus:outline-none"
               style={{ fontSize: 13 }}
             >
-              <option value="">— Sélectionner un sous-secteur —</option>
+              <option value="">- Sélectionner un sous-secteur -</option>
               {subsectors.map((s) => (
                 <option key={s.id} value={s.id}>{s.label}</option>
               ))}
@@ -104,7 +104,7 @@ export function EditProModal({
               className="w-full px-3 py-2.5 rounded-xl bg-[#F3F4F6] border-none focus:ring-2 focus:ring-[#E11D2E]/30 focus:outline-none"
               style={{ fontSize: 13 }}
             >
-              <option value="">— Sélectionner un métier —</option>
+              <option value="">- Sélectionner un métier -</option>
               {niches.map((n) => (
                 <option key={n} value={n}>{n}</option>
               ))}
@@ -119,7 +119,7 @@ export function EditProModal({
             className="w-full px-3 py-2.5 rounded-xl bg-[#F3F4F6] border-none focus:ring-2 focus:ring-[#E11D2E]/30 focus:outline-none"
             style={{ fontSize: 13 }}
           >
-            <option value="">— Sélectionner —</option>
+            <option value="">- Sélectionner -</option>
             {CIRCUITS.map((c) => (
               <option key={c.id} value={c.id}>{c.icon} {c.label}</option>
             ))}

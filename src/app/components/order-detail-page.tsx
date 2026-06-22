@@ -109,7 +109,7 @@ export function OrderDetailPage() {
   const activeStep = order.status === "preparation" ? 1 : order.status === "expedition" ? 2 : order.status === "livree" ? 3 : order.status === "cloturee" ? 4 : 0;
 
   const orderItems = realOrder
-    ? realOrder.items.map((it) => ({
+    ? realOrder.items.map((it: any) => ({
         name: it.name,
         qty: it.quantity,
         unit: it.unit || "pièce",
@@ -145,12 +145,12 @@ export function OrderDetailPage() {
 
   async function submitDispute() {
     if (!reason) { toast.error("Sélectionne un motif"); return; }
-    if (!realOrder) { toast.error("Commande non synchronisée — impossible d'ouvrir un litige"); return; }
+    if (!realOrder) { toast.error("Commande non synchronisée - impossible d'ouvrir un litige"); return; }
     setSubmitting(true);
     const res = openDispute(order.id, reason, details.trim() || undefined);
     setSubmitting(false);
     if (!res.ok) { toast.error(res.error || "Erreur"); return; }
-    toast.success("Litige ouvert — IPPOO te répond sous 48h");
+    toast.success("Litige ouvert - IPPOO te répond sous 48h");
     setShowDispute(false);
     setDetails("");
   }
@@ -295,7 +295,7 @@ export function OrderDetailPage() {
           <h3 className="mb-4 flex items-center gap-2" style={{ fontFamily: "Poppins", fontWeight: 700, fontSize: 15 }}>
             <Package className="w-4 h-4 text-[#E11D2E]" /> Articles ({orderItems.length})
           </h3>
-          {orderItems.map((item, i) => (
+          {orderItems.map((item: any, i: number) => (
             <div key={i} className="flex gap-3 py-3 border-b border-[#F3F4F6] last:border-0">
               <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0">
                 <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
@@ -365,8 +365,8 @@ export function OrderDetailPage() {
 
         {(order.status === "livree" || order.status === "cloturee") && (() => {
           const slugs = Array.from(new Set(
-            (realOrder?.items ?? [])
-              .map((it) => it.vendorId)
+            ((realOrder?.items ?? []) as any[])
+              .map((it: any) => it.vendorId as string | undefined)
               .filter((v): v is string => typeof v === "string" && v.length > 0)
           ));
           if (slugs.length === 0) return null;

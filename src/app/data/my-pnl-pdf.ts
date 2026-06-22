@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Compte de résultat mensuel (PDF)
+   IPPOO - Compte de résultat mensuel (PDF)
    Bilan simplifié à partir des MyInvoice + mouvements
    de stock du vendeur sur un mois civil donné.
    Format : Produits (CA), Charges (réapprovisionnement
@@ -160,7 +160,7 @@ export function openMonthlyPnlPdf(report: PnlReport, vendor: InvoiceVendor): voi
 
   const html = `<!doctype html>
 <html lang="fr"><head><meta charset="utf-8" />
-<title>Bilan ${esc(report.monthLabel)} ${report.year} — ${esc(vendor.shopName)}</title>
+<title>Bilan ${esc(report.monthLabel)} ${report.year} - ${esc(vendor.shopName)}</title>
 <style>
   @page { size: A4; margin: 14mm; }
   body { font-family: -apple-system, system-ui, "Segoe UI", Roboto, sans-serif; color: #0F172A; margin: 0; }
@@ -222,11 +222,11 @@ export function openMonthlyPnlPdf(report: PnlReport, vendor: InvoiceVendor): voi
 
   <h2>Compte de résultat simplifié</h2>
   <div class="pnl">
-    <div class="row"><span>Produits — Ventes nettes</span><span>${fmt(report.revenue)}</span></div>
+    <div class="row"><span>Produits - Ventes nettes</span><span>${fmt(report.revenue)}</span></div>
     <div class="row sub"><span>dont remboursements</span><span>− ${fmt(report.refunds)}</span></div>
     <div class="row total"><span>Total produits</span><span>${fmt(report.revenue)}</span></div>
 
-    <div class="row" style="margin-top:10px"><span>Charges — Coût d'achat des marchandises vendues</span><span>− ${fmt(report.cogsEstimate)}</span></div>
+    <div class="row" style="margin-top:10px"><span>Charges - Coût d'achat des marchandises vendues</span><span>− ${fmt(report.cogsEstimate)}</span></div>
     <div class="row sub"><span>Réapprovisionnement valorisé sur la période</span><span>${fmt(report.stockInValue)}</span></div>
     <div class="row total"><span>Marge brute</span><span>${fmt(report.grossMargin)}</span></div>
 
@@ -246,7 +246,7 @@ export function openMonthlyPnlPdf(report: PnlReport, vendor: InvoiceVendor): voi
   <h2>Modes de paiement</h2>
   <table>
     <thead><tr><th>Moyen</th><th class="right">Transactions</th><th class="right">Montant</th></tr></thead>
-    <tbody>${payRows || `<tr><td colspan="3" style="text-align:center;color:#9CA3AF">—</td></tr>`}</tbody>
+    <tbody>${payRows || `<tr><td colspan="3" style="text-align:center;color:#9CA3AF">-</td></tr>`}</tbody>
   </table>
 
   <h2>Mouvements de stock</h2>
@@ -254,7 +254,7 @@ export function openMonthlyPnlPdf(report: PnlReport, vendor: InvoiceVendor): voi
     <thead><tr><th>Type</th><th class="right">Unités</th><th class="right">Valeur</th></tr></thead>
     <tbody>
       <tr><td>Entrées (réappro, retours)</td><td class="right">+ ${report.stockIn}</td><td class="right">${fmt(report.stockInValue)}</td></tr>
-      <tr><td>Sorties (ventes, casse)</td><td class="right">− ${report.stockOut}</td><td class="right">—</td></tr>
+      <tr><td>Sorties (ventes, casse)</td><td class="right">− ${report.stockOut}</td><td class="right">-</td></tr>
     </tbody>
   </table>
 

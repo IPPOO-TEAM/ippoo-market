@@ -1,6 +1,6 @@
 import { logger } from "../lib/logger";
 /* ═══════════════════════════════════════════
-   IPPOO — Branding boutique (Supabase Storage)
+   IPPOO - Branding boutique (Supabase Storage)
    - Upload logo/bannière en JPEG compressé vers le serveur
    - Le serveur stocke dans le bucket privé make-cc347259-shop-assets
    - Récupération via URL signées (1h), cache local en complément

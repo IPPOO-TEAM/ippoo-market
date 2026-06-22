@@ -128,7 +128,7 @@ export function NotificationsPage() {
     const p = await requestPushPermission();
     setPermission(p);
     if (p === "granted") toast.success("Notifications push activées");
-    else if (p === "denied") toast.error("Notifications refusées — autorise-les dans les réglages du navigateur");
+    else if (p === "denied") toast.error("Notifications refusées - autorise-les dans les réglages du navigateur");
   };
 
   return (

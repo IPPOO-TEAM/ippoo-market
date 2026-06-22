@@ -61,7 +61,7 @@ export function WalletPage() {
   useEffect(() => {
     // Le store local est la source de vérité pour les recharges/paiements
     // effectués hors-ligne. On ne synchronise depuis le serveur que si celui-ci
-    // détient un solde strictement supérieur (crédit reçu côté serveur) — sinon
+    // détient un solde strictement supérieur (crédit reçu côté serveur) - sinon
     // un solde serveur à 0 viendrait écraser un solde local après un paiement
     // QR refusé pour solde insuffisant.
     if (server.data && server.data.balance > state.walletBalance) {
@@ -103,7 +103,7 @@ export function WalletPage() {
       setActionModal("Recharger");
       setAmount(String(n));
       setTopupFromScan(true);
-      toast.info(`Solde IPPOO CASH insuffisant — recharge ${formatPrice(n)} pour finaliser le paiement.`);
+      toast.info(`Solde IPPOO CASH insuffisant - recharge ${formatPrice(n)} pour finaliser le paiement.`);
     }
     const next = new URLSearchParams(sp);
     next.delete("topup");

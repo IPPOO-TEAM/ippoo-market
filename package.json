@@ -6,9 +6,9 @@
   "scripts": {
     "build": "vite build",
     "typecheck": "tsc --noEmit",
-    "test": "vitest",
-    "test:ui": "vitest --ui",
-    "test:coverage": "vitest --coverage",
+    "test": "NODE_ENV=development vitest",
+    "test:ui": "NODE_ENV=development vitest --ui",
+    "test:coverage": "NODE_ENV=development vitest --coverage",
     "dev": "vite"
   },
   "dependencies": {

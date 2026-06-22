@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Étiquettes QR pour produits physiques
+   IPPOO - Étiquettes QR pour produits physiques
    Génère une planche imprimable d'étiquettes QR
    à coller sur chaque unité physique en stock,
    pour synchroniser l'inventaire physique et

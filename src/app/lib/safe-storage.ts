@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Wrapper localStorage tolérant aux pannes
+   IPPOO - Wrapper localStorage tolérant aux pannes
    Encapsule les accès à localStorage pour éviter les crashes
    en mode privé (Safari iOS), quota dépassé, désactivation
    par l'utilisateur ou environnement SSR.

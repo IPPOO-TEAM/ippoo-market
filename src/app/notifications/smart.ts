@@ -1,8 +1,8 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Notifications intelligentes
+   IPPOO - Notifications intelligentes
    Émet périodiquement des notifications contextuelles (promos, jeux,
    cadeaux, cashback) pour animer l'expérience utilisateur.
-   - Intervalle aléatoire 90s–180s en session active
+   - Intervalle aléatoire 90s-180s en session active
    - Première salve 8s après démarrage pour effet "vivant"
    - Évite les doublons immédiats
    ═══════════════════════════════════════════ */
@@ -43,7 +43,7 @@ function pickTemplate(): SmartTemplate {
 }
 
 function scheduleNext() {
-  const delay = 90_000 + Math.floor(Math.random() * 90_000); // 90s–180s
+  const delay = 90_000 + Math.floor(Math.random() * 90_000); // 90s-180s
   timer = setTimeout(tick, delay);
 }
 

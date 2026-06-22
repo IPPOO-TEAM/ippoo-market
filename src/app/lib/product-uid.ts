@@ -47,7 +47,7 @@ export const IPPOO_DEFAULT_PUBLIC_ORIGIN = "https://ippoomarket.figma.site";
  * Ordre de priorité :
  *   1. valeur configurée dans le back-office (Paramètres → Domaine public)
  *   2. window.location.origin si on tourne sur un vrai domaine HTTPS public
- *      (n'importe quel hébergeur — Vercel, Netlify, Cloudflare, propre VPS…)
+ *      (n'importe quel hébergeur - Vercel, Netlify, Cloudflare, propre VPS…)
  *   3. domaine par défaut codé en dur (fallback ultime / SSR)
  *
  * Cette résolution se fait à chaque appel : si on change d'hébergement, les

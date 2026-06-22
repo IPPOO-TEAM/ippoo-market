@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '../../../test/test-utils';
+import { render, screen, waitFor, renderHook, act } from '../../../test/test-utils';
 import { SplashScreen, useSplashScreen } from '../splash-screen';
 
 describe('SplashScreen', () => {
@@ -64,17 +64,3 @@ describe('useSplashScreen', () => {
   });
 });
 
-// Helper pour renderHook (simple version)
-function renderHook<T>(hook: () => T) {
-  let result: { current: T };
-  function TestComponent() {
-    result = { current: hook() };
-    return null;
-  }
-  render(<TestComponent />);
-  return { result: result! };
-}
-
-function act(callback: () => void) {
-  callback();
-}

@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Résolveur unifié des visuels de boutique
+   IPPOO - Résolveur unifié des visuels de boutique
    Source unique de vérité pour logo / bannière / nom /
    description, fusionnée dans cet ordre de priorité :
      1. shop-assets (upload local sur ce device)

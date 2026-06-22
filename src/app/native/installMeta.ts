@@ -21,7 +21,7 @@ function tags(): Tag[] {
     { type: "meta", name: "theme-color", content: "#E11D2E" },
     { type: "meta", name: "color-scheme", content: "light" },
     { type: "meta", name: "application-name", content: "IPPOO Market" },
-    { type: "meta", name: "description", content: "Marketplace B2B de gros pour l'Afrique de l'Ouest — commandez en gros, payez en mobile money, suivez vos livraisons." },
+    { type: "meta", name: "description", content: "Marketplace B2B de gros pour l'Afrique de l'Ouest - commandez en gros, payez en mobile money, suivez vos livraisons." },
     { type: "meta", name: "msapplication-TileColor", content: "#E11D2E" },
     { type: "meta", name: "msapplication-TileImage", content: "/icons/ippoo-logo.png" },
     { type: "meta", name: "msapplication-tap-highlight", content: "no" },
@@ -46,7 +46,7 @@ function buildManifestBlobUrl(): string {
   const manifest = {
     name: "IPPOO Market",
     short_name: "IPPOO",
-    description: "Marketplace B2B de gros pour l'Afrique de l'Ouest — commandez en gros, payez en mobile money, suivez vos livraisons.",
+    description: "Marketplace B2B de gros pour l'Afrique de l'Ouest - commandez en gros, payez en mobile money, suivez vos livraisons.",
     id: "/?source=pwa",
     start_url: "/?source=pwa",
     scope: "/",

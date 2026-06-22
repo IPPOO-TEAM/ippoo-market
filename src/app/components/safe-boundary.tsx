@@ -17,7 +17,7 @@ function isTransientDomError(err: unknown): boolean {
 /**
  * ErrorBoundary qui :
  *  - Tente une réhydratation silencieuse pour les erreurs DOM transitoires
- *    (race React/lib tierce — ex. NotFoundError removeChild).
+ *    (race React/lib tierce - ex. NotFoundError removeChild).
  *  - Affiche un fallback lisible pour toute autre erreur, au lieu de
  *    re-monter en boucle et de produire un écran blanc.
  */

@@ -219,6 +219,8 @@ export function PaymentDialog({ open, onClose, onSuccess, payInputBase, initialM
         line2: payInputBase.address?.note ?? undefined,
       },
       paymentMethod: method === "mobile" ? "mobile-money" : method === "qr" ? "wallet" : method,
+      mobileProvider: choice.kind === "mobile" ? (choice.provider as any) : undefined,
+      currency: "XOF",
     }).catch((e) => logger.warn(`mirror order failed: ${e?.message ?? e}`));
 
     // Notification vendeur : si l'un des items appartient à la boutique du

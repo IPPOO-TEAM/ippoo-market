@@ -113,11 +113,11 @@ export function AdminPromosPage() {
                 return (
                   <tr key={p.code} className="hover:bg-muted/40">
                     <Td><span style={{ fontFamily: "ui-monospace, monospace", fontWeight: 700 }}>{p.code}</span></Td>
-                    <Td className="text-muted-foreground">{p.label || "—"}</Td>
+                    <Td className="text-muted-foreground">{p.label || "-"}</Td>
                     <Td><strong>{p.type === "percent" ? `${p.value} %` : `${p.value.toLocaleString()} F`}</strong></Td>
-                    <Td className="text-muted-foreground">{p.minAmount ? `${p.minAmount.toLocaleString()} F` : "—"}</Td>
+                    <Td className="text-muted-foreground">{p.minAmount ? `${p.minAmount.toLocaleString()} F` : "-"}</Td>
                     <Td className="text-muted-foreground">{p.uses}{p.maxUses ? ` / ${p.maxUses}` : ""}</Td>
-                    <Td className="text-muted-foreground">{p.expiresAt ? fmtDate(p.expiresAt) : "—"}</Td>
+                    <Td className="text-muted-foreground">{p.expiresAt ? fmtDate(p.expiresAt) : "-"}</Td>
                     <Td>
                       {expired ? <Badge color="#9CA3AF">Expiré</Badge>
                         : p.active ? <Badge color="#16A34A">Actif</Badge>

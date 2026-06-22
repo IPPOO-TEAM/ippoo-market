@@ -110,7 +110,7 @@ export function AdminSupportPage() {
               ) : sorted.map((t) => (
                 <tr key={t.id} className="hover:bg-muted/40 cursor-pointer" onClick={() => { setOpened(t.id); setReply(""); }}>
                   <Td><strong>{t.subject}</strong></Td>
-                  <Td className="text-muted-foreground">{t.userEmail || "—"}</Td>
+                  <Td className="text-muted-foreground">{t.userEmail || "-"}</Td>
                   <Td className="capitalize text-muted-foreground">{t.category}</Td>
                   <Td><StatusBadge status={t.priority} /></Td>
                   <Td><StatusBadge status={t.status} /></Td>
@@ -143,7 +143,7 @@ export function AdminSupportPage() {
               <div>
                 <h3 style={{ fontFamily: "Poppins", fontWeight: 800, fontSize: 16 }}>{current.subject}</h3>
                 <p className="text-muted-foreground mt-0.5" style={{ fontSize: 12 }}>
-                  {current.userEmail || "—"} · {current.category} · <StatusBadge status={current.priority} /> <StatusBadge status={current.status} />
+                  {current.userEmail || "-"} · {current.category} · <StatusBadge status={current.priority} /> <StatusBadge status={current.status} />
                 </p>
               </div>
               <button onClick={() => setOpened(null)} className="p-1 rounded-lg hover:bg-muted"><X className="w-5 h-5" /></button>

@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Mes prix surveillés
+   IPPOO - Mes prix surveillés
    Liste les produits surveillés via readPriceWatchList()
    et affiche les deltas 7 j / 30 j en temps réel.
    ═══════════════════════════════════════════ */

@@ -138,7 +138,7 @@ export function hydrateAdmin(force = false): Promise<void> {
       state = {
         vendors: vendors.map((v: any): AdminVendor => ({
           id: v.ownerId || "",
-          name: v.name || "—",
+          name: v.name || "-",
           city: v.city || "",
           category: v.niche || "",
           email: v.email || "",
@@ -151,7 +151,7 @@ export function hydrateAdmin(force = false): Promise<void> {
         })),
         products: products.map((p: any): AdminProduct => ({
           id: String(p.id ?? ""),
-          name: p.name || "—",
+          name: p.name || "-",
           vendorId: p.ownerId || "",
           vendor: p.ownerId || "",
           category: p.category || "",
@@ -162,7 +162,7 @@ export function hydrateAdmin(force = false): Promise<void> {
         })),
         users: users.map((u: any): AdminUser => ({
           id: u.id,
-          name: (u.metadata?.name as string) || (u.email ? u.email.split("@")[0] : "—"),
+          name: (u.metadata?.name as string) || (u.email ? u.email.split("@")[0] : "-"),
           email: u.email || "",
           phone: "",
           role: u.isAdmin ? "admin" : "buyer",
@@ -174,8 +174,8 @@ export function hydrateAdmin(force = false): Promise<void> {
         })),
         tickets: tickets.map((t: any): AdminTicket => ({
           id: t.id,
-          subject: t.subject || "—",
-          user: t.userEmail || t.userId || "—",
+          subject: t.subject || "-",
+          user: t.userEmail || t.userId || "-",
           orderId: undefined,
           category: (t.category as AdminTicket["category"]) || "autre",
           priority: t.priority || "normal",

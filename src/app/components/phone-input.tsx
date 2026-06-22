@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO Market — PhoneInput
+   IPPOO Market - PhoneInput
    Indicatif (54 pays africains) + numéro national
    formaté selon les règles locales. Aucune emoji,
    accessibilité clavier, recherche dans le picker.

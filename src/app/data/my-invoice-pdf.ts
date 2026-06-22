@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Facture vendeur (vente directe en boutique)
+   IPPOO - Facture vendeur (vente directe en boutique)
    PDF imprimable via window.print(), pour les MyInvoice
-   générées par purchaseMyProduct() — avec UID produit,
+   générées par purchaseMyProduct() - avec UID produit,
    catégorie et référentiels vendeur (RCCM, IFU, contact).
    ═══════════════════════════════════════════ */
 

@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Analytics boutique
+   IPPOO - Analytics boutique
    KPIs dérivés des commandes locales : CA total,
    commandes, panier moyen, taux d'acceptation,
    top produits, CA par jour (7 derniers jours).
@@ -97,20 +97,20 @@ export function MyAnalyticsPage() {
   const myMovements = listMyMovements(slug).filter((m) => m.ts >= periodStart);
 
   const marketplaceRevenue = myItems
-    .filter((it) => it.status !== "cancelled")
+    .filter((it) => it.status !== "annulee")
     .reduce((s, it) => s + it.unitPrice * it.qty, 0);
   const directRevenue = myOrders
     .filter((o) => o.status !== "refunded")
     .reduce((s, o) => s + o.total, 0);
   const revenue = marketplaceRevenue + directRevenue;
-  const marketplaceCount = ordersInPeriod.filter((o) => o.status !== "cancelled").length;
+  const marketplaceCount = ordersInPeriod.filter((o) => o.status !== "annulee").length;
   const directCount = myOrders.filter((o) => o.status !== "refunded").length;
   const ordersCount = marketplaceCount + directCount;
   const avgBasket = ordersCount ? Math.round(revenue / ordersCount) : 0;
-  const completed = ordersInPeriod.filter((o) => o.status === "completed").length + directCount;
+  const completed = ordersInPeriod.filter((o) => o.status === "cloturee").length + directCount;
   const total = ordersInPeriod.length + directCount;
   const conversionPct = total ? Math.round((completed / total) * 100) : 0;
-  const unitsSold = myItems.filter((it) => it.status !== "cancelled").reduce((s, it) => s + it.qty, 0)
+  const unitsSold = myItems.filter((it) => it.status !== "annulee").reduce((s, it) => s + it.qty, 0)
     + myOrders.filter((o) => o.status !== "refunded").reduce((s, o) => s + o.qty, 0);
   const stockEntries = myMovements.filter((m) => m.delta > 0).reduce((s, m) => s + m.delta, 0);
   const stockExits = myMovements.filter((m) => m.delta < 0).reduce((s, m) => s + Math.abs(m.delta), 0);
@@ -133,7 +133,7 @@ export function MyAnalyticsPage() {
     };
   });
   for (const it of myItems) {
-    if (it.status === "cancelled") continue;
+    if (it.status === "annulee") continue;
     const b = buckets.find((bk) => it.createdAt >= bk.start && it.createdAt < bk.end);
     if (b) { b.ca += it.unitPrice * it.qty; b.n += 1; }
   }
@@ -147,7 +147,7 @@ export function MyAnalyticsPage() {
   // Top 5 produits par CA
   const productMap = new Map<string, { title: string; qty: number; ca: number }>();
   for (const it of myItems) {
-    if (it.status === "cancelled") continue;
+    if (it.status === "annulee") continue;
     const cur = productMap.get(it.productId) ?? { title: it.title, qty: 0, ca: 0 };
     cur.qty += it.qty;
     cur.ca += it.unitPrice * it.qty;
@@ -171,8 +171,8 @@ export function MyAnalyticsPage() {
     const rows: string[][] = [[...header]];
     const accept = (s: OrderRecord["status"]) =>
       exportScope === "all" ? true
-      : exportScope === "no-cancelled" ? s !== "cancelled"
-      : s === "completed";
+      : exportScope === "no-cancelled" ? s !== "annulee"
+      : s === "cloturee";
     for (const o of ordersInPeriod) {
       if (!accept(o.status)) continue;
       const date = new Date(o.createdAt).toISOString().slice(0, 10);

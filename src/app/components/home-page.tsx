@@ -975,7 +975,7 @@ export function HomePage() {
         </div>
         <div className="border-t border-white/10">
           <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-white/50" style={{ fontSize: 11 }}>
-            <span>© {new Date().getFullYear()} IPPOO Market — Tous droits réservés</span>
+            <span>© {new Date().getFullYear()} IPPOO Market - Tous droits réservés</span>
             <span>Bénin · FCFA · Français</span>
           </div>
         </div>

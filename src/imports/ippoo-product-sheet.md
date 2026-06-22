@@ -1,13 +1,13 @@
-Canevas de fiche produit – IPPOO Market (Gros / Semi-gros)
+Canevas de fiche produit - IPPOO Market (Gros / Semi-gros)
 1. En-tête du produit
 
 Nom du produit
 
 Exemple :
-Riz parfumé premium – Sac 25 kg
+Riz parfumé premium - Sac 25 kg
 
 Fournisseur / Grossiste
-IPPOO Market – Fournisseur partenaire
+IPPOO Market - Fournisseur partenaire
 
 Catégorie
 
@@ -41,8 +41,8 @@ Commande recommandée
 
 4. Grille de prix (gros / semi-gros)
 Quantité	Prix unitaire
-20 – 49 sacs	11 500 FCFA
-50 – 99 sacs	10 800 FCFA
+20 - 49 sacs	11 500 FCFA
+50 - 99 sacs	10 800 FCFA
 100 sacs et +	10 200 FCFA
 5. Conditionnement
 

@@ -24,7 +24,7 @@ import { verifyLoginPayload, isOwnAccount } from "../auth/account-id";
 /* ─────────────────────────────────────────────────────────────────────────
    Décodage QR : utilise l'API BarcodeDetector si disponible (Chrome/Edge
    mobile et desktop récents). En absence, on retombe sur une saisie
-   manuelle. Aucune dépendance externe — pas de jsQR, pas de html5-qrcode.
+   manuelle. Aucune dépendance externe - pas de jsQR, pas de html5-qrcode.
    ───────────────────────────────────────────────────────────────────── */
 
 type BarcodeFormat = "qr_code" | "code_128" | "ean_13" | "ean_8" | "upc_a" | "upc_e";
@@ -96,7 +96,7 @@ function unitPriceAtMoq(product: ScannerProduct): number {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
-   Scanner — composant autonome
+   Scanner - composant autonome
    ───────────────────────────────────────────────────────────────────── */
 
 type ScannerStatus = "idle" | "requesting" | "streaming" | "denied" | "unsupported" | "error";
@@ -325,7 +325,7 @@ function Scanner({ onDecoded }: { onDecoded: (raw: string) => void }) {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
-   /scanner — page complète
+   /scanner - page complète
    ───────────────────────────────────────────────────────────────────── */
 
 type Receipt = {
@@ -733,7 +733,7 @@ function Row({ icon, label, value }: { icon: React.ReactNode; label: string; val
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
-   /scan/:uid — page de fallback : on essaie de résoudre l'UID en produit,
+   /scan/:uid - page de fallback : on essaie de résoudre l'UID en produit,
    sinon on affiche un message clair avec accès au scanner.
    ───────────────────────────────────────────────────────────────────── */
 
@@ -764,7 +764,7 @@ export function ScanLookupPage() {
         </div>
         <h2 style={{ fontFamily: "Poppins", fontWeight: 800, fontSize: 18 }}>Code non reconnu</h2>
         <p className="text-muted-foreground mt-2" style={{ fontSize: 13 }}>
-          Aucun produit ne correspond au code <span style={{ fontWeight: 700 }}>{decoded || "—"}</span>.
+          Aucun produit ne correspond au code <span style={{ fontWeight: 700 }}>{decoded || "-"}</span>.
         </p>
         <button
           onClick={() => navigate("/scanner")}

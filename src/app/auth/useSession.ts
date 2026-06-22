@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Hook session Supabase (réactif)
+   IPPOO - Hook session Supabase (réactif)
    Émet l'état session + suit auth.onAuthStateChange.
    ═══════════════════════════════════════════ */
 

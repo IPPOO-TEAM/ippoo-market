@@ -107,7 +107,7 @@ export function PasswordModal({ onClose }: { onClose: () => void }) {
       const sb = getSupabase();
       const sess = await getSession();
       const email = sess?.user?.email;
-      if (!email) return setError("Session expirée — reconnecte-toi");
+      if (!email) return setError("Session expirée - reconnecte-toi");
       const reauth = await sb.auth.signInWithPassword({ email, password: oldPwd });
       if (reauth.error) return setError("Mot de passe actuel incorrect");
       const upd = await sb.auth.updateUser({ password: newPwd });

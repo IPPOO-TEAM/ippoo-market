@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Orchestrateur de vérifications quotidiennes
+   IPPOO - Orchestrateur de vérifications quotidiennes
    Lance tous les watchers vendeur (stock bas, escrow,
    paiements en retard) au plus une fois par 24 h grâce
    à un horodatage par (slug, check) en localStorage.
@@ -63,7 +63,7 @@ function checkLatePayments(slug: string): number {
       type: "payment",
       priority: "high",
       title: "Paiement en retard",
-      desc: `Commande ${o.id.slice(0, 8)} (${o.productName}) — ${daysLate} j de retard, ${o.buyerName || "client comptoir"}`,
+      desc: `Commande ${o.id.slice(0, 8)} (${o.productName}) - ${daysLate} j de retard, ${o.buyerName || "client comptoir"}`,
       link: `/vendeur-comptabilite`,
       color: "#E11D2E",
     });

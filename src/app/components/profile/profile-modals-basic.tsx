@@ -90,7 +90,7 @@ export function PasswordModal({ onClose }: { onClose: () => void }) {
       const sb = getSupabase();
       const { data: sessionData } = await sb.auth.getSession();
       const email = sessionData.session?.user?.email;
-      if (!email) { toast.error("Session expirée — reconnecte-toi"); setBusy(false); return; }
+      if (!email) { toast.error("Session expirée - reconnecte-toi"); setBusy(false); return; }
       const reauth = await sb.auth.signInWithPassword({ email, password: oldPwd });
       if (reauth.error) { toast.error("Mot de passe actuel incorrect"); setBusy(false); return; }
       const upd = await sb.auth.updateUser({ password: newPwd });

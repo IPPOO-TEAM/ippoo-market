@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO Market — Profil utilisateur complet
+   IPPOO Market - Profil utilisateur complet
    Centralise toutes les infos saisies à l'inscription :
    perso, pro, logistique, paiement, documents.
    Persisté localStorage + abonnements (useSyncExternalStore).

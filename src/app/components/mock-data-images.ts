@@ -1,6 +1,6 @@
 export const IMAGES = {
   // ─── Context / General ───
-  // ─── Produits uniquement — pas de personnes/paysages ───
+  // ─── Produits uniquement - pas de personnes/paysages ───
   market: "https://images.unsplash.com/photo-1714317437445-785581e4ff7a?w=1080&q=80&auto=format&fit=crop",
   entrepreneur: "https://images.unsplash.com/photo-1772985194378-b9d9c3c67352?w=1080&q=80&auto=format&fit=crop",
   warehouse: "https://images.unsplash.com/photo-1672552226380-486fe900b322?w=1080&q=80&auto=format&fit=crop",

@@ -1,4 +1,4 @@
-1. SECTEUR PRIMAIRE — EXTRA LONGUE LISTE
+1. SECTEUR PRIMAIRE - EXTRA LONGUE LISTE
 
 (Agriculture, élevage, pêche, exploitation naturelle)
 
@@ -92,7 +92,7 @@ Cueilleur de plantes médicinales
 Collecteur de feuilles (palme, rônier)
 Exploitant de fibres naturelles (raphia, bambou)
 Producteur d’argile
-🟦 2. SECTEUR SECONDAIRE — EXTRA LONGUE LISTE
+🟦 2. SECTEUR SECONDAIRE - EXTRA LONGUE LISTE
 
 (Transformation, artisanat, fabrication)
 
@@ -182,7 +182,7 @@ Fabricant d’objets décoratifs
 Fabricant d’ustensiles traditionnels
 Fabricant de balais
 Fabricant de paniers
-🟧 3. SECTEUR TERTIAIRE — EXTRA LONGUE LISTE
+🟧 3. SECTEUR TERTIAIRE - EXTRA LONGUE LISTE
 
 (Commerce, distribution, services)
 

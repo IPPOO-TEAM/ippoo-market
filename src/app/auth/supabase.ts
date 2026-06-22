@@ -1,6 +1,6 @@
 import { logger } from "../lib/logger";
 /* ═══════════════════════════════════════════
-   IPPOO — Client Supabase singleton (frontend)
+   IPPOO - Client Supabase singleton (frontend)
    ═══════════════════════════════════════════ */
 
 import { createClient, type SupabaseClient, type Session } from "@supabase/supabase-js";

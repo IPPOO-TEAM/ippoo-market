@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Watcher local pour notifications vendeur
+   IPPOO - Watcher local pour notifications vendeur
    Détecte les transitions d'escrow vers "released"
    sur les commandes du vendeur et pousse une notif
    locale (toast + son + entrée dans le centre).
@@ -51,7 +51,7 @@ export async function checkSellerEscrowReleases(vendorKey: string): Promise<void
     }
     if (touched) persistSeen(seen);
   } catch {
-    /* silent — pas critique */
+    /* silent - pas critique */
   } finally {
     inflight = false;
   }

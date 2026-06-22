@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Gestion des produits (vendeur)
+   IPPOO - Gestion des produits (vendeur)
    Liste, recherche, statut, CRUD complet via
    un store local. Accessible aux vendeurs depuis
    le dashboard `/boutique`.
@@ -40,6 +40,7 @@ import {
   type MyProductStatus,
 } from "../data/my-products";
 import { formatPrice } from "./mock-data";
+import { getProductModeration, subscribePublicProducts } from "../data/public-products";
 import { AnimatedNumber } from "./animated-number";
 import { ProductEditor } from "./my-products/product-editor";
 
@@ -59,6 +60,7 @@ export function MyProductsPage() {
   useEffect(() => { hydrateMyProducts(); hydrateMyShops(); }, []);
   useSyncExternalStore(subscribeProducts, getMyProductsSnapshot, () => PRODUCTS_SNAPSHOT);
   useSyncExternalStore(subscribeShops, getMyShopsSnapshot, () => SHOPS_SNAPSHOT);
+  useSyncExternalStore(subscribePublicProducts, () => "", () => "");
 
   const navigate = useNavigate();
   const [sp, setSp] = useSearchParams();
@@ -458,6 +460,7 @@ function ProductRow({
   const tone = STATUS_COLORS[product.status];
   const cover = product.images?.[0] ?? product.image;
   const mediaCount = (product.images?.length ?? 0) + (product.videos?.length ?? 0);
+  const moderation = product.status === "published" ? getProductModeration(product.id) : undefined;
   return (
     <div className="bg-white rounded-2xl border border-border overflow-hidden flex flex-col hover:shadow-md hover:-translate-y-0.5 transition-all">
       <Link to={`/boutique/produits/${product.id}`} className="aspect-[4/3] bg-[#F3F4F6] relative block group">
@@ -502,6 +505,17 @@ function ProductRow({
           <div className="flex items-center gap-1 mt-1 text-[#F59E0B]" style={{ fontSize: 10 }}>
             <AlertCircle className="w-3 h-3" />
             Stock épuisé
+          </div>
+        )}
+        {moderation?.status === "pending" && (
+          <div className="flex items-center gap-1 mt-1 text-[#F0B429]" style={{ fontSize: 10, fontWeight: 600 }}>
+            <AlertCircle className="w-3 h-3" />
+            En attente de modération admin
+          </div>
+        )}
+        {moderation?.status === "rejected" && (
+          <div className="mt-1 text-[#E11D2E]" style={{ fontSize: 10, fontWeight: 600 }} title={moderation.reason}>
+            ⚠ Rejeté par la modération{moderation.reason ? ` : ${moderation.reason}` : ""}
           </div>
         )}
         <div className="flex gap-1 mt-3">

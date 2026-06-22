@@ -1,6 +1,6 @@
 import { logger } from "../lib/logger";
 /* ═══════════════════════════════════════════
-   IPPOO — Fichiers utilisateur (avatar, KYC, etc.)
+   IPPOO - Fichiers utilisateur (avatar, KYC, etc.)
    Owner-based : la propriété est l'utilisateur Supabase authentifié.
    ═══════════════════════════════════════════ */
 

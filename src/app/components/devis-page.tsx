@@ -357,7 +357,7 @@ function DevisDetailModal({ devis, onClose }: { devis: Devis; onClose: () => voi
                         style={{ fontFamily: "Poppins", fontSize: 12, fontWeight: 800, color: i === 0 ? "#16A34A" : "#1A1A2E" }}>
                         {formatPrice(r.price)}
                       </div>
-                      <div className="col-span-2 text-center" style={{ fontSize: 11, color: "#6B7280" }}>{r.leadTime ?? "—"}</div>
+                      <div className="col-span-2 text-center" style={{ fontSize: 11, color: "#6B7280" }}>{r.leadTime ?? "-"}</div>
                       <div className="col-span-2 flex justify-end gap-1">
                         {devis.status === "open" && (
                           <button onClick={(e) => { e.stopPropagation(); accept(r.id, r.vendorName); }}

@@ -130,7 +130,7 @@ input, textarea, select {
 }
 
 /* ═══════════════════════════════════════════
-   IPPOO — Native-app style Sonner toasts
+   IPPOO - Native-app style Sonner toasts
    Bright, animated, with glow + accent stripe.
    ═══════════════════════════════════════════ */
 [data-sonner-toaster] {

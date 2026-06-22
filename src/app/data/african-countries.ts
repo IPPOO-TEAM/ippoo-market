@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO Market — 54 pays d'Afrique
+   IPPOO Market - 54 pays d'Afrique
    ISO-3166 alpha-2, indicatif E.164, longueur de
    numéro national (NSN) et exemple de format local.
    Source : ITU + UPU. Aucun drapeau emoji (UI no-emoji).

@@ -137,7 +137,7 @@ export function ParametresPage() {
         {
           id: sess.access_token.slice(0, 12),
           name: `${browser} sur ${platform}${isMobile ? " (mobile)" : ""}`,
-          location: typeof navigator !== "undefined" ? navigator.language || "—" : "—",
+          location: typeof navigator !== "undefined" ? navigator.language || "-" : "-",
           lastSeen: "À l'instant",
           current: true,
         },

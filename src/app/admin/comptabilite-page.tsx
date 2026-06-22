@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Comptabilité admin
+   IPPOO - Comptabilité admin
    Agrège toutes les MyInvoice (ventes directes vendeurs)
    par boutique et par période. Permet à l'admin de
    suivre le CA global, ventilation par vendeur,
@@ -200,7 +200,7 @@ export function AdminComptabilitePage() {
             <FileText className="w-4 h-4 text-[#1A1A2E]" /> Par catégorie
           </h2>
           {byCategory.length === 0 ? (
-            <div className="text-muted-foreground text-center p-4" style={{ fontSize: 12 }}>—</div>
+            <div className="text-muted-foreground text-center p-4" style={{ fontSize: 12 }}>-</div>
           ) : (
             <table className="w-full" style={{ fontSize: 12 }}>
               <thead>
@@ -228,7 +228,7 @@ export function AdminComptabilitePage() {
             <Receipt className="w-4 h-4 text-[#F97316]" /> Par moyen de paiement
           </h2>
           {byPayment.length === 0 ? (
-            <div className="text-muted-foreground text-center p-4" style={{ fontSize: 12 }}>—</div>
+            <div className="text-muted-foreground text-center p-4" style={{ fontSize: 12 }}>-</div>
           ) : (
             <table className="w-full" style={{ fontSize: 12 }}>
               <thead>
@@ -287,7 +287,7 @@ export function AdminComptabilitePage() {
             </table>
             {invoices.length > 30 && (
               <p className="text-center text-muted-foreground pt-2" style={{ fontSize: 11 }}>
-                + {invoices.length - 30} facture(s) — exporter en CSV pour le détail complet
+                + {invoices.length - 30} facture(s) - exporter en CSV pour le détail complet
               </p>
             )}
           </div>

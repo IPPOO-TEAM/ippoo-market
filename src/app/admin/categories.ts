@@ -59,7 +59,7 @@ export async function refreshCategories(): Promise<void> {
       emit();
     }
   } catch {
-    /* ignore — keep cache */
+    /* ignore - keep cache */
   }
 }
 

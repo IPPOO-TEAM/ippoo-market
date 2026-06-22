@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Boutiques suivies (vue acheteur)
+   IPPOO - Boutiques suivies (vue acheteur)
    ═══════════════════════════════════════════ */
 
 import { useEffect, useSyncExternalStore } from "react";

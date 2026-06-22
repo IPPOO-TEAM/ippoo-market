@@ -122,7 +122,7 @@ function generateComparisons(): ComparisonEntry[] {
     "ProClean SARL", "Tokpa Textiles", "Mama Ayo Mode", "TechGros Benin", "Tech Revendeurs Cotonou",
     "Beaute Queens", "GlowUp Distribution", "BricoPlus Benin", "MatBTP Benin", "Boissons du Golfe",
     "AfricJuice Distribution", "Mama Tokpa", "Commerce General Cotonou", "Delta Import-Export",
-    "EquipPro Benin", "FroidAfric SARL", "CoutureEquip Cotonou", "AgroMachines Benin", "HydroEquip Benin",
+    "EquipPro Benin", "FroidAfric SARL", "CoutureEquip Cotonou", "AagroMachines Benin", "HydroEquip Benin",
   ];
   const rng = (seed: number) => { let s = seed; return () => { s = (s * 16807 + 0) % 2147483647; return s / 2147483647; }; };
 
@@ -234,7 +234,8 @@ export function subscribeComparisons(fn: () => void): () => void {
 }
 
 function rebuildAllComparisons() {
-  const publics = getPublicProducts();
+  // Ne montre que les produits vendeurs ayant passé la modération admin.
+  const publics = getPublicProducts().filter((p) => (p.moderation ?? "pending") === "approved");
   // On évite les doublons : un produit public porte déjà un id hashé > 1_000_000
   // donc impossible de collisionner avec un id catalogue (petit entier).
   const publicEntries = publics.map((p, i) => generatePublicProductComparison(p, i));
@@ -261,7 +262,7 @@ export function comparisonForProductId(productId: number): ComparisonEntry | nul
   if (existing) return existing;
   // Si l'id est hashé (≥ 1_000_000), il vient d'un produit vendeur publié.
   if (productId >= 1_000_000) {
-    const pp = getPublicProducts().find((p) => hashProductIdToNumber(p.id) === productId);
+    const pp = getPublicProducts().find((p) => hashProductIdToNumber(p.id) === productId && (p.moderation ?? "pending") === "approved");
     return pp ? generatePublicProductComparison(pp, 0) : null;
   }
   const product = catalogProducts.find((p) => p.id === productId);

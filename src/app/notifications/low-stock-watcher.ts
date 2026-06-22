@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Watcher stock bas (vendeur)
+   IPPOO - Watcher stock bas (vendeur)
    Détecte les produits publiés dont le stock passe sous
    le seuil (défaut 5) et pousse une notification locale
    par produit, en évitant les doublons via localStorage.

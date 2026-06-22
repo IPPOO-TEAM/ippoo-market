@@ -129,7 +129,7 @@ export function AdminContentPage() {
 
   const lastUpdated = content.meta?.lastUpdated
     ? new Date(content.meta.lastUpdated).toLocaleString("fr-FR")
-    : "—";
+    : "-";
 
   return (
     <div className="p-6">

@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Store d'engagement Blog
+   IPPOO - Store d'engagement Blog
    Persiste localement : favoris d'articles, abonnement
    newsletter, abonnements par article, votes "utile",
    réponses, avis utilisateurs et compteurs de vues.

@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Synchronisation cross-tab
+   IPPOO - Synchronisation cross-tab
    Propage logout/login entre les onglets via BroadcastChannel
    (+ fallback storage event). Utilisé pour invalider les états
    locaux quand l'utilisateur se déconnecte ailleurs.

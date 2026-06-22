@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Web Push (vraies notifications système)
+   IPPOO - Web Push (vraies notifications système)
    Enregistre le Service Worker, souscrit le PushManager,
    transmet l'abonnement au backend.
    ═══════════════════════════════════════════ */
@@ -39,7 +39,7 @@ export function getVapidPublicKey(): string {
   return "";
 }
 
-/** @deprecated Utiliser getVapidPublicKey() — la valeur est désormais dynamique. */
+/** @deprecated Utiliser getVapidPublicKey() - la valeur est désormais dynamique. */
 export const VAPID_PUBLIC_KEY = getVapidPublicKey();
 
 const SW_URL = "/sw.js";
@@ -95,7 +95,7 @@ export async function subscribeWebPush(): Promise<PushSubscription | null> {
   if (!sub) {
     const key = getVapidPublicKey();
     if (!key) {
-      console.warn("[push] VAPID public key non configurée — push désactivé.");
+      console.warn("[push] VAPID public key non configurée - push désactivé.");
       return null;
     }
     sub = await reg.pushManager.subscribe({

@@ -1,4 +1,4 @@
-/* Blog articles data — extracted from blog-article-page.tsx to break cross-page coupling. */
+/* Blog articles data - extracted from blog-article-page.tsx to break cross-page coupling. */
 
 const IMG = {
   openMarket: "https://images.unsplash.com/photo-1717065165653-bb853b7e6e7e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxBZnJpY2FuJTIwb3BlbiUyMGFpciUyMHRyYWRpdGlvbmFsJTIwbWFya2V0JTIwY29sb3JmdWwlMjBzdGFsbHN8ZW58MXx8fHwxNzcyOTM2NjA3fDA&ixlib=rb-4.1.0&q=80&w=1080",
@@ -278,7 +278,7 @@ export const blogArticles = [
       { type: "section" as const, title: "Le marche des equipements en Afrique de l'Ouest", text: "Le marche des biens d'equipements est en pleine croissance, tire par l'essor des PME et TPE. Le probleme ? Les prix varient de 30 a 60% d'un vendeur a l'autre pour le même materiel, sans compter les contrefacons." },
       { type: "image" as const, text: "", src: IMG.sewingMachine, caption: "Machine a coudre industrielle -- l'outil essentiel des ateliers de couture africains" },
       { type: "insight" as const, text: "Sur IPPOO, un groupe electrogene 5kVA se trouve entre 345 000 et 385 000 FCFA selon le vendeur. En boutique traditionnelle, le même modele est affiche entre 420 000 et 550 000 FCFA. Economie : 15 a 37% !" },
-      { type: "section" as const, title: "Les equipements les plus demandes", text: "1. Groupes electrogenes (incontournables avec les coupures frequentes). 2. Congelateurs commerciaux (boutiques de boissons et alimentaire). 3. Machines a coudre industrielles (ateliers de couture). 4. Moulins a grains (transformation agroalimentaire). 5. Pompes a eau (agriculture et forages)." },
+      { type: "section" as const, title: "Les equipements les plus demandes", text: "1. Groupes electrogenes (incontournables avec les coupures frequentes). 2. Congelateurs commerciaux (boutiques de boissons et alimentaire). 3. Machines a coudre industrielles (ateliers de couture). 4. Moulins a grains (transformation aagroalimentaire). 5. Pompes a eau (agriculture et forages)." },
       { type: "section" as const, title: "Comment bien comparer", text: "Ne comparez pas seulement le prix d'achat. Evaluez la consommation en carburant/electricite, le coût des pieces de rechange, la disponibilite du SAV local, et la garantie. Un equipement 20% moins cher mais sans SAV peut couter très cher a long terme." },
       { type: "image" as const, text: "", src: IMG.waterPump, caption: "Pompe submersible -- essentielle pour l'irrigation et l'approvisionnement en eau" },
       { type: "section" as const, title: "Le financement avec IPPOO", text: "Pour les equipements a plus de 200 000 FCFA, IPPOO propose un paiement en 3 ou 4 fois sans frais via IPPOO CASH. Les Communautes IPPOO organisent egalement des achats groupes pour obtenir des prix grossiste sur du materiel individuel." },

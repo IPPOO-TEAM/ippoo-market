@@ -98,6 +98,8 @@ export function AuthPage() {
           toast.error(error.message === "Invalid login credentials" ? "Email ou mot de passe incorrect" : `Connexion échouée : ${error.message}`);
           return;
         }
+        // Alerte de connexion par email (best-effort, non bloquant).
+        import("../auth/email-server").then((m) => m.notifyLoginAlert(email)).catch(() => undefined);
       } else {
         // Inscription : crée le compte serveur (auto-confirm) puis ouvre la session.
         const { signupAndSignIn } = await import("../auth/signup-server");
@@ -221,7 +223,7 @@ export function AuthPage() {
           </h1>
           <p className="text-muted-foreground mb-5 mt-1" style={{ fontSize: 13 }}>
             {mode === "login"
-              ? "Accédez à votre espace IPPOO Market — Bénin."
+              ? "Accédez à votre espace IPPOO Market - Bénin."
               : "Choisissez votre profil ci-dessous pour démarrer."}
           </p>
 
@@ -243,11 +245,14 @@ export function AuthPage() {
             {(
               <button
                 type="button"
-                onClick={() => {
+                onClick={async () => {
                   const e = window.prompt("Email du compte à réinitialiser");
                   if (!e) return;
                   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) { toast.error("Email invalide"); return; }
-                  toast.success(`Lien de réinitialisation envoyé à ${e}`);
+                  const { requestPasswordReset } = await import("../auth/email-server");
+                  const r = await requestPasswordReset(e, window.location.origin);
+                  if (r.ok) toast.success(`Si un compte existe, un lien a été envoyé à ${e}`);
+                  else toast.error(r.error || "Envoi impossible");
                 }}
                 className="text-[#E11D2E] hover:underline"
                 style={{ fontSize: 12 }}
@@ -259,7 +264,7 @@ export function AuthPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full mt-2 py-3 rounded-xl bg-gradient-to-r from-[#FF6A00] to-[#FF4400] text-white flex items-center justify-center gap-2 disabled:opacity-60"
+              className="w-full mt-2 py-3 rounded-xl bg-gradient-to-r from-[#E11D2E] to-[#BE123C] text-white flex items-center justify-center gap-2 disabled:opacity-60"
               style={{ fontFamily: "Poppins", fontWeight: 700, fontSize: 14 }}
             >
               {loading ? "Patiente..." : mode === "login" ? "Se connecter" : "Créer mon compte"}

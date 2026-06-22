@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Notifications natives (Web Notification API)
+   IPPOO - Notifications natives (Web Notification API)
    Permet d'envoyer une notification push système quand l'utilisateur
    a donné son accord. Sinon fallback silencieux (le toast sonner +
    le centre de notifications restent affichés depuis store.ts).
@@ -31,7 +31,7 @@ export async function requestPushPermission(): Promise<NotificationPermission> {
     catch { perm = Notification.permission; }
   }
   if (perm === "granted") {
-    // Souscrit le Web Push (fire-and-forget — n'échoue jamais bloquant)
+    // Souscrit le Web Push (fire-and-forget - n'échoue jamais bloquant)
     import("./web-push").then((m) => m.subscribeWebPush().catch(() => { /* ignore */ }));
   }
   return perm;

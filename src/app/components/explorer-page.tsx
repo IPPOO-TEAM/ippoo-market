@@ -386,7 +386,7 @@ export function ExplorerPage() {
                   </div>
                   <div>
                     <label style={{ fontSize: 12, fontWeight: 600 }}>Poids max (kg)</label>
-                    <input type="number" value={maxWeight} onChange={(e) => setMaxWeight(e.target.value)} placeholder="—" className="w-full mt-1 px-3 py-2 rounded-lg bg-[#F3F4F6] border-none" style={{ fontSize: 13 }} />
+                    <input type="number" value={maxWeight} onChange={(e) => setMaxWeight(e.target.value)} placeholder="-" className="w-full mt-1 px-3 py-2 rounded-lg bg-[#F3F4F6] border-none" style={{ fontSize: 13 }} />
                   </div>
                   <div className="col-span-2 md:col-span-2 flex items-end">
                     <button

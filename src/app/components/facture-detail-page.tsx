@@ -76,10 +76,10 @@ export function FactureDetailPage() {
       `Statut : ${invoice.status === "paid" ? "PAYÉE" : "EN ATTENTE"}`,
       "",
       "Lignes :",
-      ...lines.map((l) => `· ${l.name} × ${l.quantity} — ${formatPrice(l.total)}`),
+      ...lines.map((l) => `· ${l.name} × ${l.quantity} - ${formatPrice(l.total)}`),
       "",
       "Vous pouvez consulter et télécharger votre facture certifiée sur IPPOO Market.",
-      "— L'équipe IPPOO Market",
+      "- L'équipe IPPOO Market",
     ];
     const mailto = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join("\n"))}`;
     try {
@@ -141,7 +141,7 @@ export function FactureDetailPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5">
           <div>
             <p className="text-muted-foreground" style={{ fontSize: 11, fontWeight: 700 }}>ACHETEUR</p>
-            <p style={{ fontWeight: 700, fontSize: 13 }}>{invoice.buyer?.name ?? order?.address.name ?? "—"}</p>
+            <p style={{ fontWeight: 700, fontSize: 13 }}>{invoice.buyer?.name ?? order?.address.name ?? "-"}</p>
             <p className="text-muted-foreground" style={{ fontSize: 12 }}>{invoice.buyer?.phone ?? order?.address.phone ?? ""}</p>
             <p className="text-muted-foreground" style={{ fontSize: 12 }}>
               {invoice.buyer?.line ?? order?.address.line ?? ""} {invoice.buyer?.city ?? order?.address.city ?? ""}
@@ -153,7 +153,7 @@ export function FactureDetailPage() {
             {order?.txnId && (
               <p style={{ fontSize: 12 }}>Transaction : <span style={{ fontFamily: "ui-monospace", fontWeight: 700 }}>{order.txnId}</span></p>
             )}
-            <p style={{ fontSize: 12 }}>Paiement : {invoice.payMethod ?? order?.payMethod ?? "—"}</p>
+            <p style={{ fontSize: 12 }}>Paiement : {invoice.payMethod ?? order?.payMethod ?? "-"}</p>
           </div>
         </div>
 
@@ -195,9 +195,9 @@ export function FactureDetailPage() {
                   <td className="px-3 py-2" style={{ fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace", fontSize: 11 }}>{l.uid}</td>
                   <td className="px-3 py-2">
                     <div style={{ fontWeight: 600 }}>{l.name}</div>
-                    <div className="text-muted-foreground" style={{ fontSize: 11 }}>Vendu par {l.vendorName ?? "—"}</div>
+                    <div className="text-muted-foreground" style={{ fontSize: 11 }}>Vendu par {l.vendorName ?? "-"}</div>
                   </td>
-                  <td className="px-3 py-2 text-muted-foreground">{l.category ?? "—"}</td>
+                  <td className="px-3 py-2 text-muted-foreground">{l.category ?? "-"}</td>
                   <td className="px-3 py-2 text-right">{l.quantity} {l.unit ?? ""}</td>
                   <td className="px-3 py-2 text-right">{formatPrice(l.unitPrice)}</td>
                   <td className="px-3 py-2 text-right" style={{ fontWeight: 700 }}>{formatPrice(l.total)}</td>

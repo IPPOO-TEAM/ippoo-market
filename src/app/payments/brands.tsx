@@ -51,7 +51,7 @@ type LogoSize = "sm" | "md" | "lg";
 
 const SIZE_PX: Record<LogoSize, number> = { sm: 32, md: 44, lg: 56 };
 
-/** Composant logo générique — carré arrondi avec image, icône ou monogramme. */
+/** Composant logo générique - carré arrondi avec image, icône ou monogramme. */
 export function PaymentLogo({
   brand,
   size = "md",

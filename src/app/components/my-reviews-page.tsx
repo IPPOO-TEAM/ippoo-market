@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Modération des avis (vendeur)
+   IPPOO - Modération des avis (vendeur)
    Liste des avis reçus sur la boutique active, avec
    actions : approuver, rejeter, répondre, supprimer.
    ═══════════════════════════════════════════ */

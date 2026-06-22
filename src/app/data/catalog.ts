@@ -523,14 +523,14 @@ for (const c of CATALOG) {
 
 // Dictionnaire sémantique : chaque sous-catégorie reçoit une image qui illustre
 // fidèlement son intitulé (lecture du nom français, fallback parent en dernier
-// recours). Aucune attribution aléatoire — chaque entrée a été choisie.
+// recours). Aucune attribution aléatoire - chaque entrée a été choisie.
 // L'ordre des clés compte : la première qui matche le nom normalisé gagne, donc
 // on place les termes les plus spécifiques en haut.
 // Seules les entrées avec un visuel TRÈS spécifique restent ici. Les sous-
 // catégories sans match certain héritent simplement de l'image de leur catégorie
 // parente (toujours topique) plutôt que d'une image générique trompeuse.
 const KEYWORD_IMAGES: Array<[RegExp, string]> = [
-  // Téléphonie — visuels distincts par type d'objet
+  // Téléphonie - visuels distincts par type d'objet
   [/iphone|ios|ipad|tablette/, "photo-1662893170097-d6563d0093d3"],
   [/smartphone|android/, "photo-1741061963569-9d0ef54d10d2"],
   [/ecouteur|casque audio|casque(?! gaming)|bluetooth/, "photo-1577174881658-0f30ed549adc"],
@@ -586,18 +586,18 @@ const KEYWORD_IMAGES: Array<[RegExp, string]> = [
   [/jouet/, "photo-1545558014-8692077e9b5c"],
   [/vetement bebe|vetement enfant|chaussure enfant|landau|poussette|lit bebe|biberon|hygiene bebe|sac scolaire/, "photo-1617331140180-e8262094733a"],
 
-  // Aliments frais — visuels distincts par type
+  // Aliments frais - visuels distincts par type
   [/tomate(?! en boite)/, "photo-1593105544559-ecb03bf76f82"],
   [/oignon|carotte|chou|aubergine|concombre|epinard|feuille verte|gombo|salade|haricot vert|betterave|legume frais|legumes frais/, "photo-1593105544559-ecb03bf76f82"],
   [/tilapia|carpe|capitaine|sardine fraiche|poisson(?! en| en boite)|crevette|gamba|crabe|moule|coquillage|calamar|poulpe|fruit de mer/, "photo-1553659971-f01207815844"],
 
-  // Cuisine sèche & épices — visuel piments uniquement quand pertinent
+  // Cuisine sèche & épices - visuel piments uniquement quand pertinent
   [/piment|poivre|curry|gingembre|ail en poudre|epice|cube alimentaire/, "photo-1629285464605-8e6493153fdb"],
 
   // Ménager
   [/lessive|savon|liquide vaisselle|javel|nettoyant|entretien/, "photo-1740657254989-42fe9c3b8cce"],
 
-  // Sport — visuel par discipline quand identifiable
+  // Sport - visuel par discipline quand identifiable
   [/musculation|haltere|fitness/, "photo-1591311630200-ffa9120a540f"],
 
   // Gaming

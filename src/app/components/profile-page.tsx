@@ -168,13 +168,13 @@ export function ProfilePage() {
       if (tm && Array.isArray(tm)) setTeam(tm);
       if (pr && typeof pr === "object") setPrefs((p) => ({ ...p, ...pr }));
       if (security && typeof security.twoFA === "boolean") setTwoFA(security.twoFA);
-      const totalSpent = (orders ?? []).filter((o) => o.status === "completed").reduce((s, o) => s + (o.total || 0), 0);
+      const totalSpent = (orders ?? []).filter((o) => o.status === "cloturee" || o.status === "livree").reduce((s, o) => s + (o.total || 0), 0);
       setLoyaltyPoints(Math.floor(totalSpent / 100));
     })();
     return () => { dead = true; };
   }, [session]);
 
-  // Push debouncé (500ms) — évite un round-trip serveur par frappe lors d'édits rapides
+  // Push debouncé (500ms) - évite un round-trip serveur par frappe lors d'édits rapides
   const hydratedRef = useRef({ addresses: false, team: false, preferences: false });
   const timersRef = useRef<{ [k: string]: ReturnType<typeof setTimeout> | undefined }>({});
   const schedulePush = (
@@ -253,7 +253,7 @@ export function ProfilePage() {
       if (!token) { toast.error("Connectez-vous pour téléverser ce document"); return; }
       await uploadUserFile(kind, dataUrl);
       setDocs((prev) => prev.map((d) => (d.id === id ? { ...d, status: "pending" } : d)));
-      toast.success("Document envoyé ☁️ — vérification sous 24-48h.");
+      toast.success("Document envoyé ☁️ - vérification sous 24-48h.");
     } catch (err) {
       logger.warn(`KYC upload error (${id}/${kind}): ${err}`);
       toast.error(`Envoi échoué : ${err instanceof Error ? err.message : "inconnue"}`);
@@ -362,7 +362,7 @@ export function ProfilePage() {
           </button>
         </Section>
 
-        {/* Activité pro — vendeurs / entreprises / organisations */}
+        {/* Activité pro - vendeurs / entreprises / organisations */}
         {seller && userProfile && (userProfile.sectorId || userProfile.niche || userProfile.circuit) && (
           <Section icon={<Building2 className="w-5 h-5 text-[#F97316]" />} title="Mon activité">
             {userProfile.businessName && (
@@ -385,14 +385,14 @@ export function ProfilePage() {
           </Section>
         )}
 
-        {/* Branding boutique — vendeurs */}
+        {/* Branding boutique - vendeurs */}
         {seller && (
           <Section icon={<StoreIcon className="w-5 h-5 text-[#E8A817]" />} title="Branding boutique">
             <ShopBrandingPanel shopName={userProfile?.businessName || userProfile?.firstName || ""} />
           </Section>
         )}
 
-        {/* Logistique — vendeurs */}
+        {/* Logistique - vendeurs */}
         {seller && userProfile?.deliveryMethods && userProfile.deliveryMethods.length > 0 && (
           <Section icon={<Truck className="w-5 h-5 text-[#3B82F6]" />} title="Logistique">
             <div className="flex flex-wrap gap-2 mb-2">
@@ -414,7 +414,7 @@ export function ProfilePage() {
           </Section>
         )}
 
-        {/* Paiements acceptés — vendeurs */}
+        {/* Paiements acceptés - vendeurs */}
         {seller && userProfile?.paymentMethods && userProfile.paymentMethods.length > 0 && (
           <Section icon={<Wallet className="w-5 h-5 text-[#16A34A]" />} title="Paiements acceptés">
             <div className="flex flex-wrap gap-2">
@@ -433,7 +433,7 @@ export function ProfilePage() {
           </Section>
         )}
 
-        {/* Documents pro — vendeurs */}
+        {/* Documents pro - vendeurs */}
         {seller && userProfile && (
           <Section icon={<FileText className="w-5 h-5 text-[#F97316]" />} title="Documents pro">
             <div className="grid grid-cols-3 gap-3">
@@ -465,7 +465,7 @@ export function ProfilePage() {
           </Section>
         )}
 
-        {/* KYC — vendeurs / entreprises / organisations uniquement */}
+        {/* KYC - vendeurs / entreprises / organisations uniquement */}
         {seller && (
         <Section icon={<BadgeCheck className="w-5 h-5 text-[#16A34A]" />} title="Vérification (KYC/KYB)">
           {docs.map((doc) => (
@@ -548,7 +548,7 @@ export function ProfilePage() {
                 : "01/25",
               expiresOn: sub
                 ? new Date(sub.expiresAt).toLocaleDateString("fr-FR", { month: "2-digit", year: "2-digit" })
-                : "—/—",
+                : "-/-",
               planName: sub ? sub.label.toUpperCase() : "MEMBRE",
               role: "member",
               bioEnabled: bioEnrolled,
@@ -718,7 +718,7 @@ export function ProfilePage() {
           ))}
         </Section>
 
-        {/* B2B — entreprises & organisations uniquement */}
+        {/* B2B - entreprises & organisations uniquement */}
         {business && (
         <Section icon={<Users className="w-5 h-5 text-[#3B82F6]" />} title="Gestion utilisateurs (Entreprise)">
           <p className="text-muted-foreground" style={{ fontSize: 13 }}>

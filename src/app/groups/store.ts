@@ -323,7 +323,7 @@ export function leaveGroup(groupId: string, participantId: string): { ok: boolea
   if (!g) return { ok: false, error: "Groupement introuvable" };
   const member = g.participants.find((p) => p.id === participantId);
   if (!member) return { ok: false, error: "Vous ne participez pas à ce groupement" };
-  if (member.paid) return { ok: false, error: "Part déjà payée — contactez le responsable pour un remboursement" };
+  if (member.paid) return { ok: false, error: "Part déjà payée - contactez le responsable pour un remboursement" };
   let next: Group = { ...g, participants: g.participants.filter((p) => p.id !== participantId) };
   next = recomputeAmounts(next);
   if (next.status === "complet" && currentQty(next) < g.targetQty) next = { ...next, status: "ouvert" };

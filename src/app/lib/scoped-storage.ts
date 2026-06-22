@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Clés localStorage scopées par compte
+   IPPOO - Clés localStorage scopées par compte
    Évite que les données d'un utilisateur (wallet, notifs, boutiques,
    abonnement…) fuitent vers un nouveau compte créé sur le même
    navigateur. Chaque clé est namespacée par l'ID de compte courant ;

@@ -1,6 +1,6 @@
 import { logger } from "../lib/logger";
 /* ═══════════════════════════════════════════
-   IPPOO — User KV : collections JSON owner-based
+   IPPOO - User KV : collections JSON owner-based
    (adresses, équipe, préférences) synchronisées multi-appareils.
    ═══════════════════════════════════════════ */
 
@@ -9,7 +9,7 @@ import { getAccessToken } from "../auth/supabase";
 
 const BASE = `https://${projectId}.supabase.co/functions/v1/make-server-cc347259`;
 
-export type UserKvKey = "addresses" | "team" | "preferences" | "security";
+export type UserKvKey = "addresses" | "team" | "preferences" | "security" | "follows" | "my-shops" | "my-promos";
 
 export async function getUserKv<T>(key: UserKvKey): Promise<T | null> {
   const token = await getAccessToken();

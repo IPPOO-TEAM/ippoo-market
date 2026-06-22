@@ -59,12 +59,12 @@ const ceProfile = {
   name: "Mon CE",
   type: "Comité d'entreprise",
   members: 0,
-  city: "—",
-  since: "—",
+  city: "-",
+  since: "-",
   totalOrders: 0,
   totalSavings: 0,
   creditAvailable: 0,
-  nextDelivery: "—",
+  nextDelivery: "-",
   tier: "Bronze",
 };
 

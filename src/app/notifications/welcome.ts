@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Message de bienvenue
+   IPPOO - Message de bienvenue
    Notification informationnelle envoyée une fois après la 1ère
    inscription. Aucun crédit, aucun coupon, aucun cadeau simulé : le
    compte démarre vierge et l'utilisateur recharge lui-même son

@@ -154,7 +154,7 @@ export function AdminReviewsPage() {
                       {r.targetType}<br />{r.targetId}
                     </Td>
                     <Td style={{ maxWidth: 360 }}>
-                      <p style={{ fontSize: 13 }}>{r.comment || <span className="text-muted-foreground">—</span>}</p>
+                      <p style={{ fontSize: 13 }}>{r.comment || <span className="text-muted-foreground">-</span>}</p>
                     </Td>
                     <Td className="text-muted-foreground" style={{ fontSize: 11 }}>{r.userEmail || r.userId}</Td>
                     <Td className="text-muted-foreground">{fmtRelative(r.createdAt)}</Td>

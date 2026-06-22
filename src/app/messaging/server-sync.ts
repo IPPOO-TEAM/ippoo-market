@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Messagerie : mirroring vers le serveur
+   IPPOO - Messagerie : mirroring vers le serveur
    ─────────────────────────────────────────
    La UI de messagerie reste pilotée par le store local (mock + UX
    instantanée). En arrière-plan on persiste les messages sortants
@@ -45,7 +45,7 @@ function slugify(s: string): string {
 
 /**
  * Associe le numericId local à un convId serveur et le crée si besoin.
- * Le "otherId" est dérivé du slug du nom — pas un vrai user id Supabase,
+ * Le "otherId" est dérivé du slug du nom - pas un vrai user id Supabase,
  * mais suffisant pour conserver une conversation cohérente côté KV.
  */
 export async function mirrorOutgoingMessage(input: {

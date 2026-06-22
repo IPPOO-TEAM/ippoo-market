@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Messagerie serveur (Edge Function)
+   IPPOO - Messagerie serveur (Edge Function)
    ═══════════════════════════════════════════ */
 
 import { apiFetch } from "../api/client";

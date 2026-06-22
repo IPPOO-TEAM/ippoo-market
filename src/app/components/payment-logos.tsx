@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO Market — Logos des moyens de paiement
+   IPPOO Market - Logos des moyens de paiement
    Marques béninoises : MTN MoMo, Moov Money, Celtiis Cash.
    Cartes : Visa, Mastercard. Plus Paiement à la livraison.
    Rendu en SVG inline (aucun asset externe, aucune emoji).

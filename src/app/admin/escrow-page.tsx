@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Admin · Escrow
+   IPPOO - Admin · Escrow
    Liste les commandes dont l'escrow est en "held" et permet
    de libérer les fonds vers les vendeurs (split commission 8%).
    ═══════════════════════════════════════════ */
@@ -30,7 +30,7 @@ export function AdminEscrowPage() {
   const refresh = useCallback(async () => {
     setLoading(true); setError(null);
     try {
-      // Pas d'endpoint dédié "liste escrows" — on s'appuie sur le préfixe via
+      // Pas d'endpoint dédié "liste escrows" - on s'appuie sur le préfixe via
       // un futur endpoint admin. En attendant on lit la commande à la volée.
       const j = await apiFetch<{ items: EscrowRecord[] }>("/admin/escrow/held").catch(() => ({ items: [] as EscrowRecord[] }));
       setItems(j.items ?? []);

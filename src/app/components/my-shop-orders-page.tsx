@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Vendeur · Commandes (vue dédiée + filtres avancés)
+   IPPOO - Vendeur · Commandes (vue dédiée + filtres avancés)
    ═══════════════════════════════════════════ */
 
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
@@ -46,15 +46,21 @@ type Payment = OrderRecord["paymentMethod"];
 
 const STATUS_LABEL: Record<Status, string> = {
   pending: "En attente",
-  shipped: "Expédiée",
-  completed: "Livrée",
-  cancelled: "Annulée",
+  preparation: "En préparation",
+  expedition: "Expédiée",
+  livree: "Livrée",
+  cloturee: "Clôturée",
+  litige: "Litige",
+  annulee: "Annulée",
 };
 const STATUS_TONE: Record<Status, string> = {
-  pending: "#F59E0B",
-  shipped: "#3B82F6",
-  completed: "#16A34A",
-  cancelled: "#9CA3AF",
+  pending: "#F0B429",
+  preparation: "#F59E0B",
+  expedition: "#3B82F6",
+  livree: "#16A34A",
+  cloturee: "#6B7280",
+  litige: "#E11D2E",
+  annulee: "#9CA3AF",
 };
 const PAYMENT_LABEL: Record<Payment, string> = {
   wallet: "IPPOO CASH",
@@ -210,7 +216,7 @@ export function MyShopOrdersPage() {
             <span style={{ fontSize: 12, fontWeight: 500 }}>Retour</span>
           </button>
           <h1 className="text-white flex items-center gap-2" style={{ fontFamily: "Poppins", fontWeight: 900, fontSize: 22 }}>
-            <ShoppingBag className="w-6 h-6" /> COMMANDES — {activeShopName.toUpperCase()}
+            <ShoppingBag className="w-6 h-6" /> COMMANDES - {activeShopName.toUpperCase()}
           </h1>
           <p className="text-white/80 mt-1" style={{ fontSize: 13 }}>
             Filtre, exporte et facture toutes les commandes de ta boutique
@@ -331,7 +337,7 @@ export function MyShopOrdersPage() {
                     <div className="min-w-0">
                       <Link to={`/commande/${order.id}`} className="block">
                         <div className="truncate" style={{ fontWeight: 600, fontSize: 13 }}>
-                          {items[0]?.title ?? "—"}{items.length > 1 && <span className="text-muted-foreground"> +{items.length - 1}</span>}
+                          {items[0]?.title ?? "-"}{items.length > 1 && <span className="text-muted-foreground"> +{items.length - 1}</span>}
                         </div>
                         <div className="text-muted-foreground truncate" style={{ fontSize: 11 }}>
                           {inv} · {order.shippingAddress.name} · {order.shippingAddress.city}

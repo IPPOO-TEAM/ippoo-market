@@ -26,8 +26,8 @@ export function PageHeader({ title, subtitle, actions }: { title: string; subtit
   );
 }
 
-export function Card({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return <div className={`bg-white rounded-2xl border border-border ${className}`}>{children}</div>;
+export function Card({ children, className = "", style }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) {
+  return <div className={`bg-white rounded-2xl border border-border ${className}`} style={style}>{children}</div>;
 }
 
 export function Badge({ children, color }: { children: React.ReactNode; color: string }) {
@@ -117,8 +117,8 @@ export function Th({ children, className = "" }: { children?: React.ReactNode; c
   );
 }
 
-export function Td({ children, className = "", style }: { children?: React.ReactNode; className?: string; style?: React.CSSProperties }) {
-  return <td className={`px-4 py-3 border-b border-[#F3F4F6] ${className}`} style={{ fontSize: 13, ...style }}>{children}</td>;
+export function Td({ children, className = "", style, colSpan }: { children?: React.ReactNode; className?: string; style?: React.CSSProperties; colSpan?: number }) {
+  return <td colSpan={colSpan} className={`px-4 py-3 border-b border-[#F3F4F6] ${className}`} style={{ fontSize: 13, ...style }}>{children}</td>;
 }
 
 export function IconBtn({ icon: Icon, label, onClick, color = "#6B7280" }: { icon: typeof Check; label: string; onClick: () => void; color?: string }) {
@@ -135,9 +135,11 @@ export function IconBtn({ icon: Icon, label, onClick, color = "#6B7280" }: { ico
   );
 }
 
-export function EmptyState({ children }: { children: React.ReactNode }) {
+export function EmptyState({ children, title, description }: { children?: React.ReactNode; title?: string; description?: string }) {
   return (
     <div className="text-center py-10 text-muted-foreground" style={{ fontSize: 13 }}>
+      {title && <div className="text-foreground" style={{ fontFamily: "Poppins", fontWeight: 700, fontSize: 15, marginBottom: 4 }}>{title}</div>}
+      {description && <div>{description}</div>}
       {children}
     </div>
   );

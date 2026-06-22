@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Produits du vendeur (store local)
+   IPPOO - Produits du vendeur (store local)
    CRUD + persistance localStorage + abonnements
    (useSyncExternalStore). Indexé par shopSlug
    pour supporter plusieurs boutiques par compte.

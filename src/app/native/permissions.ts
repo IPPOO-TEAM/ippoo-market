@@ -71,7 +71,6 @@ export async function requestPermission(kind: PermissionKind): Promise<Permissio
       case "persistent-storage": {
         if (!navigator.storage?.persist) return "unsupported";
         const ok = await navigator.storage.persist();
-        if (ok) toast.success("Stockage local sécurisé");
         return ok ? "granted" : "denied";
       }
       case "clipboard-write":

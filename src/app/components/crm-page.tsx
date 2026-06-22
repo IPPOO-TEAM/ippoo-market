@@ -48,9 +48,9 @@ type Activity = { agent: string; action: string; client: string; time: string; i
 const recentActivity: Activity[] = [];
 
 const kpis: { label: string; value: React.ReactNode; sub: string; icon: LucideIcon; color: string; bg: string }[] = [
-  { label: "Clients totaux", value: <AnimatedNumber value={0} />, sub: "—", icon: Users, color: A1, bg: "#EFF6FF" },
-  { label: "Clients actifs", value: <AnimatedNumber value={0} />, sub: "—", icon: UserCheck, color: A2, bg: "#F0FDF4" },
-  { label: "CA mensuel", value: <><AnimatedNumber value={0} decimals={1} />M</>, sub: "—", icon: TrendingUp, color: GOLD, bg: "#FFFBEB" },
+  { label: "Clients totaux", value: <AnimatedNumber value={0} />, sub: "-", icon: Users, color: A1, bg: "#EFF6FF" },
+  { label: "Clients actifs", value: <AnimatedNumber value={0} />, sub: "-", icon: UserCheck, color: A2, bg: "#F0FDF4" },
+  { label: "CA mensuel", value: <><AnimatedNumber value={0} decimals={1} />M</>, sub: "-", icon: TrendingUp, color: GOLD, bg: "#FFFBEB" },
   { label: "Taux conv.", value: <AnimatedNumber value={0} suffix="%" />, sub: "Objectif : 80%", icon: Target, color: ORANGE, bg: "#FFF7ED" },
 ];
 

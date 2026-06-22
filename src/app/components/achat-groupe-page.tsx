@@ -223,7 +223,7 @@ export function AchatGroupePage() {
     const r = payShare(g.id, me.id);
     if (!r.ok) {
       if (r.deficit) {
-        toast.error(`Solde insuffisant — manque ${formatPrice(r.deficit)}`, {
+        toast.error(`Solde insuffisant - manque ${formatPrice(r.deficit)}`, {
           action: { label: "Recharger", onClick: () => navigate("/wallet") },
         });
       } else {
@@ -231,7 +231,7 @@ export function AchatGroupePage() {
       }
       return;
     }
-    toast.success("Part payée — ref " + r.txnId);
+    toast.success("Part payée - ref " + r.txnId);
   };
 
   const handleLeave = (g: Group) => {
@@ -319,7 +319,7 @@ export function AchatGroupePage() {
             {[
               { v: String(activeGroupsList.length), l: "Groupes", color: "#FCA5A5" },
               { v: String(totalMembers), l: "Membres", color: "#FBBF24" },
-              { v: avgSaving > 0 ? `-${avgSaving}%` : "—", l: "Économie", color: "#86EFAC" },
+              { v: avgSaving > 0 ? `-${avgSaving}%` : "-", l: "Économie", color: "#86EFAC" },
             ].map((s, i) => (
               <div key={i} className="text-center px-3.5 py-2.5 rounded-xl" style={{ background: "rgba(255,255,255,0.12)" }}>
                 <p style={{ fontFamily: "Poppins", fontWeight: 800, fontSize: 20, color: s.color }}>{s.v}</p>
@@ -828,7 +828,7 @@ export function AchatGroupePage() {
         {/* ───── CATALOGUE ───── */}
         {activeTab === "catalogue" && (
           <div className="space-y-4">
-            <p style={{ fontFamily: "Poppins", fontWeight: 700, fontSize: 16, color: NAVY }}>Catalogue Famille — Produits groupables</p>
+            <p style={{ fontFamily: "Poppins", fontWeight: 700, fontSize: 16, color: NAVY }}>Catalogue Famille - Produits groupables</p>
 
             <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
               {catalogCategories.map((c, i) => {

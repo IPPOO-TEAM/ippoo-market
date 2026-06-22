@@ -34,7 +34,7 @@ import { PackagePlus } from "lucide-react";
 import { AnimatedNumber } from "./animated-number";
 import { resolveShopVisuals } from "../data/shop-resolver";
 
-// Produits uniquement — synchronisé avec vendors-page.tsx, aucune réutilisation
+// Produits uniquement - synchronisé avec vendors-page.tsx, aucune réutilisation
 const u = (id: string) => `https://images.unsplash.com/${id}?w=1080&q=80&auto=format&fit=crop`;
 const EXTRA = {
   spice: u("photo-1633536705119-bcc37bf6c84e"),
@@ -84,7 +84,7 @@ const allVendors = [
   { id: 28, name: "MotoPlus Parakou", avatar: EXTRA.autoParts, category: "Auto & Accessoires", rating: 4.3, orders: 290, deliveryRate: 91, badge: "VERIFIE", location: "Parakou" },
   { id: 29, name: "JoujouLand Bénin", avatar: EXTRA.gifts, category: "Divers & Cadeaux", rating: 4.5, orders: 450, deliveryRate: 93, badge: "TOP", location: "Cotonou" },
   { id: 30, name: "FêtesExpress Porto", avatar: EXTRA.gifts, category: "Divers & Cadeaux", rating: 4.2, orders: 220, deliveryRate: 89, badge: "VERIFIE", location: "Porto-Novo" },
-  { id: 31, name: "AgroNord Parakou", avatar: IMAGES.vegetables, category: "Vivrier & Céréales", rating: 4.3, orders: 520, deliveryRate: 91, badge: "VERIFIE", location: "Parakou" },
+  { id: 31, name: "AagroNord Parakou", avatar: IMAGES.vegetables, category: "Vivrier & Céréales", rating: 4.3, orders: 520, deliveryRate: 91, badge: "VERIFIE", location: "Parakou" },
   { id: 32, name: "Grenier du Nord", avatar: EXTRA.grain, category: "Vivrier & Céréales", rating: 4.6, orders: 870, deliveryRate: 95, badge: "VIP", location: "Parakou" },
   { id: 33, name: "CoopAgri Bénin", avatar: EXTRA.farmer, category: "Vivrier & Céréales", rating: 4.4, orders: 430, deliveryRate: 92, badge: "TOP", location: "Porto-Novo" },
   { id: 34, name: "Nectar d'Afrique", avatar: EXTRA.beverages, category: "Alimentation & Boissons", rating: 4.3, orders: 340, deliveryRate: 91, badge: "VERIFIE", location: "Parakou" },
@@ -255,7 +255,7 @@ export function VendorShopPage() {
           </div>
         </div>
 
-        {/* Profile overlap area — centré verticalement sur la bannière */}
+        {/* Profile overlap area - centré verticalement sur la bannière */}
         <div className="absolute inset-0 z-10 flex items-center px-4">
           <div className="flex items-center gap-4 max-w-5xl mx-auto w-full">
             {/* Avatar */}

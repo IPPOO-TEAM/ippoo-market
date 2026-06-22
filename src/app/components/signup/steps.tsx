@@ -448,8 +448,8 @@ export function StepLogistique(p: StepLogProps) {
           );
         })}
       </div>
-      <FieldRaw icon={Clock} placeholder="Horaires d'ouverture (ex. Lun–Sam 8h–18h)" value={p.openingHours} onChange={p.setOpeningHours} />
-      <FieldRaw icon={Clock} placeholder="Délai de traitement (ex. 24–48h)" value={p.processingDelay} onChange={p.setProcessingDelay} />
+      <FieldRaw icon={Clock} placeholder="Horaires d'ouverture (ex. Lun-Sam 8h-18h)" value={p.openingHours} onChange={p.setOpeningHours} />
+      <FieldRaw icon={Clock} placeholder="Délai de traitement (ex. 24-48h)" value={p.processingDelay} onChange={p.setProcessingDelay} />
     </div>
   );
 }

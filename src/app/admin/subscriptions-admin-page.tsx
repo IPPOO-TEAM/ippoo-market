@@ -5,10 +5,11 @@ import { formatPrice } from "../components/mock-data";
 import {
   PageHeader, Card, Badge, Th, Td, EmptyState,
 } from "./page-primitives";
-import { listAdminPlans, upsertAdminPlan, AdminPlan } from "../data/admin-server";
+import { listAdminPlans, upsertAdminPlan, AdminPlan, listAdminSubscriptions, AdminSubscription } from "../data/admin-server";
 
 export function AdminSubscriptionsPage() {
   const [plans, setPlans] = useState<AdminPlan[]>([]);
+  const [subscribers, setSubscribers] = useState<AdminSubscription[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -18,7 +19,9 @@ export function AdminSubscriptionsPage() {
     setLoading(true);
     setError(null);
     try {
-      setPlans(await listAdminPlans());
+      const [p, s] = await Promise.all([listAdminPlans(), listAdminSubscriptions()]);
+      setPlans(p);
+      setSubscribers(s);
     } catch (e: any) {
       setError(e?.message || "Chargement impossible");
     } finally {
@@ -28,11 +31,14 @@ export function AdminSubscriptionsPage() {
 
   useEffect(() => { void load(); }, [load]);
 
+  const now = Date.now();
+  const activeSubs = useMemo(() => subscribers.filter((s) => (s.expiresAt ?? 0) > now), [subscribers, now]);
   const totals = useMemo(() => ({
     total: plans.length,
     active: plans.filter((p) => p.active).length,
-    mrr: plans.filter((p) => p.active).reduce((s, p) => s + p.priceMonthly, 0),
-  }), [plans]);
+    subscribers: activeSubs.length,
+    mrr: activeSubs.reduce((s, sub) => s + (sub.price || 0), 0),
+  }), [plans, activeSubs]);
 
   async function savePlan(p: Partial<AdminPlan> & { id: string; priceMonthly: number }) {
     setSaving(p.id);
@@ -54,7 +60,7 @@ export function AdminSubscriptionsPage() {
     <div className="p-6">
       <PageHeader
         title="Abonnements VIP"
-        subtitle={loading ? "Chargement…" : `${totals.total} plan(s) · ${totals.active} actif(s) · MRR ${formatPrice(totals.mrr)} FCFA`}
+        subtitle={loading ? "Chargement…" : `${totals.total} plan(s) · ${totals.active} actif(s) · ${totals.subscribers} abonné(s) · MRR ${formatPrice(totals.mrr)} FCFA`}
         actions={
           <div className="flex items-center gap-2">
             <button onClick={() => { void load(); }} className="px-3 py-2 rounded-xl bg-white border border-border flex items-center gap-1.5" style={{ fontSize: 13, fontWeight: 600 }}>
@@ -105,6 +111,51 @@ export function AdminSubscriptionsPage() {
               {!loading && plans.map((p) => (
                 <PlanRow key={p.id} plan={p} saving={saving === p.id} onSave={(np) => savePlan(np)} />
               ))}
+            </tbody>
+          </table>
+        </div>
+      </Card>
+
+      <h3 className="mt-6 mb-3" style={{ fontFamily: "Poppins", fontWeight: 700, fontSize: 14 }}>
+        Abonnés actifs ({activeSubs.length})
+      </h3>
+      <Card className="overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr>
+                <Th>Utilisateur</Th>
+                <Th>Plan</Th>
+                <Th>Prix</Th>
+                <Th>Démarré</Th>
+                <Th>Expire</Th>
+                <Th>Auto-renouv.</Th>
+              </tr>
+            </thead>
+            <tbody>
+              {!loading && subscribers.length === 0 && (
+                <tr><Td className="text-center" colSpan={6 as any}><EmptyState title="Aucun abonné" description="Personne n'a encore souscrit." /></Td></tr>
+              )}
+              {!loading && subscribers.map((s) => {
+                const expired = (s.expiresAt ?? 0) <= now;
+                return (
+                  <tr key={s.userId} className="hover:bg-muted/40">
+                    <Td>
+                      <div style={{ fontSize: 13, fontWeight: 600 }}>{s.userEmail ?? "-"}</div>
+                      <div className="text-muted-foreground" style={{ fontFamily: "ui-monospace, monospace", fontSize: 10 }}>{s.userId}</div>
+                    </Td>
+                    <Td>{s.label || s.planId}</Td>
+                    <Td>{formatPrice(s.price)} FCFA</Td>
+                    <Td style={{ fontSize: 12 }}>{new Date(s.startedAt).toLocaleDateString("fr-FR")}</Td>
+                    <Td style={{ fontSize: 12 }}>
+                      {expired
+                        ? <Badge color="#9CA3AF">Expiré</Badge>
+                        : <span>{new Date(s.expiresAt).toLocaleDateString("fr-FR")}</span>}
+                    </Td>
+                    <Td>{s.autoRenew ? <Badge color="#16A34A">Oui</Badge> : <Badge color="#9CA3AF">Non</Badge>}</Td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

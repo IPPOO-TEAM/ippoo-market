@@ -9,7 +9,7 @@ export function formatCardNumber(raw: string): string {
   return digitsOnly(raw).slice(0, 19).replace(/(.{4})/g, "$1 ").trim();
 }
 
-/** Algorithme de Luhn pour valider un numéro de carte (13–19 chiffres). */
+/** Algorithme de Luhn pour valider un numéro de carte (13-19 chiffres). */
 export function luhnCheck(raw: string): boolean {
   const s = digitsOnly(raw);
   if (s.length < 13 || s.length > 19) return false;

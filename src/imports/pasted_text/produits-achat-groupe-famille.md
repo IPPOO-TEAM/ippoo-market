@@ -1,10 +1,10 @@
 Liste de produits/articles adaptés à l’achat groupé “famille” (par catégories)
 1) Viandes, volailles, poissons (très pertinents en groupement)
-Poulet entier (1–1,5 kg / 1,5–2 kg / 2 kg+) : à partager en 2, 3 ou 4 parts
+Poulet entier (1-1,5 kg / 1,5-2 kg / 2 kg+) : à partager en 2, 3 ou 4 parts
 Poulet découpé (cuisses, ailes, pilons, blancs) en plateaux familiaux
 Pintade entière / découpée
 Dinde (morceaux) en lots
-Viande de bœuf (morceaux pour sauce, grillade, steak) en lots de 2–5 kg
+Viande de bœuf (morceaux pour sauce, grillade, steak) en lots de 2-5 kg
 Viande de mouton/chèvre (morceaux) en lots
 Abats (foie, gésier, cœur) en lots
 Poisson frais (tilapia, carpe, capitaine, maquereau, etc.) en lots par taille

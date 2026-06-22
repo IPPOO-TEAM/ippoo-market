@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Registre public des groupements Achat Groupé
+   IPPOO - Registre public des groupements Achat Groupé
    Cache (localStorage + abonnés) sur l'endpoint serveur
    `groups/public`. Permet à n'importe quel utilisateur de
    découvrir, rejoindre puis suivre un groupement créé par
@@ -10,6 +10,7 @@ import { projectId, publicAnonKey } from "/utils/supabase/info";
 import { getAccessToken } from "../auth/supabase";
 import { safeGetItem, safeSetItem } from "../lib/safe-storage";
 import { logger } from "../lib/logger";
+import { isBackendOffline, isNetworkError, markBackendOffline } from "../lib/backend-health";
 import type { Group } from "../groups/store";
 
 const BASE = `https://${projectId}.supabase.co/functions/v1/make-server-cc347259`;
@@ -60,6 +61,7 @@ function removeLocal(id: string) {
 
 /** Récupère la liste réseau et met à jour le cache. Idempotent. */
 export async function refreshPublicGroups(force = false): Promise<Group[]> {
+  if (isBackendOffline()) return cache;
   if (!force && Date.now() - lastFetch < REFRESH_MS && cache.length) return cache;
   if (inflight) return inflight;
   inflight = (async () => {
@@ -78,7 +80,8 @@ export async function refreshPublicGroups(force = false): Promise<Group[]> {
       emit();
       return cache;
     } catch (e) {
-      logger.warn(`groups/public GET error: ${e}`);
+      if (isNetworkError(e)) markBackendOffline("groups/public", e);
+      else logger.warn(`groups/public GET error: ${e}`);
       return cache;
     } finally {
       inflight = null;

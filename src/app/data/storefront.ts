@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Adaptateur Storefront
+   IPPOO - Adaptateur Storefront
    Convertit les produits/vendeurs publiés côté serveur
    (PublicProduct / PublicVendor) vers le format utilisé
    par les pages du storefront (mock-data shape).
@@ -66,7 +66,7 @@ function fallbackImage(category?: string): string {
     "Textile": IMAGES.textile,
     "Électronique": IMAGES.electronics,
   };
-  return (category && map[category]) || IMAGES.marketplace;
+  return (category && map[category]) || IMAGES.market;
 }
 
 export function publicProductToStorefront(p: PublicProduct, vendorName?: string): StorefrontProduct {
@@ -92,10 +92,10 @@ export function publicProductToStorefront(p: PublicProduct, vendorName?: string)
 }
 
 export function publicVendorToStorefront(v: PublicVendor): StorefrontVendor {
-  const id = Math.abs(hashProductIdToNumber(v.ownerId));
+  const id = Math.abs(hashProductIdToNumber(v.ownerId ?? v.name));
   return {
     id,
-    ownerId: v.ownerId,
+    ownerId: v.ownerId ?? "",
     name: v.name,
     avatar: v.avatar || v.logo || IMAGES.marketVendor,
     category: v.niche || "Divers",

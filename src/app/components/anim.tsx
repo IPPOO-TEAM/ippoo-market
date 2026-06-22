@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Helpers d'animation réutilisables (Motion)
+   IPPOO - Helpers d'animation réutilisables (Motion)
    - FadeIn          : apparition douce d'un bloc
    - StaggerList     : conteneur qui décale ses enfants
    - StaggerItem     : enfant individuel d'un StaggerList

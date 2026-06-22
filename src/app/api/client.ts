@@ -1,11 +1,12 @@
 /* ═══════════════════════════════════════════
-   IPPOO — API client centralisé
+   IPPOO - API client centralisé
    Wrap fetch pour les Edge Functions avec token Bearer auto,
    timeout, parsing d'erreur uniforme.
    ═══════════════════════════════════════════ */
 
 import { projectId } from "/utils/supabase/info";
 import { getAccessToken } from "../auth/supabase";
+import { isBackendOffline, isNetworkError, markBackendOffline } from "../lib/backend-health";
 
 export const API_BASE = `https://${projectId}.supabase.co/functions/v1/make-server-cc347259`;
 
@@ -28,6 +29,7 @@ type Options = {
 
 export async function apiFetch<T = unknown>(path: string, opts: Options = {}): Promise<T> {
   const { method = "GET", body, auth = true, timeoutMs = 15_000 } = opts;
+  if (isBackendOffline()) throw new ApiError("Backend hors-ligne", 0);
   const headers: Record<string, string> = {};
   if (body !== undefined) headers["Content-Type"] = "application/json; charset=utf-8";
   if (auth) {
@@ -53,6 +55,7 @@ export async function apiFetch<T = unknown>(path: string, opts: Options = {}): P
   } catch (e) {
     if (e instanceof ApiError) throw e;
     if ((e as Error)?.name === "AbortError") throw new ApiError("Délai dépassé", 408);
+    if (isNetworkError(e)) markBackendOffline(`apiFetch ${path}`, e);
     throw new ApiError((e as Error)?.message ?? "Erreur réseau", 0);
   } finally {
     clearTimeout(timer);

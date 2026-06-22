@@ -8,9 +8,9 @@ import { slugifyShopName } from "../../data/shop-assets";
 /* ═══════════════════════════════════════════
    EXTRA IMAGES
    ═══════════════════════════════════════════ */
-/* Per-niche cover image pools — each niche gets multiple unique URLs so no two
+/* Per-niche cover image pools - each niche gets multiple unique URLs so no two
    vendors in the same niche share the same cover. */
-/* PRODUITS UNIQUEMENT — chaque URL n'apparaît qu'une seule fois sur toute la
+/* PRODUITS UNIQUEMENT - chaque URL n'apparaît qu'une seule fois sur toute la
    plateforme. Aucune photo de personne, de paysage ou de scène. */
 const u = (id: string) => `https://images.unsplash.com/${id}?w=1080&q=80&auto=format&fit=crop`;
 export const NICHE_COVERS: Record<string, string[]> = {
@@ -115,7 +115,7 @@ export const NICHE_COVERS: Record<string, string[]> = {
   ],
 };
 
-/* EXTRA — produits uniquement, jamais réutilisés ailleurs. */
+/* EXTRA - produits uniquement, jamais réutilisés ailleurs. */
 const EXTRA = {
   spice: u("photo-1633536705119-bcc37bf6c84e"),
   construction: u("photo-1622044939413-0b829c342434"),
@@ -226,7 +226,7 @@ const VENDOR_SEED: Array<Omit<Vendor, "category"> & { niche: string }> = [
 
   // Produits locaux & artisanat
   { id: 30, name: "FêtesExpress Porto", avatar: EXTRA.gifts, cover: EXTRA.gifts, rating: 4.2, orders: 220, deliveryRate: 89, badge: "VERIFIE", location: "Porto-Novo", niche: "artisanat", description: "Décorations, articles saisonniers, cadeaux et articles promotionnels", subcategories: ["Décorations", "Saisonnier", "Cadeaux"] },
-  { id: 31, name: "AgroNord Parakou", avatar: IMAGES.vegetables, cover: EXTRA.grain, rating: 4.3, orders: 520, deliveryRate: 91, badge: "VERIFIE", location: "Parakou", niche: "artisanat", description: "Maïs, sorgho, mil, riz local et légumineuses en vrac", subcategories: ["Maïs", "Sorgho", "Légumineuses"] },
+  { id: 31, name: "AagroNord Parakou", avatar: IMAGES.vegetables, cover: EXTRA.grain, rating: 4.3, orders: 520, deliveryRate: 91, badge: "VERIFIE", location: "Parakou", niche: "artisanat", description: "Maïs, sorgho, mil, riz local et légumineuses en vrac", subcategories: ["Maïs", "Sorgho", "Légumineuses"] },
   { id: 32, name: "Grenier du Nord", avatar: EXTRA.grain, cover: EXTRA.farmer, rating: 4.6, orders: 870, deliveryRate: 95, badge: "VIP", location: "Parakou", niche: "artisanat", description: "Grossiste céréales, igname, manioc et produits laitiers locaux", subcategories: ["Céréales", "Igname", "Manioc"] },
   { id: 33, name: "CoopAgri Bénin", avatar: EXTRA.farmer, cover: IMAGES.vegetables, rating: 4.4, orders: 430, deliveryRate: 92, badge: "TOP", location: "Porto-Novo", niche: "artisanat", description: "Coopérative agricole, fruits, légumes frais et tubercules", subcategories: ["Fruits", "Légumes", "Tubercules"] },
   { id: 34, name: "Nectar d'Afrique", avatar: EXTRA.beverages, cover: EXTRA.farmer, rating: 4.3, orders: 340, deliveryRate: 91, badge: "VERIFIE", location: "Parakou", niche: "alimentation", description: "Jus naturels artisanaux, boissons locales et eaux aromatisées", subcategories: ["Jus naturels", "Boissons locales", "Eaux"] },
@@ -238,7 +238,7 @@ const VENDOR_SEED: Array<Omit<Vendor, "category"> & { niche: string }> = [
    pool global, chaque URL ne pouvant être utilisée qu'UNE seule
    fois sur toute la plateforme. La cover est de préférence tirée
    du pool de la niche, le logo d'une autre niche (variation
-   visuelle) — toujours via le même registre d'unicité.
+   visuelle) - toujours via le même registre d'unicité.
    ════════════════════════════════════════════════════════════════ */
 const _GLOBAL_POOL: string[] = (() => {
   const set = new Set<string>();
@@ -253,7 +253,7 @@ function _takeImage(prefNiche?: string): string {
     for (const url of pref) if (!_assignedImages.has(url)) { _assignedImages.add(url); return url; }
   }
   for (const url of _GLOBAL_POOL) if (!_assignedImages.has(url)) { _assignedImages.add(url); return url; }
-  // Pool épuisé — derniers fallbacks (ne devrait pas arriver pour la seed actuelle)
+  // Pool épuisé - derniers fallbacks (ne devrait pas arriver pour la seed actuelle)
   return _GLOBAL_POOL[(_assignedImages.size) % _GLOBAL_POOL.length];
 }
 

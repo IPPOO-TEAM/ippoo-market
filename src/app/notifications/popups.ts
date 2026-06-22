@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Popups dynamiques in-app
+   IPPOO - Popups dynamiques in-app
    File d'attente de popups marketing/promo affichées par PromoPopupHost.
    Persistance "déjà vu" pour éviter les doublons.
    ═══════════════════════════════════════════ */

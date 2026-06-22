@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Auth admin (serveur + PIN local)
+   IPPOO - Auth admin (serveur + PIN local)
    ─────────────────────────────────────────
    1. La vérification *réelle* du rôle admin se fait côté serveur
       via /admin/whoami (email présent dans IPPOO_ADMIN_EMAILS).

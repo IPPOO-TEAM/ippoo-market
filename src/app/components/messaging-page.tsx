@@ -340,7 +340,7 @@ export function MessagingPage() {
   const scrollToBottom = useCallback(() => {
     const el = messagesScrollRef.current;
     if (!el) return;
-    // Scroll local au conteneur uniquement — évite que la page entière scrolle
+    // Scroll local au conteneur uniquement - évite que la page entière scrolle
     // (ce qui décalerait le header sticky à chaque message / ouverture clavier).
     el.scrollTop = el.scrollHeight;
   }, []);
@@ -879,7 +879,7 @@ export function MessagingPage() {
             <div className="h-4" />
           </div>
 
-          {/* FAB New Message (mobile only) — Messenger blue */}
+          {/* FAB New Message (mobile only) - Messenger blue */}
           <button
             onClick={() => setShowNewConv(true)}
             className="lg:hidden absolute right-4 bottom-4 w-14 h-14 rounded-full flex items-center justify-center text-white shadow-lg active:scale-95 transition-transform z-20"

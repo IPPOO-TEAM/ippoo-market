@@ -69,7 +69,7 @@ export function OrdersPage() {
         statusLabel: statusLabels[o.status as keyof typeof statusLabels] ?? o.status,
         total: o.total,
         items: o.items.reduce((acc: number, it: any) => acc + (it.qty ?? it.quantity ?? 0), 0),
-        seller: (o.items[0] as any)?.title || "—",
+        seller: (o.items[0] as any)?.title || "-",
         createdAt: o.createdAt,
       });
     }
@@ -82,7 +82,7 @@ export function OrdersPage() {
         statusLabel: statusLabels[o.status] ?? o.status,
         total: o.total,
         items: o.items.reduce((acc, it) => acc + it.quantity, 0),
-        seller: o.items[0]?.vendorName || o.items[0]?.seller || "—",
+        seller: o.items[0]?.vendorName || o.items[0]?.seller || "-",
         createdAt: o.createdAt,
       });
     }

@@ -148,13 +148,13 @@ export function VendeurComptabilitePage() {
         <KPI icon={<BarChart3 className="w-5 h-5" />} label="Panier moyen" value={<AnimatedNumber value={Math.round(avgTicket)} format={(n) => formatPrice(n)} />} color="#16A34A" />
       </div>
 
-      {/* ─── Ma boutique connectée — ventes directes (scan + comptoir) ─── */}
+      {/* ─── Ma boutique connectée - ventes directes (scan + comptoir) ─── */}
       {mySlug && (
         <div className="bg-card border border-border rounded-2xl p-4 mb-4">
           <div className="flex items-center justify-between gap-2 mb-3 flex-wrap">
             <h3 className="flex items-center gap-2" style={{ fontFamily: "Poppins", fontWeight: 700, fontSize: 14 }}>
               <Store className="w-4 h-4 text-[#E11D2E]" />
-              Ma boutique — ventes directes
+              Ma boutique - ventes directes
               {myShopName && <span className="text-muted-foreground" style={{ fontSize: 11, fontWeight: 500 }}>· {myShopName}</span>}
             </h3>
             <div className="flex items-center gap-2 flex-wrap">
@@ -240,7 +240,7 @@ export function VendeurComptabilitePage() {
               </table>
               {myInvoices.length > 12 && (
                 <p className="text-center text-muted-foreground pt-2" style={{ fontSize: 11 }}>
-                  + {myInvoices.length - 12} facture(s) — exporter en CSV pour voir tout
+                  + {myInvoices.length - 12} facture(s) - exporter en CSV pour voir tout
                 </p>
               )}
             </div>
@@ -347,7 +347,7 @@ export function VendeurComptabilitePage() {
                         </Link>
                       </td>
                       <td className="px-2 py-2 text-muted-foreground">{inv.date}</td>
-                      <td className="px-2 py-2">{inv.buyer?.name ?? "—"}</td>
+                      <td className="px-2 py-2">{inv.buyer?.name ?? "-"}</td>
                       <td className="px-2 py-2 text-right" style={{ fontWeight: 700 }}>{formatPrice(mySubtotal)}</td>
                       <td className="px-2 py-2 text-right">
                         <span
@@ -410,7 +410,7 @@ function openPayoutPdf(
     return `<tr>
       <td>${esc(inv.id)}</td>
       <td>${esc(inv.date)}</td>
-      <td>${esc(inv.buyer?.name ?? "—")}</td>
+      <td>${esc(inv.buyer?.name ?? "-")}</td>
       <td style="text-align:right;font-weight:700">${fmt(mySubtotal)}</td>
       <td style="text-align:right">${inv.status === "paid" ? "PAYÉE" : "EN ATTENTE"}</td>
     </tr>`;
@@ -507,7 +507,7 @@ function openPayoutPdf(
   win.document.open();
   win.document.write(html);
   win.document.close();
-  toast.success("Bilan ouvert dans un nouvel onglet — utilise « Imprimer » pour enregistrer en PDF.");
+  toast.success("Bilan ouvert dans un nouvel onglet - utilise « Imprimer » pour enregistrer en PDF.");
 }
 
 function KPI({ icon, label, value, sub, color }: { icon: React.ReactNode; label: string; value: React.ReactNode; sub?: string; color: string }) {

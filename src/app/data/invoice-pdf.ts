@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Facture imprimable (PDF via window.print)
+   IPPOO - Facture imprimable (PDF via window.print)
    Ouvre un onglet HTML stylé en format A4 et déclenche
    automatiquement la boîte d'impression. L'utilisateur
    peut alors "Enregistrer en PDF" depuis son navigateur.
@@ -8,6 +8,23 @@
 import type { OrderRecord } from "./orders-server";
 import { formatPrice } from "../components/mock-data";
 import { safeGetItem, safeSetItem } from "../lib/safe-storage";
+import { getAdminSettings } from "../admin/settings-store";
+import { apiFetch } from "../api/client";
+
+/**
+ * Demande au serveur un numéro de facture séquentiel (atomique, dédoublonné
+ * par orderId). Si l'appel échoue, fallback sur la séquence locale.
+ */
+export async function reserveInvoiceNumber(scope: string, orderId: string): Promise<string> {
+  try {
+    const j = await apiFetch<{ number: string }>("/invoices/number", {
+      method: "POST",
+      body: { scope, orderId },
+    });
+    if (j?.number) return j.number;
+  } catch { /* fallback local */ }
+  return getInvoiceNumber(scope, orderId);
+}
 
 export type InvoiceVendor = {
   shopName: string;
@@ -18,8 +35,6 @@ export type InvoiceVendor = {
   ifu?: string;
   logo?: string; // data URL ou http(s)
 };
-
-const COMMISSION_RATE = 0.08;
 
 function esc(s: unknown): string {
   return String(s ?? "")
@@ -59,8 +74,14 @@ export function openInvoiceForVendor(order: OrderRecord, vendor: InvoiceVendor, 
   );
   if (items.length === 0) return;
   const subtotal = items.reduce((s, it) => s + it.unitPrice * it.qty, 0);
-  const commission = Math.round(subtotal * COMMISSION_RATE);
+  // Réglages plateforme (source : serveur via settings-store, repli défauts).
+  const settings = getAdminSettings();
+  const commissionPct = Number.isFinite(settings.commission) ? settings.commission : 8;
+  const vatPct = Number.isFinite(settings.vatRate) ? settings.vatRate : 18;
+  const commission = Math.round((subtotal * commissionPct) / 100);
   const net = subtotal - commission;
+  // Prix affichés TTC → TVA incluse = TTC × taux / (100 + taux).
+  const vatIncluded = vatPct > 0 ? Math.round((subtotal * vatPct) / (100 + vatPct)) : 0;
   const date = new Date(order.createdAt).toLocaleDateString("fr-FR", {
     day: "2-digit", month: "long", year: "numeric",
   });
@@ -83,7 +104,7 @@ export function openInvoiceForVendor(order: OrderRecord, vendor: InvoiceVendor, 
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
-  <title>Facture ${esc(invoiceNo)} — ${esc(vendor.shopName)}</title>
+  <title>Facture ${esc(invoiceNo)} - ${esc(vendor.shopName)}</title>
   <style>
     @page { size: A4; margin: 18mm; }
     * { box-sizing: border-box; }
@@ -132,8 +153,8 @@ export function openInvoiceForVendor(order: OrderRecord, vendor: InvoiceVendor, 
       <p style="margin:2px 0 0;font-size:11px;">Réf. commande : ${esc(order.id)}</p>
       <p style="margin:2px 0 0;">${esc(date)}</p>
       <p style="margin:8px 0 0;">
-        <span class="badge ${order.status === "completed" ? "badge-paid" : "badge-pending"}">
-          ${order.status === "completed" ? "PAYÉE" : order.status === "cancelled" ? "ANNULÉE" : "EN COURS"}
+        <span class="badge ${order.status === "cloturee" ? "badge-paid" : "badge-pending"}">
+          ${order.status === "cloturee" ? "PAYÉE" : order.status === "annulee" ? "ANNULÉE" : "EN COURS"}
         </span>
       </p>
     </div>
@@ -164,13 +185,14 @@ export function openInvoiceForVendor(order: OrderRecord, vendor: InvoiceVendor, 
   </table>
 
   <div class="totals">
-    <div class="row"><span>Sous-total HT</span><span>${formatPrice(subtotal)} FCFA</span></div>
-    <div class="row" style="color:#6B7280;"><span>Commission IPPOO (8%)</span><span>− ${formatPrice(commission)} FCFA</span></div>
+    <div class="row"><span>Sous-total (TTC)</span><span>${formatPrice(subtotal)} FCFA</span></div>
+    ${vatIncluded > 0 ? `<div class="row" style="color:#6B7280;"><span>Dont TVA (${vatPct}%)</span><span>${formatPrice(vatIncluded)} FCFA</span></div>` : ""}
+    <div class="row" style="color:#6B7280;"><span>Commission IPPOO (${commissionPct}%)</span><span>− ${formatPrice(commission)} FCFA</span></div>
     <div class="row grand"><span>Net vendeur</span><span>${formatPrice(net)} FCFA</span></div>
   </div>
 
   <footer>
-    Facture générée via IPPOO Market — ippoo.com<br/>
+    Facture générée via IPPOO Market - ippoo.com<br/>
     Document non contractuel, conservé pour votre comptabilité.
   </footer>
 

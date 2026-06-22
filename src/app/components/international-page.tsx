@@ -94,7 +94,7 @@ export function InternationalPage() {
       dest: `${rfqForm.cityTo}, ${rfqForm.countryTo}`,
       status: "En attente de réponses",
       progress: 5,
-      items: `${rfqForm.product}${rfqForm.quantity ? ` — ${rfqForm.quantity}` : ""}`,
+      items: `${rfqForm.product}${rfqForm.quantity ? ` - ${rfqForm.quantity}` : ""}`,
       color: P,
       createdAt: Date.now(),
     };

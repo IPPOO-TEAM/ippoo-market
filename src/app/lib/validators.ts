@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Validateurs centralisés
+   IPPOO - Validateurs centralisés
    Règles communes à l'inscription, profil pro et formulaires.
    Renvoient `null` si OK, sinon un message d'erreur FR prêt
    à afficher (toast / inline).

@@ -1,13 +1,16 @@
 import { ReactElement } from 'react';
 import { render, RenderOptions } from '@testing-library/react';
+import { MemoryRouter } from 'react-router';
 import { I18nProvider } from '../app/i18n';
 
-// Custom render with providers
+// Custom render with providers (router + i18n).
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
   return (
-    <I18nProvider>
-      {children}
-    </I18nProvider>
+    <MemoryRouter>
+      <I18nProvider>
+        {children}
+      </I18nProvider>
+    </MemoryRouter>
   );
 };
 

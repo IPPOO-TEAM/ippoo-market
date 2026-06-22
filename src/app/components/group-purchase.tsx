@@ -121,7 +121,7 @@ export function GroupPurchaseModal({ product, quantity, totalPrice, onClose }: G
     const r = payShare(liveGroup.id, me.id);
     if (!r.ok) {
       if (r.deficit) {
-        toast.error(`Solde insuffisant — manque ${formatPrice(r.deficit)}`, {
+        toast.error(`Solde insuffisant - manque ${formatPrice(r.deficit)}`, {
           action: { label: "Recharger", onClick: () => navigate("/wallet") },
         });
       } else {
@@ -196,7 +196,7 @@ export function GroupPurchaseModal({ product, quantity, totalPrice, onClose }: G
                   Vous avez déjà un groupement ouvert pour ce produit
                 </p>
                 <p className="text-muted-foreground" style={{ fontSize: 11 }}>
-                  {liveGroup.id} · {liveGroup.participants.length}/{liveGroup.maxParticipants} membres — on le réutilise au lieu d'en créer un nouveau.
+                  {liveGroup.id} · {liveGroup.participants.length}/{liveGroup.maxParticipants} membres - on le réutilise au lieu d'en créer un nouveau.
                 </p>
               </div>
             </div>

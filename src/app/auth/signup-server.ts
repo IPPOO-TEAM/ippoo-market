@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Inscription via Edge Function
+   IPPOO - Inscription via Edge Function
    Crée le compte côté serveur avec admin.createUser({ email_confirm: true })
    pour contourner la confirmation par email, puis ouvre la session.
    ═══════════════════════════════════════════ */

@@ -1,6 +1,16 @@
 import { useSyncExternalStore } from "react";
 import { logAudit } from "./audit";
 import { safeGetItem, safeSetItem } from "../lib/safe-storage";
+import { apiFetch } from "../api/client";
+import { logger } from "../lib/logger";
+import { isBackendOffline, isNetworkError } from "../lib/backend-health";
+
+// Champs « plateforme » persistés côté serveur (source unique de vérité).
+// Les autres réglages (notifications, maintenance UI…) restent locaux.
+const SERVER_FIELDS = [
+  "commission", "vatRate", "shippingStd", "shippingExpress",
+  "freeShippingThreshold", "defaultCurrency", "refundWindowDays",
+] as const;
 
 export type AdminSettings = {
   commission: number;
@@ -68,6 +78,24 @@ export function hydrateAdminSettings() {
   hydrated = true;
   state = load();
   listeners.forEach((l) => l());
+  // Aligne les champs « plateforme » sur la source de vérité serveur.
+  refreshPlatformSettings().catch(() => undefined);
+}
+
+/** Récupère les réglages plateforme publics (commission/TVA/livraison) depuis le serveur. */
+export async function refreshPlatformSettings(): Promise<void> {
+  if (isBackendOffline()) return;
+  try {
+    const j = await apiFetch<{ settings: Partial<AdminSettings> }>("/settings/public", { auth: false });
+    if (j?.settings) {
+      state = { ...state, ...j.settings };
+      emit();
+    }
+  } catch (e) {
+    // Échec réseau (backend non déployé) : silencieux, on garde les réglages locaux.
+    if (isNetworkError(e) || isBackendOffline()) return;
+    logger.warn(`refreshPlatformSettings: ${(e as Error)?.message ?? e}`);
+  }
 }
 
 function persist() {
@@ -96,6 +124,13 @@ export function updateAdminSettings(patch: Partial<AdminSettings>) {
   state = { ...state, ...patch };
   emit();
   logAudit("settings.update", "Paramètres back-office", { fields: Object.keys(patch).join(",") });
+  // Persiste les champs « plateforme » côté serveur (admin uniquement, best-effort).
+  const serverPatch: Record<string, unknown> = {};
+  for (const k of SERVER_FIELDS) if (k in patch) serverPatch[k] = (patch as any)[k];
+  if (Object.keys(serverPatch).length > 0) {
+    apiFetch("/admin/settings", { method: "PUT", body: serverPatch })
+      .catch((e) => logger.warn(`settings PUT serveur: ${(e as Error)?.message ?? e}`));
+  }
 }
 
 export function resetAdminSettings() {

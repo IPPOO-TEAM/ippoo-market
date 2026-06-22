@@ -85,7 +85,7 @@ export function QrIdentity() {
 
   const formatted = user.userNumber
     ? user.userNumber.replace(/(\d{4})(\d{4})(\d{4})/, "$1  $2  $3")
-    : "—";
+    : "-";
 
   const initials = (user.fullname || "?")
     .split(/\s+/)
@@ -101,7 +101,7 @@ export function QrIdentity() {
 
   const expiresOn = subscription.paidUntil
     ? new Date(subscription.paidUntil).toLocaleDateString("fr-FR", { month: "2-digit", year: "2-digit" })
-    : "—/—";
+    : "-/-";
 
   const download = () => {
     if (!canvasRef.current) return;
@@ -200,7 +200,7 @@ export function QrIdentity() {
       </header>
 
       <div className="grid lg:grid-cols-[auto_1fr] gap-6 items-start">
-        {/* Premium visual card — recto/verso flip */}
+        {/* Premium visual card - recto/verso flip */}
         <div className="flex flex-col items-center w-full lg:w-auto">
           <div
             ref={cardRef}
@@ -238,7 +238,7 @@ export function QrIdentity() {
                   gap: "1.8cqw",
                 }}
               >
-            {/* Decorative layers — pointer-events-none */}
+            {/* Decorative layers - pointer-events-none */}
             <div
               aria-hidden
               className="absolute inset-0 pointer-events-none"
@@ -269,7 +269,7 @@ export function QrIdentity() {
               {initials}
             </span>
 
-            {/* Guilloché security pattern — very subtle */}
+            {/* Guilloché security pattern - very subtle */}
             <svg
               aria-hidden
               className="absolute inset-0 pointer-events-none"
@@ -286,9 +286,9 @@ export function QrIdentity() {
               <rect width="100%" height="100%" fill="url(#guilloche)" />
             </svg>
 
-            {/* Initials monogram watermark — Revolut style, large + soft */}
+            {/* Initials monogram watermark - Revolut style, large + soft */}
 
-            {/* Row 1 — Brand block (inline logomark + wordmark + sub) · Tier pill */}
+            {/* Row 1 - Brand block (inline logomark + wordmark + sub) · Tier pill */}
             <div className="relative flex items-start justify-between" style={{ gap: "3cqw" }}>
               <div className="flex items-center" style={{ gap: "2.2cqw" }}>
                 <img
@@ -335,7 +335,7 @@ export function QrIdentity() {
               </span>
             </div>
 
-            {/* Row 2 — Chip + contactless (AmEx-style alignment) */}
+            {/* Row 2 - Chip + contactless (AmEx-style alignment) */}
             <div className="relative flex items-center" style={{ gap: "2.8cqw" }}>
               <div
                 style={{
@@ -382,7 +382,7 @@ export function QrIdentity() {
               </svg>
             </div>
 
-            {/* Row 3 — MEMBER ID label + big number */}
+            {/* Row 3 - MEMBER ID label + big number */}
             <div className="relative flex flex-col justify-center" style={{ gap: "1.4cqw" }}>
               <p
                 style={{
@@ -410,7 +410,7 @@ export function QrIdentity() {
               </p>
             </div>
 
-            {/* Row 4 — Holder + since (refined AmEx hierarchy) */}
+            {/* Row 4 - Holder + since (refined AmEx hierarchy) */}
             <div className="relative flex items-center justify-between" style={{ gap: "2.5cqw" }}>
               <div className="min-w-0 flex-1">
                 <p
@@ -438,7 +438,7 @@ export function QrIdentity() {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  {user.fullname || "—"}
+                  {user.fullname || "-"}
                 </p>
                 {user.company && (
                   <p
@@ -534,7 +534,7 @@ export function QrIdentity() {
                   <rect width="100%" height="100%" fill="url(#guilloche-back)" />
                 </svg>
 
-                {/* Initials watermark — discreet */}
+                {/* Initials watermark - discreet */}
                 <span
                   aria-hidden
                   className="absolute pointer-events-none"
@@ -622,7 +622,7 @@ export function QrIdentity() {
                   />
                 </div>
 
-                {/* QR + Signature/CVV — main row */}
+                {/* QR + Signature/CVV - main row */}
                 <div
                   className="relative flex items-center"
                   style={{

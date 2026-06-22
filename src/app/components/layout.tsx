@@ -258,7 +258,7 @@ function LayoutInner() {
   // Boot-router pour les QR codes : intercepte ?ippoo=<uid> et ?ippoo-pay=<id>
   // posés à la racine, et redirige vers la bonne page interne. Ainsi un QR scanné
   // hors de l'app (caméra du téléphone, lecteur tiers) ouvre toujours la fiche
-  // produit publique — quel que soit l'hébergement, sans configuration SPA.
+  // produit publique - quel que soit l'hébergement, sans configuration SPA.
   useEffect(() => {
     if (location.pathname !== "/") return;
     const sp = new URLSearchParams(location.search);

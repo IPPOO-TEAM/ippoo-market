@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO Market — Classification des activités
+   IPPOO Market - Classification des activités
    Structure : Secteur → Sous-secteur → Niches (métiers).
    Utilisé par le formulaire d'inscription pour le sélecteur cascadant
    Secteur → Sous-secteur → Niche.
@@ -476,7 +476,7 @@ export type Circuit = {
 
 export const CIRCUITS: Circuit[] = [
   { id: "producteur",     label: "Producteur",          description: "Agriculture, élevage, pêche, coopératives", icon: "🌿" },
-  { id: "transformateur", label: "Transformateur",      description: "Agro-transformation, artisanat, industrie", icon: "🏭" },
+  { id: "transformateur", label: "Transformateur",      description: "Aagro-transformation, artisanat, industrie", icon: "🏭" },
   { id: "distributeur",   label: "Distributeur",        description: "Grossiste, semi-grossiste, importateur",    icon: "🚚" },
   { id: "revendeur",      label: "Revendeur / Commerçant", description: "Boutique, supermarché, e-commerce",      icon: "🛒" },
 ];

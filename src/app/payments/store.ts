@@ -100,10 +100,32 @@ const PLAN_DURATIONS: Record<Subscription["planId"], number> = {
   yearly: 365,
 };
 
+/** Reflète l'abonnement courant côté serveur (best-effort) pour que
+ *  l'admin (GET /admin/subscriptions) voie l'ensemble des abonnés. */
+function mirrorSubscriptionToServer(sub: Subscription | null) {
+  void (async () => {
+    try {
+      const token = await getAccessToken();
+      if (!token) return;
+      const { apiFetch } = await import("../api/client");
+      if (!sub) { await apiFetch("/subscriptions/me", { method: "DELETE" }); return; }
+      await apiFetch("/subscriptions/me", {
+        method: "PUT",
+        body: {
+          planId: sub.planId, label: sub.label, price: sub.price,
+          startedAt: sub.startedAt, expiresAt: sub.expiresAt, autoRenew: sub.autoRenew,
+        },
+      });
+    } catch (e) {
+      logger.warn(`mirror subscription to server failed: ${(e as Error)?.message ?? e}`);
+    }
+  })();
+}
+
 export function activateSubscription(planId: Subscription["planId"], label: string, price: number) {
   const now = Date.now();
   const days = PLAN_DURATIONS[planId];
-  // Si déjà actif, on prolonge à partir de la date d'expiration
+  // Optimiste côté client (UX immédiate) ; le serveur fait foi (cf. ci-dessous).
   const base = state.subscription && state.subscription.expiresAt > now ? state.subscription.expiresAt : now;
   state.subscription = {
     planId,
@@ -114,12 +136,39 @@ export function activateSubscription(planId: Subscription["planId"], label: stri
     autoRenew: true,
   };
   emit();
+  // Activation autoritative côté serveur : c'est le serveur qui calcule
+  // startedAt/expiresAt à partir de son horloge, pas le client.
+  void (async () => {
+    try {
+      const token = await getAccessToken();
+      if (!token) return;
+      const { apiFetch } = await import("../api/client");
+      const j = await apiFetch<{ subscription: Subscription }>("/subscriptions/activate", {
+        method: "POST",
+        body: { planId, label, price, days, autoRenew: true },
+      });
+      if (j?.subscription) {
+        state.subscription = {
+          planId: j.subscription.planId as Subscription["planId"],
+          label: j.subscription.label ?? label,
+          price: j.subscription.price,
+          startedAt: j.subscription.startedAt,
+          expiresAt: j.subscription.expiresAt,
+          autoRenew: j.subscription.autoRenew ?? true,
+        };
+        emit();
+      }
+    } catch (e) {
+      logger.warn(`activate subscription server failed: ${(e as Error)?.message ?? e}`);
+    }
+  })();
 }
 
 export function cancelSubscription() {
   if (!state.subscription) return;
   state.subscription = { ...state.subscription, autoRenew: false };
   emit();
+  mirrorSubscriptionToServer(state.subscription);
 }
 
 export function isSubscriptionActive(): boolean {
@@ -301,7 +350,7 @@ export function applyPromo(code: string): { ok: boolean; rate?: number; amount?:
   if (!c) return { ok: false, error: "Code requis" };
   // Anti-cumul : un seul code à la fois (sauf si on réapplique le même)
   if (state.promoCode && state.promoCode !== c) {
-    return { ok: false, error: `Code ${state.promoCode} déjà actif — retirez-le avant d'en appliquer un autre` };
+    return { ok: false, error: `Code ${state.promoCode} déjà actif - retirez-le avant d'en appliquer un autre` };
   }
   const subtotal = cartSubtotal();
 
@@ -650,6 +699,7 @@ export async function paySubscription(
       ...state.invoices,
     ];
     emit();
+    mirrorSubscriptionToServer(next);
     return { ok: true, txnId, invoiceId, subscription: next };
   } finally {
     subscriptionInFlight = false;
@@ -694,6 +744,7 @@ function maybeAutoRenew() {
     ...state.invoices,
   ];
   emit();
+  mirrorSubscriptionToServer(state.subscription);
 }
 
 /* ─── QR PAYMENTS ─── */
@@ -764,7 +815,7 @@ export type InstantPayResult =
 
 /**
  * Débite immédiatement le solde IPPOO CASH pour un scan QR.
- * Aucun PIN, aucun écran intermédiaire — flux le plus court possible.
+ * Aucun PIN, aucun écran intermédiaire - flux le plus court possible.
  * Si solde insuffisant, retourne le `deficit` pour proposer la recharge.
  */
 export function payWalletInstant(opts: {
@@ -893,7 +944,7 @@ export async function processPayment(input: PayInput): Promise<PayResult> {
     state.walletBalance -= input.total;
   }
 
-  // Paiement direct via Fedapay (Mobile Money / carte) — n'exige pas de solde IPPOO CASH.
+  // Paiement direct via Fedapay (Mobile Money / carte) - n'exige pas de solde IPPOO CASH.
   let fedapayRef: string | undefined;
   if (input.payMethod === "mobile" || input.payMethod === "card") {
     const { chargeViaFedapay } = await import("./fedapay");
@@ -901,7 +952,7 @@ export async function processPayment(input: PayInput): Promise<PayResult> {
       ? await chargeViaFedapay(input.total, {
           channel: "mobile",
           phone: input.mobilePhone ?? "",
-          operator: (input.mobileProvider === "moov" ? "moov" : "mtn"),
+          operator: input.mobileProvider ?? "mtn",
           otp: "0000",
         })
       : await chargeViaFedapay(input.total, {
@@ -1003,8 +1054,8 @@ export async function processPayment(input: PayInput): Promise<PayResult> {
     }));
     const vendorAgg = new Map<string, { vendorId: string; vendorName: string; subtotal: number }>();
     for (const l of lines) {
-      const key = l.vendorId ?? l.vendorName ?? "—";
-      const cur = vendorAgg.get(key) ?? { vendorId: l.vendorId ?? key, vendorName: l.vendorName ?? "—", subtotal: 0 };
+      const key = l.vendorId ?? l.vendorName ?? "-";
+      const cur = vendorAgg.get(key) ?? { vendorId: l.vendorId ?? key, vendorName: l.vendorName ?? "-", subtotal: 0 };
       cur.subtotal += l.total;
       vendorAgg.set(key, cur);
     }
@@ -1295,6 +1346,62 @@ export function openDispute(id: string, reason: string, details?: string): PayRe
     desc: `${id} · ${reason}`,
     link: `/commande/${id}`,
     color: "#E11D2E",
+  });
+  return { ok: true, orderId: id, txnId: "" };
+}
+
+/** Résout un litige côté admin : soit on rembourse l'acheteur, soit on libère
+ *  les fonds vers le vendeur. Met à jour le statut de la commande, l'escrow
+ *  et crée si besoin une transaction de remboursement wallet. */
+export function resolveDispute(
+  id: string,
+  outcome: "refund_buyer" | "release_vendor",
+  adminNote?: string,
+): PayResult {
+  const o = state.orders.find((x) => x.id === id);
+  if (!o) return { ok: false, error: "Commande introuvable" };
+  if (!o.dispute || o.dispute.status === "resolved")
+    return { ok: false, error: "Aucun litige actif" };
+
+  const refundBuyer = outcome === "refund_buyer";
+  if (refundBuyer && o.paid && o.payMethod === "wallet") {
+    state.walletBalance += o.total;
+    const txnId = genId("RMB");
+    const { date, time, ts } = nowParts();
+    state.transactions = [
+      {
+        id: txnId,
+        type: "credit",
+        label: `Remboursement litige ${o.id}`,
+        amount: o.total,
+        date,
+        time,
+        method: "IPPOO CASH",
+        status: "success",
+        ref: o.id,
+        ts,
+      },
+      ...state.transactions,
+    ];
+  }
+
+  state.orders = state.orders.map((x) =>
+    x.id === id
+      ? {
+          ...x,
+          status: (refundBuyer ? "annulee" : "cloturee") as OrderStatus,
+          escrowStatus: (refundBuyer ? "refunded" : "released") as EscrowStatus,
+          dispute: { ...x.dispute!, status: "resolved" as const, details: adminNote ?? x.dispute!.details },
+        }
+      : x,
+  );
+  emit();
+  pushNotification({
+    type: "system",
+    title: refundBuyer ? "Litige résolu - remboursement" : "Litige résolu - vendeur",
+    desc: `${id} · ${o.total.toLocaleString("fr-FR")} FCFA`,
+    link: `/commande/${id}`,
+    color: refundBuyer ? "#E11D2E" : "#16A34A",
   });
   return { ok: true, orderId: id, txnId: "" };
 }

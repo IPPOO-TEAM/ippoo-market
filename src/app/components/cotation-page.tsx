@@ -86,7 +86,7 @@ export function CotationPage() {
   };
   const refresh = () => { setLastRefresh(new Date()); toast.success("Données rafraîchies"); };
   const shareCotation = async (c: Cotation) => {
-    const text = `${c.name} · ${c.prixGros.toLocaleString("fr-FR")} FCFA/${c.unit} (var 7j ${c.variation7j > 0 ? "+" : ""}${c.variation7j}%) — IPPOO`;
+    const text = `${c.name} · ${c.prixGros.toLocaleString("fr-FR")} FCFA/${c.unit} (var 7j ${c.variation7j > 0 ? "+" : ""}${c.variation7j}%) - IPPOO`;
     const url = `${window.location.origin}/cotation?id=${c.id}`;
     try {
       if (navigator.share) { await navigator.share({ title: c.name, text, url }); return; }
@@ -603,7 +603,7 @@ export function CotationPage() {
                 return (
                   <button
                     key={i}
-                    onClick={() => { if (e.label === "CSV") exportCSV(filtered); else toast.info(`Export ${e.label} bientôt disponible — utilisez CSV pour l'instant`); }}
+                    onClick={() => { if (e.label === "CSV") exportCSV(filtered); else toast.info(`Export ${e.label} bientôt disponible - utilisez CSV pour l'instant`); }}
                     className="flex-1 py-2.5 rounded-xl bg-white border border-border flex items-center justify-center gap-1.5"
                     style={{ fontSize: 12, fontWeight: 700, color: P }}
                   >
@@ -1110,7 +1110,7 @@ export function CotationPage() {
                 ].map((item, i) => (
                   <button
                     key={i}
-                    onClick={() => toast.info(`${item} — réservé aux administrateurs IPPOO`)}
+                    onClick={() => toast.info(`${item} - réservé aux administrateurs IPPOO`)}
                     className="py-2 rounded-lg bg-white/10 text-white/90 text-center"
                     style={{ fontSize: 11, fontWeight: 600 }}
                   >

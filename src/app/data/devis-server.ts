@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Devis (RFQ) cross-utilisateurs
+   IPPOO - Devis (RFQ) cross-utilisateurs
    Wrapper REST sur les endpoints `/devis*` du serveur Supabase.
    Deux listes côté client : `mine` (acheteur) et `inbox` (vendeur ciblé).
    Cache localStorage scopé par compte + listeners pour rafraîchir l'UI.

@@ -109,7 +109,7 @@ const profileTypes: ProfileType[] = [
     ],
     categories: ["Vivrier", "Alimentaire"],
     featuredMembers: [
-      { id: 1, name: "AgroNord Bénin", avatar: IMAGES.vegetables, specialty: "Céréales & Vivrier", location: "Parakou", rating: 4.7, badge: "TOP", products: 45, orders: 890 },
+      { id: 1, name: "AagroNord Bénin", avatar: IMAGES.vegetables, specialty: "Céréales & Vivrier", location: "Parakou", rating: 4.7, badge: "TOP", products: 45, orders: 890 },
       { id: 2, name: "Coop Vivrier Borgou", avatar: IMAGES.tubers, specialty: "Igname & Manioc", location: "Borgou", rating: 4.6, badge: "VERIFIE", products: 28, orders: 560 },
       { id: 3, name: "Soja Gold Bénin", avatar: IMAGES.vegetables, specialty: "Soja & Oléagineux", location: "Cotonou", rating: 4.5, badge: "VIP", products: 32, orders: 720 },
     ],

@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Admin serveur (Edge Function)
+   IPPOO - Admin serveur (Edge Function)
    Endpoints réservés aux emails listés dans IPPOO_ADMIN_EMAILS.
    ═══════════════════════════════════════════ */
 
@@ -226,6 +226,24 @@ export async function listAdminPlans(): Promise<AdminPlan[]> {
 export async function upsertAdminPlan(p: Partial<AdminPlan> & { id: string; priceMonthly: number }): Promise<AdminPlan> {
   const j = await apiFetch<{ plan: AdminPlan }>("/admin/subscriptions/upsert-plan", { method: "POST", body: p });
   return j.plan;
+}
+
+/* ── Abonnés actifs ── */
+export type AdminSubscription = {
+  userId: string;
+  userEmail: string | null;
+  planId: string;
+  label?: string;
+  price: number;
+  startedAt: number;
+  expiresAt: number;
+  autoRenew?: boolean;
+  updatedAt?: number;
+};
+
+export async function listAdminSubscriptions(): Promise<AdminSubscription[]> {
+  const j = await apiFetch<{ items: AdminSubscription[] }>("/admin/subscriptions");
+  return j.items ?? [];
 }
 
 /* ── Reviews ── */

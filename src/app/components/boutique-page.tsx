@@ -360,14 +360,14 @@ export function BoutiquePage() {
           {/* Fade vers le bas pour lisibilité */}
           <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white/95 to-transparent" />
 
-          {/* Badge vérifiée — top right */}
+          {/* Badge vérifiée - top right */}
           {shop.verified && (
             <div className="absolute top-4 right-4 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur shadow-sm">
               <ShieldCheck className="w-3.5 h-3.5 text-[#16A34A]" />
               <span style={{ fontSize: 10, fontWeight: 800, color: "#16A34A", letterSpacing: 0.5 }}>VÉRIFIÉE</span>
             </div>
           )}
-          {/* Chip niche — top left */}
+          {/* Chip niche - top left */}
           <div className="absolute top-4 left-4 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/35 backdrop-blur text-white">
             <CategoryIcon name={niche?.icon} className="w-3.5 h-3.5" strokeWidth={2.2} />
             <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: 0.5 }}>
@@ -396,7 +396,7 @@ export function BoutiquePage() {
           )}
         </div>
 
-        {/* Bloc identité — chevauche la bannière proprement */}
+        {/* Bloc identité - chevauche la bannière proprement */}
         <div className="relative px-4 max-w-5xl mx-auto">
           <div className="-mt-12 sm:-mt-14 flex items-end gap-3 sm:gap-4">
             {/* Logo circulaire avec halo blanc */}

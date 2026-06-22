@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — AnimatedNumber
+   IPPOO - AnimatedNumber
    Compte-rebours animé (easeOutCubic) de 0 vers `value`.
    Respecte prefers-reduced-motion. Reformate via Intl
    ou prefix/suffix (« FCFA », « % », « ★ »…).

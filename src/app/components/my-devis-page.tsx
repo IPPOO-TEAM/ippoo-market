@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Vendeur · Devis reçus (RFQ inbox)
+   IPPOO - Vendeur · Devis reçus (RFQ inbox)
    Liste les demandes envoyées au vendeur courant et permet d'y répondre.
    ═══════════════════════════════════════════ */
 
@@ -147,7 +147,7 @@ function RespondModal({ devis, onClose }: { devis: Devis; onClose: () => void })
                       className="text-sm bg-gray-50 rounded-xl px-2 py-2 outline-none"
                     />
                     <div className="text-sm text-right pr-1 self-center text-gray-700">
-                      {sub > 0 ? `${formatPrice(sub)} FCFA` : "—"}
+                      {sub > 0 ? `${formatPrice(sub)} FCFA` : "-"}
                     </div>
                   </div>
                 </div>

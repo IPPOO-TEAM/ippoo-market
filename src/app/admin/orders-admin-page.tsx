@@ -136,7 +136,7 @@ export function AdminOrdersPage() {
                 <tr key={o.id} className="hover:bg-muted/40">
                   <Td><span style={{ fontFamily: "ui-monospace, monospace", fontWeight: 600 }}>{o.id}</span></Td>
                   <Td className="text-muted-foreground">{fmtDate(o.createdAt)}</Td>
-                  <Td>{o.shippingAddress?.name || "—"}</Td>
+                  <Td>{o.shippingAddress?.name || "-"}</Td>
                   <Td className="text-muted-foreground">{o.items.length} ligne(s)</Td>
                   <Td><strong>{formatPrice(o.total)}</strong> FCFA</Td>
                   <Td className="capitalize text-muted-foreground">{o.paymentMethod}</Td>

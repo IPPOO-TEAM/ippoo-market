@@ -75,7 +75,7 @@ export async function refreshPayouts(): Promise<void> {
     state = items.map(fromServer);
     emit();
   } catch {
-    /* ignore — keep cache */
+    /* ignore - keep cache */
   }
 }
 

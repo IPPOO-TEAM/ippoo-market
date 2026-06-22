@@ -260,17 +260,17 @@ export const marketsData: MarketDay[] = [
     categories: ["Maïs", "Igname", "Manioc", "Haricot", "Mil", "Sorgho", "Arachide", "Soja", "Noix de palme", "Karité"],
     highlights: ["Prix producteur garanti", "Céréales récoltées 2026", "Transport groupé disponible"],
     vendors: [
-      { id: 11, name: "AgroNord Bénin", avatar: IMAGES.businessman, category: "Céréales & Grains", rating: 4.7, badge: "TOP", specialOffer: "Maïs 50kg : 6 800 FCFA" },
+      { id: 11, name: "AagroNord Bénin", avatar: IMAGES.businessman, category: "Céréales & Grains", rating: 4.7, badge: "TOP", specialOffer: "Maïs 50kg : 6 800 FCFA" },
       { id: 14, name: "Coop Vivrier Borgou", avatar: IMAGES.entrepreneur, category: "Igname & Tubercules", rating: 4.6, badge: "VIP", specialOffer: "Igname pilée : -20%" },
       { id: 15, name: "Karité Gold", avatar: IMAGES.market, category: "Oléagineux", rating: 4.5, badge: "VERIFIE", specialOffer: "Beurre karité : lot -25%" },
       { id: 16, name: "Haricot Express", avatar: IMAGES.entrepreneur, category: "Légumineuses", rating: 4.4, badge: "VERIFIE", specialOffer: "Haricot 100kg : prix cassé" },
     ],
     products: [
-      { id: 7, name: "Maïs séché 50kg, Récolte 2026", image: MARKET_IMAGES.guema_cereals, price: 6800, originalPrice: 8500, discount: 20, moq: 20, unit: "sacs", seller: "AgroNord Bénin", rating: 4.7, stock: 300 },
+      { id: 7, name: "Maïs séché 50kg, Récolte 2026", image: MARKET_IMAGES.guema_cereals, price: 6800, originalPrice: 8500, discount: 20, moq: 20, unit: "sacs", seller: "AagroNord Bénin", rating: 4.7, stock: 300 },
       { id: 44, name: "Igname pilée, Sac 25kg", image: IMAGES.vegetables, price: 12000, originalPrice: 15000, discount: 20, moq: 10, unit: "sacs", seller: "Coop Vivrier Borgou", rating: 4.6, stock: 150 },
       { id: 46, name: "Haricots rouges 25kg", image: MARKET_IMAGES.guema_cereals, price: 45000, originalPrice: 58000, discount: 22, moq: 5, unit: "sacs", seller: "Haricot Express", rating: 4.4, stock: 80 },
       { id: 25, name: "Beurre de karité brut 10kg", image: MARKET_IMAGES.tropical_fruits, price: 28000, originalPrice: 35000, discount: 20, moq: 3, unit: "bidons", seller: "Karité Gold", rating: 4.5, stock: 40 },
-      { id: 47, name: "Arachide décortiquée 50kg", image: MARKET_IMAGES.guema_cereals, price: 7500, originalPrice: 9500, discount: 21, moq: 15, unit: "sacs", seller: "AgroNord Bénin", rating: 4.7, stock: 200 },
+      { id: 47, name: "Arachide décortiquée 50kg", image: MARKET_IMAGES.guema_cereals, price: 7500, originalPrice: 9500, discount: 21, moq: 15, unit: "sacs", seller: "AagroNord Bénin", rating: 4.7, stock: 200 },
       { id: 45, name: "Gari (manioc séché) 50kg", image: IMAGES.grocery, price: 5500, originalPrice: 7000, discount: 21, moq: 20, unit: "sacs", seller: "Coop Vivrier Borgou", rating: 4.6, stock: 250 },
     ],
     schedule: [

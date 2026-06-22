@@ -30,7 +30,7 @@ export type MemberCardData = {
   bioEnabled?: boolean;
   /** Statut de l'abonnement VIP courant. */
   subscriptionStatus?: "active" | "expired" | "none";
-  /** Date d'expiration brute (ms) — pour libellé long sous la carte. */
+  /** Date d'expiration brute (ms) - pour libellé long sous la carte. */
   subscriptionExpiresAt?: number;
 };
 
@@ -261,7 +261,7 @@ export function MemberCard({ data, onRegenerate, onEnrolBiometric }: Props) {
                   {initials}
                 </span>
 
-                {/* Row 1 — Logo + sous-titre + pill */}
+                {/* Row 1 - Logo + sous-titre + pill */}
                 <div className="relative flex items-center justify-between" style={{ gap: "3cqw" }}>
                   <div className="flex items-center" style={{ gap: "3cqw" }}>
                     <img
@@ -320,7 +320,7 @@ export function MemberCard({ data, onRegenerate, onEnrolBiometric }: Props) {
                   </span>
                 </div>
 
-                {/* Row 2 — Chip + contactless */}
+                {/* Row 2 - Chip + contactless */}
                 <div className="relative flex items-center" style={{ gap: "2.8cqw" }}>
                   <div
                     style={{
@@ -359,7 +359,7 @@ export function MemberCard({ data, onRegenerate, onEnrolBiometric }: Props) {
                   </svg>
                 </div>
 
-                {/* Row 3 — MEMBER ID */}
+                {/* Row 3 - MEMBER ID */}
                 <div className="relative flex flex-col justify-center" style={{ gap: "1cqw" }}>
                   <p style={{ fontFamily: "Poppins", fontSize: "2cqw", opacity: 0.85, letterSpacing: "0.42cqw", lineHeight: 1, fontWeight: 700 }}>
                     MEMBER ID
@@ -379,7 +379,7 @@ export function MemberCard({ data, onRegenerate, onEnrolBiometric }: Props) {
                   </p>
                 </div>
 
-                {/* Row 4 — Titulaire + Expire */}
+                {/* Row 4 - Titulaire + Expire */}
                 <div className="relative flex items-end justify-between" style={{ gap: "2.5cqw" }}>
                   <div className="min-w-0 flex-1">
                     <p style={{ fontFamily: "Poppins", fontSize: "2cqw", opacity: 0.85, letterSpacing: "0.42cqw", lineHeight: 1, fontWeight: 700 }}>
@@ -399,7 +399,7 @@ export function MemberCard({ data, onRegenerate, onEnrolBiometric }: Props) {
                         whiteSpace: "nowrap",
                       }}
                     >
-                      {data.fullName || "—"}
+                      {data.fullName || "-"}
                     </p>
                     {data.organization && (
                       <p
@@ -435,7 +435,7 @@ export function MemberCard({ data, onRegenerate, onEnrolBiometric }: Props) {
                         color: subStatus === "expired" ? "#FCA5A5" : "white",
                       }}
                     >
-                      {data.expiresOn || "—/—"}
+                      {data.expiresOn || "-/-"}
                     </p>
                     {daysLeft !== null && subStatus === "active" && daysLeft <= 30 && (
                       <p
@@ -472,7 +472,7 @@ export function MemberCard({ data, onRegenerate, onEnrolBiometric }: Props) {
                   gridTemplateRows: "auto auto 1fr auto auto",
                 }}
               >
-                {/* Pattern d'ondes horizontales — identique au recto */}
+                {/* Pattern d'ondes horizontales - identique au recto */}
                 <svg
                   aria-hidden
                   className="absolute inset-0 pointer-events-none"
@@ -494,7 +494,7 @@ export function MemberCard({ data, onRegenerate, onEnrolBiometric }: Props) {
                   <rect width="100%" height="100%" fill="url(#ippoo-waves-verso)" />
                 </svg>
 
-                {/* Watermark initials — identique au recto */}
+                {/* Watermark initials - identique au recto */}
                 <span
                   aria-hidden
                   className="absolute pointer-events-none"

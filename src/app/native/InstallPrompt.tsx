@@ -32,14 +32,14 @@ export function InstallPrompt() {
 
     const platform = detectPlatform();
 
-    // iOS Safari — no beforeinstallprompt, show manual hint
+    // iOS Safari - no beforeinstallprompt, show manual hint
     if (platform === "ios") {
       if (recentlyDismissed()) return;
       const t = window.setTimeout(() => { setIosHint(true); setOpen(true); }, 4000);
       return () => window.clearTimeout(t);
     }
 
-    // Chrome / Edge / Android — capture the prompt event
+    // Chrome / Edge / Android - capture the prompt event
     const onBIP = (e: Event) => {
       e.preventDefault();
       if (recentlyDismissed()) return;

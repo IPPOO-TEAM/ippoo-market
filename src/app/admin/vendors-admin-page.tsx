@@ -173,20 +173,20 @@ export function AdminVendorsPage() {
                     <Td>
                       <div className="flex items-center gap-2 min-w-0">
                         <Store className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
-                        <span className="truncate"><strong>{v.name || "—"}</strong></span>
+                        <span className="truncate"><strong>{v.name || "-"}</strong></span>
                       </div>
                       <div className="text-muted-foreground truncate" style={{ fontSize: 11 }}>
                         {v.email || v.ownerId}
                       </div>
                     </Td>
-                    <Td className="text-muted-foreground">{v.niche || "—"}</Td>
+                    <Td className="text-muted-foreground">{v.niche || "-"}</Td>
                     <Td className="text-muted-foreground">
                       <span className="inline-flex items-center gap-1">
-                        <MapPin className="w-3 h-3" />{v.city || "—"}
+                        <MapPin className="w-3 h-3" />{v.city || "-"}
                       </span>
                     </Td>
                     <Td className="text-muted-foreground">
-                      {v.createdAt ? fmtRelative(v.createdAt) : "—"}
+                      {v.createdAt ? fmtRelative(v.createdAt) : "-"}
                     </Td>
                     <Td>
                       {v.suspended

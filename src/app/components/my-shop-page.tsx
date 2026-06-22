@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Tableau de bord vendeur
+   IPPOO - Tableau de bord vendeur
    Vue d'ensemble de la boutique : KPIs, commandes
    récentes, raccourcis, aperçu public.
    ═══════════════════════════════════════════ */
@@ -69,18 +69,26 @@ import { formatPrice } from "./mock-data";
 
 const fcfa = (n: number) => `${formatPrice(n)} FCFA`;
 
-function statusLabel(s: OrderRecord["status"]): string {
-  return { pending: "En attente", shipped: "Expédiée", completed: "Livrée", cancelled: "Annulée" }[s];
-}
-
-function statusTone(s: OrderRecord["status"]): string {
-  return {
-    pending: "#F59E0B",
-    shipped: "#3B82F6",
-    completed: "#16A34A",
-    cancelled: "#9CA3AF",
-  }[s];
-}
+const STATUS_LABEL: Record<OrderRecord["status"], string> = {
+  pending: "En attente",
+  preparation: "En préparation",
+  expedition: "Expédiée",
+  livree: "Livrée",
+  cloturee: "Clôturée",
+  litige: "Litige",
+  annulee: "Annulée",
+};
+const STATUS_TONE: Record<OrderRecord["status"], string> = {
+  pending: "#F0B429",
+  preparation: "#F59E0B",
+  expedition: "#3B82F6",
+  livree: "#16A34A",
+  cloturee: "#6B7280",
+  litige: "#E11D2E",
+  annulee: "#9CA3AF",
+};
+function statusLabel(s: OrderRecord["status"]): string { return STATUS_LABEL[s] ?? s; }
+function statusTone(s: OrderRecord["status"]): string { return STATUS_TONE[s] ?? "#9CA3AF"; }
 
 export function MyShopPage() {
   const profile = useSyncExternalStore(subscribe, getUserProfile, () => SERVER_SNAPSHOT);
@@ -221,7 +229,7 @@ export function MyShopPage() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-5 pb-32 lg:pb-8">
-      {/* En-tête boutique — design moderne avec halo et glass */}
+      {/* En-tête boutique - design moderne avec halo et glass */}
       <div
         className="rounded-3xl p-5 mb-5 relative overflow-hidden"
         style={{
@@ -432,7 +440,7 @@ export function MyShopPage() {
         />
       )}
 
-      {/* KPIs — design moderne avec accent latéral */}
+      {/* KPIs - design moderne avec accent latéral */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
         {kpis.map((k) => {
           const Icon = k.icon;
@@ -464,7 +472,7 @@ export function MyShopPage() {
         })}
       </div>
 
-      {/* Onboarding — masqué quand tout est complété */}
+      {/* Onboarding - masqué quand tout est complété */}
       {progress < 100 && (
         <div className="bg-white rounded-2xl border border-border p-4 mb-5">
           <div className="flex items-center justify-between mb-3">

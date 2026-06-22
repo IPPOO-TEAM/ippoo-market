@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Wallet serveur (Edge Function)
+   IPPOO - Wallet serveur (Edge Function)
    Récupère le solde et l'historique de transactions depuis la
    source de vérité côté serveur. Le store local /payments reste
    utilisé pour l'UI offline / fallback.

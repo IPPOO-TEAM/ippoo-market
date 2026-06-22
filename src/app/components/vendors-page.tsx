@@ -483,7 +483,7 @@ export function VendorsPage() {
 
   return (
     <div className="pb-24">
-      {/* ─── Hero Section — Alibaba "Suppliers" premium ─── */}
+      {/* ─── Hero Section - Alibaba "Suppliers" premium ─── */}
       <div className="relative" style={{ background: "#F8FAFC", borderBottom: "1px solid #E5E7EB" }}>
         {/* Bandeau sombre avec halos lumineux + pattern grille subtil */}
         <div
@@ -637,7 +637,7 @@ export function VendorsPage() {
           </div>
         </div>
 
-        {/* Bandeau stats premium — chevauche la bordure sombre/claire */}
+        {/* Bandeau stats premium - chevauche la bordure sombre/claire */}
         <div className="max-w-7xl mx-auto px-4 -mt-4 relative z-20">
           <div
             className="grid grid-cols-2 sm:grid-cols-4 gap-0 rounded-xl overflow-hidden bg-white"

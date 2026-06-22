@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   IPPOO — Hook wallet serveur
+   IPPOO - Hook wallet serveur
    Charge le solde + transactions depuis l'Edge Function et
    se ré-synchronise sur changement de session.
    ═══════════════════════════════════════════ */
