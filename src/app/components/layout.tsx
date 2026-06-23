@@ -49,7 +49,8 @@ import { productUid } from "../lib/product-uid";
 import { PullToRefresh } from "../native/PullToRefresh";
 import { RefreshProvider, useRefreshContext } from "../native/RefreshContext";
 import ippooLogo from "../../imports/ippo_market.png";
-const ippooOldLogo = ippooLogo;
+import ippooHeaderLogo from "../../imports/market_fav.jpg";
+const ippooOldLogo = ippooHeaderLogo;
 
 const navItems = [
   { path: "/", icon: Home, label: "Accueil" },
@@ -356,11 +357,11 @@ function LayoutInner() {
         <div className="max-w-7xl mx-auto px-3 sm:px-4 py-2 sm:py-3 flex items-center gap-2 sm:gap-3">
           {/* Logo */}
           <button onClick={() => navigate("/")} aria-label="Retour à l'accueil" className="flex items-center gap-1 shrink-0">
-            <img src={ippooOldLogo} alt="IPPOO Market" className="h-9 sm:h-10 w-auto object-contain" />
+            <img src={ippooOldLogo} alt="IPPOO Market" className="h-7 sm:h-10 w-auto object-contain" />
           </button>
 
           {/* Search bar with scan */}
-          <div className="flex-1 relative">
+          <div className="hidden sm:block flex-1 relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <input
               type="text"

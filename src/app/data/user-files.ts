@@ -1,13 +1,13 @@
 import { logger } from "../lib/logger";
+import { FUNCTIONS_BASE } from "../lib/runtime-config";
 /* ═══════════════════════════════════════════
    IPPOO - Fichiers utilisateur (avatar, KYC, etc.)
    Owner-based : la propriété est l'utilisateur Supabase authentifié.
    ═══════════════════════════════════════════ */
 
-import { projectId } from "/utils/supabase/info";
 import { getAccessToken } from "../auth/supabase";
 
-const BASE = `https://${projectId}.supabase.co/functions/v1/make-server-cc347259`;
+const BASE = FUNCTIONS_BASE;
 
 export type UserFileKind =
   | "avatar"

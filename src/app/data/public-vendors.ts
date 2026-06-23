@@ -1,4 +1,5 @@
 import { logger } from "../lib/logger";
+import { FUNCTIONS_BASE, SUPABASE_ANON_KEY } from "../lib/runtime-config";
 /* ═══════════════════════════════════════════
    IPPOO - Annuaire public des vendeurs
    Store léger (cache localStorage + abonnés) qui interroge
@@ -7,12 +8,11 @@ import { logger } from "../lib/logger";
    mettre à jour depuis n'importe quel appareil.
    ═══════════════════════════════════════════ */
 
-import { projectId, publicAnonKey } from "/utils/supabase/info";
 import { getAccessToken } from "../auth/supabase";
 import { safeGetItem, safeSetItem } from "../lib/safe-storage";
 import { isBackendOffline, isNetworkError, markBackendOffline } from "../lib/backend-health";
 
-const BASE = `https://${projectId}.supabase.co/functions/v1/make-server-cc347259`;
+const BASE = FUNCTIONS_BASE;
 const CACHE_KEY = "ippoo:public-vendors:v1";
 const REFRESH_MS = 60_000;
 
@@ -80,7 +80,7 @@ export async function refreshPublicVendors(force = false): Promise<PublicVendor[
   inflight = (async () => {
     try {
       const res = await fetch(`${BASE}/vendors/public`, {
-        headers: { Authorization: `Bearer ${publicAnonKey}` },
+        headers: { Authorization: `Bearer ${SUPABASE_ANON_KEY}` },
       });
       if (!res.ok) {
         logger.warn(`vendors/public GET failed: HTTP ${res.status}`);

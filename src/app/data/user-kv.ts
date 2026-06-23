@@ -1,13 +1,13 @@
 import { logger } from "../lib/logger";
+import { FUNCTIONS_BASE } from "../lib/runtime-config";
 /* ═══════════════════════════════════════════
    IPPOO - User KV : collections JSON owner-based
    (adresses, équipe, préférences) synchronisées multi-appareils.
    ═══════════════════════════════════════════ */
 
-import { projectId } from "/utils/supabase/info";
 import { getAccessToken } from "../auth/supabase";
 
-const BASE = `https://${projectId}.supabase.co/functions/v1/make-server-cc347259`;
+const BASE = FUNCTIONS_BASE;
 
 export type UserKvKey = "addresses" | "team" | "preferences" | "security" | "follows" | "my-shops" | "my-promos";
 

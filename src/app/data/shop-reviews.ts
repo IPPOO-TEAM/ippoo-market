@@ -9,12 +9,12 @@
    ═══════════════════════════════════════════ */
 
 import { safeGetItem, safeSetItem } from "../lib/safe-storage";
-import { projectId, publicAnonKey } from "/utils/supabase/info";
+import { FUNCTIONS_BASE, SUPABASE_ANON_KEY } from "../lib/runtime-config";
 import { getAccessToken } from "../auth/supabase";
 import { logger } from "../lib/logger";
 import { isBackendOffline, isNetworkError, markBackendOffline } from "../lib/backend-health";
 
-const BASE = `https://${projectId}.supabase.co/functions/v1/make-server-cc347259`;
+const BASE = FUNCTIONS_BASE;
 
 export type ReviewStatus = "pending" | "approved" | "rejected";
 
@@ -68,7 +68,7 @@ export async function refreshShopReviews(force = false): Promise<void> {
     try {
       const token = await getAccessToken().catch(() => null);
       const res = await fetch(`${BASE}/shop-reviews`, {
-        headers: { Authorization: `Bearer ${token || publicAnonKey}` },
+        headers: { Authorization: `Bearer ${token || SUPABASE_ANON_KEY}` },
       });
       if (!res.ok) {
         logger.warn(`shop-reviews GET failed: HTTP ${res.status}`);

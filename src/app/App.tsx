@@ -17,7 +17,7 @@ import { seedWelcomePopups } from "./notifications/popups";
 import { installNotificationSoundBridge } from "./notifications/sound";
 import { PromoPopupHost } from "./components/promo-popup-host";
 import { SplashScreen, useSplashScreen } from "./components/splash-screen";
-import ippooLogoUrl from "../imports/ippo_market.png";
+import ippooLogoUrl from "../imports/MARKET.png";
 
 export default function App() {
   const { showSplash, handleComplete } = useSplashScreen();

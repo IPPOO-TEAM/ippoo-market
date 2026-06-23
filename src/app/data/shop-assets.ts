@@ -1,4 +1,5 @@
 import { logger } from "../lib/logger";
+import { FUNCTIONS_BASE, SUPABASE_ANON_KEY } from "../lib/runtime-config";
 /* ═══════════════════════════════════════════
    IPPOO - Branding boutique (Supabase Storage)
    - Upload logo/bannière en JPEG compressé vers le serveur
@@ -6,12 +7,11 @@ import { logger } from "../lib/logger";
    - Récupération via URL signées (1h), cache local en complément
    ═══════════════════════════════════════════ */
 
-import { projectId, publicAnonKey } from "/utils/supabase/info";
 import { getAccessToken } from "../auth/supabase";
 import { safeGetItem, safeSetItem } from "../lib/safe-storage";
 
 const CACHE_KEY = "ippoo:shop-assets-cache";
-const BASE = `https://${projectId}.supabase.co/functions/v1/make-server-cc347259`;
+const BASE = FUNCTIONS_BASE;
 
 export type ShopAssets = {
   logo?: string;   // URL signée ou data URL fallback
@@ -65,7 +65,7 @@ export async function refreshShopAssets(key: string): Promise<ShopAssets> {
   if (cached?.fetchedAt && Date.now() - cached.fetchedAt < SIGNED_TTL_MS) return cached;
   try {
     const res = await fetch(`${BASE}/shop-assets/${k}`, {
-      headers: { Authorization: `Bearer ${publicAnonKey}` },
+      headers: { Authorization: `Bearer ${SUPABASE_ANON_KEY}` },
     });
     if (!res.ok) {
       logger.warn(`refreshShopAssets failed (${res.status}) for key=${k}`);

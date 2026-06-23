@@ -6,14 +6,14 @@
    un autre membre de la plateforme.
    ═══════════════════════════════════════════ */
 
-import { projectId, publicAnonKey } from "/utils/supabase/info";
 import { getAccessToken } from "../auth/supabase";
+import { FUNCTIONS_BASE, SUPABASE_ANON_KEY } from "../lib/runtime-config";
 import { safeGetItem, safeSetItem } from "../lib/safe-storage";
 import { logger } from "../lib/logger";
 import { isBackendOffline, isNetworkError, markBackendOffline } from "../lib/backend-health";
 import type { Group } from "../groups/store";
 
-const BASE = `https://${projectId}.supabase.co/functions/v1/make-server-cc347259`;
+const BASE = FUNCTIONS_BASE;
 const CACHE_KEY = "ippoo:public-groups:v1";
 const REFRESH_MS = 30_000;
 
@@ -67,7 +67,7 @@ export async function refreshPublicGroups(force = false): Promise<Group[]> {
   inflight = (async () => {
     try {
       const res = await fetch(`${BASE}/groups/public`, {
-        headers: { Authorization: `Bearer ${publicAnonKey}` },
+        headers: { Authorization: `Bearer ${SUPABASE_ANON_KEY}` },
       });
       if (!res.ok) {
         logger.warn(`groups/public GET failed: HTTP ${res.status}`);

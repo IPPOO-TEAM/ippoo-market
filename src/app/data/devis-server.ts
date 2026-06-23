@@ -5,12 +5,12 @@
    Cache localStorage scopé par compte + listeners pour rafraîchir l'UI.
    ═══════════════════════════════════════════ */
 
-import { projectId } from "/utils/supabase/info";
 import { getAccessToken } from "../auth/supabase";
+import { FUNCTIONS_BASE } from "../lib/runtime-config";
 import { scopedGetJSON, scopedSetJSON } from "../lib/scoped-storage";
 import { logger } from "../lib/logger";
 
-const BASE = `https://${projectId}.supabase.co/functions/v1/make-server-cc347259`;
+const BASE = FUNCTIONS_BASE;
 const MINE_KEY = "ippoo:devis:mine:v1";
 const INBOX_KEY = "ippoo:devis:inbox:v1";
 

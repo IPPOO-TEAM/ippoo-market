@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import { useUserProfile } from "../auth/useUserProfile";
 import { fileToCompressedDataUrl, uploadShopAsset, slugifyShopName } from "../data/shop-assets";
 import { getSupabase, getAccessToken } from "../auth/supabase";
-import { projectId, publicAnonKey } from "/utils/supabase/info";
+import { FUNCTIONS_BASE, SUPABASE_ANON_KEY } from "../lib/runtime-config";
 import { useNavigate } from "react-router";
 import { saveUserProfile, getUserProfile } from "../auth/user-profile";
 import { publishMyVendor } from "../data/public-vendors";
@@ -152,9 +152,9 @@ function RegistrationModal({ onClose, onSuccess }: { onClose: () => void; onSucc
     setSubmitting(true);
     try {
       // 1) Création du compte côté serveur (email auto-confirmé)
-      const signupRes = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-cc347259/signup`, {
+      const signupRes = await fetch(`${FUNCTIONS_BASE}/signup`, {
         method: "POST",
-        headers: { "Content-Type": "application/json; charset=utf-8", Authorization: `Bearer ${publicAnonKey}` },
+        headers: { "Content-Type": "application/json; charset=utf-8", Authorization: `Bearer ${SUPABASE_ANON_KEY}` },
         body: JSON.stringify({ email, password, name: fullName }),
       });
       if (!signupRes.ok) {

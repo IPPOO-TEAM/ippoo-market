@@ -4,11 +4,11 @@
    timeout, parsing d'erreur uniforme.
    ═══════════════════════════════════════════ */
 
-import { projectId } from "/utils/supabase/info";
 import { getAccessToken } from "../auth/supabase";
 import { isBackendOffline, isNetworkError, markBackendOffline } from "../lib/backend-health";
+import { FUNCTIONS_BASE } from "../lib/runtime-config";
 
-export const API_BASE = `https://${projectId}.supabase.co/functions/v1/make-server-cc347259`;
+export const API_BASE = FUNCTIONS_BASE;
 
 export class ApiError extends Error {
   status: number;

@@ -4,12 +4,12 @@ import { logger } from "../lib/logger";
    ═══════════════════════════════════════════ */
 
 import { createClient, type SupabaseClient, type Session } from "@supabase/supabase-js";
-import { projectId, publicAnonKey } from "/utils/supabase/info";
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from "../lib/runtime-config";
 
 let client: SupabaseClient | null = null;
 export function getSupabase(): SupabaseClient {
   if (!client) {
-    client = createClient(`https://${projectId}.supabase.co`, publicAnonKey, {
+    client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
       auth: { persistSession: true, autoRefreshToken: true, storage: localStorage },
     });
   }

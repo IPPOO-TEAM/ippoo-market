@@ -6,10 +6,10 @@
    échoue proprement sans bloquer l'UX.
    ═══════════════════════════════════════════ */
 
-import { projectId, publicAnonKey } from "/utils/supabase/info";
 import { isBackendOffline, isNetworkError, markBackendOffline } from "../lib/backend-health";
+import { FUNCTIONS_BASE, SUPABASE_ANON_KEY } from "../lib/runtime-config";
 
-const BASE = `https://${projectId}.supabase.co/functions/v1/make-server-cc347259`;
+const BASE = FUNCTIONS_BASE;
 
 async function post(path: string, body: Record<string, unknown>): Promise<{ ok: boolean; error?: string }> {
   if (isBackendOffline()) return { ok: false, error: "Service indisponible" };
@@ -18,7 +18,7 @@ async function post(path: string, body: Record<string, unknown>): Promise<{ ok: 
       method: "POST",
       headers: {
         "Content-Type": "application/json; charset=utf-8",
-        Authorization: `Bearer ${publicAnonKey}`,
+        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
       },
       body: JSON.stringify(body),
     });

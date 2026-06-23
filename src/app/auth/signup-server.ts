@@ -4,10 +4,10 @@
    pour contourner la confirmation par email, puis ouvre la session.
    ═══════════════════════════════════════════ */
 
-import { projectId, publicAnonKey } from "/utils/supabase/info";
 import { getSupabase } from "./supabase";
+import { FUNCTIONS_BASE, SUPABASE_ANON_KEY } from "../lib/runtime-config";
 
-const BASE = `https://${projectId}.supabase.co/functions/v1/make-server-cc347259`;
+const BASE = FUNCTIONS_BASE;
 
 export type SignupServerResult =
   | { ok: true; userId?: string }
@@ -24,7 +24,7 @@ export async function signupViaServer(input: {
       method: "POST",
       headers: {
         "Content-Type": "application/json; charset=utf-8",
-        Authorization: `Bearer ${publicAnonKey}`,
+        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
       },
       body: JSON.stringify({
         email: input.email,
