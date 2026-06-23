@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { X, Download, Share, Plus } from "lucide-react";
-import ippooLogo from "../../imports/ippo_market.png";
+import { motion, AnimatePresence } from "motion/react";
+import ippooLogo from "../../imports/MARKET.png";
 import { safeGetItem, safeSetItem, safeRemoveItem } from "../lib/safe-storage";
 
 type BeforeInstallPromptEvent = Event & {
@@ -11,7 +12,7 @@ type BeforeInstallPromptEvent = Event & {
 
 const DISMISS_KEY = "ippoo:pwa-install-dismissed";
 const DISMISS_TTL_MS = 3 * 24 * 60 * 60 * 1000;
-const SHOW_AFTER_MS = 1500;
+const SHOW_AFTER_MS = 4000;
 
 let deferredEvent: BeforeInstallPromptEvent | null = null;
 const openListeners = new Set<() => void>();
@@ -108,12 +109,19 @@ export function PWAInstallPrompt() {
     }
   };
 
-  if (!open || standalone) return null;
-
   const canAutoInstall = !!deferredEvent && !ios;
 
   return (
-    <div className="fixed inset-x-3 bottom-3 sm:left-auto sm:right-4 sm:bottom-4 sm:w-[380px] z-[80]">
+    <AnimatePresence>
+      {open && !standalone && (
+        <motion.div
+          key="pwa-install"
+          initial={{ opacity: 0, y: 80, scale: 0.96 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 40, scale: 0.96 }}
+          transition={{ type: "spring", stiffness: 380, damping: 30 }}
+          className="fixed inset-x-3 bottom-[calc(70px+env(safe-area-inset-bottom))] sm:left-auto sm:right-4 sm:bottom-4 sm:w-[380px] z-[80]"
+        >
       <div className="bg-white rounded-2xl border border-border shadow-2xl overflow-hidden">
         <div className="flex items-start gap-3 p-4">
           <div className="w-12 h-12 shrink-0 rounded-xl bg-white border border-border overflow-hidden flex items-center justify-center">
@@ -176,7 +184,7 @@ export function PWAInstallPrompt() {
             <button
               onClick={install}
               disabled={installing}
-              className="flex-1 py-2.5 rounded-xl bg-[#FF6A00] text-white flex items-center justify-center gap-1.5 disabled:opacity-60"
+              className="flex-1 py-2.5 rounded-xl bg-[#E11D2E] text-white flex items-center justify-center gap-1.5 disabled:opacity-60"
               style={{ fontFamily: "Poppins", fontWeight: 700, fontSize: 13 }}
             >
               <Download className="w-4 h-4" />
@@ -209,6 +217,8 @@ export function PWAInstallPrompt() {
           </div>
         )}
       </div>
-    </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
