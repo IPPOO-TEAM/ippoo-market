@@ -1,0 +1,167 @@
+-- emplacement "table relationnelle"
+select count(*) as table_count from public.public_products;
+
+-- emplacement "KV"
+select key from public.kv_store_cc347259 where key like 'products:public:%';
+--: command not found
+-bash: syntax error near unexpected token `('
+--: command not found
+-bash: syntax error near unexpected token `from'
+root@ubuntu24:~# docker logs -f $(docker ps --format '{{.Names}}' | grep -iE 'function|edge') 2>&1 | grep -iE "upsert|public_products|select error|error"
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] user-files GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] user-kv GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] user-kv GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] user-kv GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] user-kv GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] user-kv GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] user-kv GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] user-kv GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] user-files GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] user-kv GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Error] Error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] public_products upsert error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
+[Info] shop_reviews select error: Could not query the database for the schema cache. Retrying.
+[Info] public_vendors select error: Could not query the database for the schema cache. Retrying.
+[Info] public_products select error: Could not query the database for the schema cache. Retrying.
+[Info] groups/public GET error: Error: Could not query the database for the schema cache. Retrying.
