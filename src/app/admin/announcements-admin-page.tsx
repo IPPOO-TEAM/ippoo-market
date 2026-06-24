@@ -1,12 +1,13 @@
 /* Admin · Announcements / Broadcast.
    Create platform-wide banners (audience + schedule) shown across the app. */
 
-import { useMemo, useState, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { Megaphone, Plus, Trash2, Power, Calendar } from "lucide-react";
 import { toast } from "sonner";
 import {
   subscribeOps, getOpsSnapshot,
   listAnnouncements, createAnnouncement, updateAnnouncement, deleteAnnouncement,
+  hydrateAnnouncements,
   type Announcement, type AnnouncementLevel, type AnnouncementAudience,
 } from "./admin-ops-store";
 import { logAudit } from "./audit";
@@ -28,6 +29,7 @@ const AUDIENCES: { value: AnnouncementAudience; label: string }[] = [
 
 export function AdminAnnouncementsPage() {
   useSyncExternalStore(subscribeOps, getOpsSnapshot, getOpsSnapshot);
+  useEffect(() => { hydrateAnnouncements(); }, []);
   const items = listAnnouncements();
   const [showCreate, setShowCreate] = useState(false);
 

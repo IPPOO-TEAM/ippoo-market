@@ -44,7 +44,8 @@ import {
   type Conversation, type ChatMessage,
 } from "./messaging-data";
 import { scopedGetItem, scopedSetItem } from "../lib/scoped-storage";
-import { mirrorOutgoingMessage } from "../messaging/server-sync";
+import { mirrorOutgoingMessage, getServerConvId } from "../messaging/server-sync";
+import { subscribeRealtimeMessages } from "../data/messaging-server";
 
 const CONV_STORAGE_KEY = "ippoo:messaging:conversations";
 const CHAT_STORAGE_KEY = "ippoo:messaging:chat-map";
@@ -364,6 +365,40 @@ export function MessagingPage() {
   // Persist conversations & chat map to localStorage.
   useEffect(() => { scopedSetItem(CONV_STORAGE_KEY, JSON.stringify(convList)); }, [convList]);
   useEffect(() => { scopedSetItem(CHAT_STORAGE_KEY, JSON.stringify(chatMap)); }, [chatMap]);
+
+  // Abonnement Realtime : messages entrants de la conversation sélectionnée.
+  // Le RLS serveur garantit que seuls les participants reçoivent les events.
+  useEffect(() => {
+    const serverConvId = getServerConvId(selectedId);
+    if (!serverConvId) return; // conversation pas encore synchronisée au serveur
+    let myId: string | null = null;
+    let unsub: (() => void) | undefined;
+    let alive = true;
+    (async () => {
+      try {
+        const { getSupabase } = await import("../auth/supabase");
+        const { data } = await getSupabase().auth.getSession();
+        myId = data.session?.user?.id ?? null;
+      } catch { /* ignore */ }
+      if (!alive) return;
+      unsub = subscribeRealtimeMessages(serverConvId, (m) => {
+        // Ignore mes propres messages (déjà affichés en optimiste).
+        if (myId && m.senderId === myId) return;
+        const incoming: ChatMessage = {
+          id: Date.now() + Math.floor(Math.random() * 1000),
+          sender: "them",
+          type: "text",
+          text: m.text,
+          time: new Date(m.ts || Date.now()).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }),
+          read: false,
+          delivered: true,
+        };
+        appendToConv(selectedId, incoming);
+        touchConv(selectedId, m.text);
+      });
+    })();
+    return () => { alive = false; unsub?.(); };
+  }, [selectedId]);
 
   // Lit un contact en attente (déposé depuis une fiche produit / boutique)
   // et crée/sélectionne la conversation correspondante.

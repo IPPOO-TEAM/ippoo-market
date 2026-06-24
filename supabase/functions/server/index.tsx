@@ -35,6 +35,7 @@ import { registerSettings } from "./routes/settings.tsx";
 import { registerSubscriptions } from "./routes/subscriptions.tsx";
 import { registerSupport } from "./routes/support.tsx";
 import { registerAdmin } from "./routes/admin.tsx";
+import { registerAnnouncements } from "./routes/announcements.tsx";
 
 const app = new Hono();
 app.use("*", logger(console.log));
@@ -75,5 +76,6 @@ registerSettings(app);
 registerSubscriptions(app);
 registerSupport(app);
 registerAdmin(app);
+registerAnnouncements(app);
 
 Deno.serve(app.fetch);

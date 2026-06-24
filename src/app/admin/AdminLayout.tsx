@@ -32,7 +32,7 @@ import { useAdmin } from "./useAdmin";
 import { logoutAdmin } from "./auth";
 import {
   subscribeOps, getOpsSnapshot,
-  activeAnnouncements, updateAnnouncement,
+  activeAnnouncements, updateAnnouncement, hydrateAnnouncements,
   type AnnouncementLevel,
 } from "./admin-ops-store";
 import { getState as getPaymentsState, subscribe as subscribePayments, SERVER_SNAPSHOT as PAYMENTS_SNAPSHOT } from "../payments/store";
@@ -88,6 +88,7 @@ export function AdminLayout() {
   useSyncExternalStore(subscribeVendorGroups, getVendorGroupsSnapshot, getVendorGroupsSnapshot);
   const pendingVendorGroups = listAllVendorGroups().filter((g) => g.moderation === "pending" && g.status !== "archived").length;
   const banners = activeAnnouncements("admin");
+  useEffect(() => { hydrateAnnouncements(); }, []);
 
   const [search, setSearch] = useState("");
   const [notifOpen, setNotifOpen] = useState(false);

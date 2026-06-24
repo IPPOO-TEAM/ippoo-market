@@ -4,6 +4,9 @@
    No backend deploy required - persisted in localStorage. */
 
 import { safeGetItem, safeSetItem } from "../lib/safe-storage";
+import { FUNCTIONS_BASE, SUPABASE_ANON_KEY } from "../lib/runtime-config";
+import { getAccessToken } from "../auth/supabase";
+import { isBackendOffline, isNetworkError, markBackendOffline } from "../lib/backend-health";
 
 /* ─── ANNOUNCEMENTS ─── */
 
@@ -129,17 +132,85 @@ export function createAnnouncement(input: Omit<Announcement, "id" | "createdAt" 
   };
   state.announcements = [a, ...state.announcements];
   emit();
+  pushAnnouncement(a);
   return a;
 }
 
 export function updateAnnouncement(id: string, patch: Partial<Announcement>) {
-  state.announcements = state.announcements.map((a) => a.id === id ? { ...a, ...patch } : a);
+  let updated: Announcement | undefined;
+  state.announcements = state.announcements.map((a) => {
+    if (a.id !== id) return a;
+    updated = { ...a, ...patch };
+    return updated;
+  });
   emit();
+  if (updated) pushAnnouncement(updated);
 }
 
 export function deleteAnnouncement(id: string) {
   state.announcements = state.announcements.filter((a) => a.id !== id);
   emit();
+  removeAnnouncement(id);
+}
+
+/* ─── Sync serveur des annonces (best-effort) ───────────────────── */
+
+const ANN_BASE = FUNCTIONS_BASE;
+let annHydrated = false;
+let annLastFetch = 0;
+const ANN_REFRESH_MS = 30_000;
+
+/** Récupère les annonces serveur et fusionne dans le state local. */
+export async function refreshAnnouncements(force = false): Promise<void> {
+  if (typeof window === "undefined" || isBackendOffline()) return;
+  if (!force && Date.now() - annLastFetch < ANN_REFRESH_MS && state.announcements.length) return;
+  try {
+    const res = await fetch(`${ANN_BASE}/announcements/public`, {
+      headers: { Authorization: `Bearer ${SUPABASE_ANON_KEY}` },
+    });
+    if (!res.ok) return;
+    const j = await res.json();
+    const items: Announcement[] = Array.isArray(j?.items) ? j.items : [];
+    annLastFetch = Date.now();
+    // Le serveur fait foi : on remplace, en gardant les locales non encore synchronisées.
+    const byId = new Map<string, Announcement>();
+    for (const a of items) if (a?.id) byId.set(a.id, a);
+    for (const a of state.announcements) if (a?.id && !byId.has(a.id)) byId.set(a.id, a);
+    state.announcements = Array.from(byId.values());
+    emit();
+  } catch (e) {
+    if (isNetworkError(e)) markBackendOffline("announcements/public", e);
+  }
+}
+
+/** Hydratation initiale (appelée au montage des pages concernées). */
+export function hydrateAnnouncements() {
+  if (annHydrated || typeof window === "undefined") return;
+  annHydrated = true;
+  refreshAnnouncements(true).catch(() => undefined);
+}
+
+async function pushAnnouncement(a: Announcement): Promise<void> {
+  const token = await getAccessToken().catch(() => null);
+  if (!token) return; // invité/non-admin : on garde au moins en local
+  try {
+    await fetch(`${ANN_BASE}/announcements/${encodeURIComponent(a.id)}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json; charset=utf-8", Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ value: a }),
+    });
+  } catch { /* best-effort */ }
+}
+
+async function removeAnnouncement(id: string): Promise<void> {
+  const token = await getAccessToken().catch(() => null);
+  if (!token) return;
+  try {
+    await fetch(`${ANN_BASE}/announcements/${encodeURIComponent(id)}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  } catch { /* best-effort */ }
 }
 
 /* ─── SUB-ADMIN API ─── */

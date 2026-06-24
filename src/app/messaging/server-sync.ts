@@ -33,6 +33,12 @@ function writeMap(m: Mapping) {
   try { safeSetItem(MAP_KEY, JSON.stringify(m)); } catch { /* ignore */ }
 }
 
+/** Renvoie le convId serveur déjà associé à un id local, sinon null. */
+export function getServerConvId(convNumericId: number): string | null {
+  const map = readMap();
+  return map[`local:${convNumericId}`]?.convId ?? null;
+}
+
 function slugify(s: string): string {
   return s
     .toLowerCase()

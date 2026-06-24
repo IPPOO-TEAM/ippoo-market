@@ -1,7 +1,8 @@
 -- ═══════════════════════════════════════════════════════════════
 -- IPPOO Market — Bootstrap COMPLET de la base (self-hosted)
 -- À exécuter UNE FOIS dans Supabase Studio → SQL Editor.
--- Idempotent (create ... if not exists) : ré-exécutable sans risque.
+-- Idempotent : ré-exécutable sans risque.
+-- Inclut : tables + Realtime + policies RLS + annonces.
 -- ═══════════════════════════════════════════════════════════════
 
 -- ── Table clé/valeur (cœur du backend Figma Make) ──
@@ -378,4 +379,212 @@ create table if not exists public.invoice_sequences (
   updated_at timestamptz not null default now()
 );
 alter table public.invoice_sequences enable row level security;
+
+-- ╔════ 0008_realtime.sql ════╗
+-- ═══════════════════════════════════════════════════════════════
+-- IPPOO Market — Migration 0008 : activer Realtime sur toutes les tables
+-- À exécuter UNE FOIS dans Supabase → SQL Editor (après 0007).
+-- Ajoute chaque table publique à la publication `supabase_realtime`
+-- afin que les changements (INSERT/UPDATE/DELETE) soient diffusés.
+--
+-- Idempotent : on ignore l'erreur "déjà membre de la publication".
+-- REPLICA IDENTITY FULL → les events UPDATE/DELETE incluent l'ancienne
+-- ligne complète (utile pour le filtrage côté client).
+-- ═══════════════════════════════════════════════════════════════
+
+-- Crée la publication si elle n'existe pas (self-hosted fraîche).
+do $$
+begin
+  if not exists (select 1 from pg_publication where pubname = 'supabase_realtime') then
+    create publication supabase_realtime;
+  end if;
+end $$;
+
+do $$
+declare
+  t text;
+  tables text[] := array[
+    'kv_store_cc347259',
+    'shop_reviews',
+    'orders', 'order_items', 'escrows',
+    'public_vendors', 'public_products',
+    'devis', 'wallets', 'wallet_transactions',
+    'conversations', 'messages', 'conversation_reads',
+    'kyc', 'reviews', 'support', 'promos', 'payouts',
+    'categories', 'plans', 'subscriptions', 'audit_log'
+  ];
+begin
+  foreach t in array tables loop
+    -- Ne traite que les tables réellement présentes.
+    if exists (
+      select 1 from information_schema.tables
+      where table_schema = 'public' and table_name = t
+    ) then
+      -- REPLICA IDENTITY FULL pour des events complets.
+      execute format('alter table public.%I replica identity full', t);
+      -- Ajout à la publication (ignore si déjà membre).
+      begin
+        execute format('alter publication supabase_realtime add table public.%I', t);
+      exception
+        when duplicate_object then null;  -- déjà dans la publication
+        when others then null;            -- tolérant (table absente, etc.)
+      end;
+    end if;
+  end loop;
+end $$;
+
+-- ╔════ 0009_rls_realtime_policies.sql ════╗
+-- ═══════════════════════════════════════════════════════════════
+-- IPPOO Market — Migration 0009 : policies RLS pour le Realtime client
+-- À exécuter UNE FOIS dans Supabase → SQL Editor (après 0008).
+--
+-- Objectif : rendre le Realtime utile depuis le navigateur SANS exposer
+-- les données sensibles.
+--   • Catalogue public (produits, vendeurs, avis approuvés, promos,
+--     catégories, annonces) → lecture anon + authenticated.
+--   • Messagerie → lecture réservée aux participants de la conversation.
+--   • Données sensibles (commandes, escrow, wallet, devis, kyc, support,
+--     payouts, abonnements, audit, kv_store) → AUCUNE policy =
+--     service-role uniquement (l'app y accède via Edge Functions).
+--
+-- Idempotent : chaque policy est recréée (drop if exists puis create).
+-- ═══════════════════════════════════════════════════════════════
+
+-- ── Helper : (re)crée une policy SELECT pour anon+authenticated ──
+do $$
+declare
+  t text;
+  public_tables text[] := array[
+    'public_products', 'public_vendors',
+    'promos', 'categories', 'plans'
+  ];
+begin
+  foreach t in array public_tables loop
+    if exists (select 1 from information_schema.tables
+               where table_schema = 'public' and table_name = t) then
+      execute format('drop policy if exists %I on public.%I', t || '_read_all', t);
+      execute format(
+        'create policy %I on public.%I for select to anon, authenticated using (true)',
+        t || '_read_all', t
+      );
+    end if;
+  end loop;
+end $$;
+
+-- ── Avis boutique : seuls les avis approuvés sont lisibles publiquement ──
+do $$
+begin
+  if exists (select 1 from information_schema.tables
+             where table_schema = 'public' and table_name = 'shop_reviews') then
+    drop policy if exists shop_reviews_read_approved on public.shop_reviews;
+    create policy shop_reviews_read_approved on public.shop_reviews
+      for select to anon, authenticated
+      using (status = 'approved');
+  end if;
+end $$;
+
+-- ── Messagerie : lecture réservée aux participants ──
+-- participants est un text[] d'identifiants utilisateur (auth.uid()).
+do $$
+begin
+  if exists (select 1 from information_schema.tables
+             where table_schema = 'public' and table_name = 'conversations') then
+    drop policy if exists conversations_read_participants on public.conversations;
+    create policy conversations_read_participants on public.conversations
+      for select to authenticated
+      using (auth.uid()::text = any(participants));
+  end if;
+
+  if exists (select 1 from information_schema.tables
+             where table_schema = 'public' and table_name = 'messages') then
+    drop policy if exists messages_read_participants on public.messages;
+    create policy messages_read_participants on public.messages
+      for select to authenticated
+      using (
+        exists (
+          select 1 from public.conversations c
+          where c.id = messages.conv_id
+            and auth.uid()::text = any(c.participants)
+        )
+      );
+  end if;
+
+  if exists (select 1 from information_schema.tables
+             where table_schema = 'public' and table_name = 'conversation_reads') then
+    drop policy if exists conversation_reads_self on public.conversation_reads;
+    create policy conversation_reads_self on public.conversation_reads
+      for select to authenticated
+      using (auth.uid()::text = user_id);
+  end if;
+end $$;
+
+-- ── Avis génériques (produit/vendeur) : lecture publique des visibles ──
+do $$
+begin
+  if exists (select 1 from information_schema.tables
+             where table_schema = 'public' and table_name = 'reviews') then
+    drop policy if exists reviews_read_visible on public.reviews;
+    -- Lecture publique ; si une colonne `status`/`hidden` existe, on filtre.
+    if exists (select 1 from information_schema.columns
+               where table_schema = 'public' and table_name = 'reviews' and column_name = 'status') then
+      create policy reviews_read_visible on public.reviews
+        for select to anon, authenticated
+        using (status is distinct from 'hidden');
+    else
+      create policy reviews_read_visible on public.reviews
+        for select to anon, authenticated using (true);
+    end if;
+  end if;
+end $$;
+
+-- NB : aucune policy INSERT/UPDATE/DELETE n'est créée → toute écriture
+-- continue de passer exclusivement par le service-role (Edge Functions).
+
+-- ╔════ 0010_announcements.sql ════╗
+-- ═══════════════════════════════════════════════════════════════
+-- IPPOO Market — Migration 0010 : annonces plateforme (broadcast)
+-- À exécuter UNE FOIS dans Supabase → SQL Editor (après 0009).
+-- Stocke les bannières d'annonce diffusées à l'audience choisie.
+-- Realtime activé + lecture publique des annonces actives & en fenêtre.
+-- Écriture réservée au service-role (Edge Functions admin).
+-- ═══════════════════════════════════════════════════════════════
+
+create table if not exists public.announcements (
+  id          text primary key,
+  title       text not null,
+  body        text not null default '',
+  level       text not null default 'info'
+              check (level in ('info','success','warning','critical')),
+  audience    text not null default 'all'
+              check (audience in ('all','buyers','vendors','admin')),
+  starts_at   bigint not null default 0,
+  ends_at     bigint,
+  active      boolean not null default true,
+  created_at  bigint not null default 0
+);
+create index if not exists announcements_active_idx   on public.announcements (active);
+create index if not exists announcements_audience_idx  on public.announcements (audience);
+create index if not exists announcements_created_idx   on public.announcements (created_at desc);
+
+alter table public.announcements enable row level security;
+
+-- Realtime
+alter table public.announcements replica identity full;
+do $$
+begin
+  if not exists (select 1 from pg_publication where pubname = 'supabase_realtime') then
+    create publication supabase_realtime;
+  end if;
+  begin
+    alter publication supabase_realtime add table public.announcements;
+  exception when duplicate_object then null; when others then null;
+  end;
+end $$;
+
+-- Lecture publique des annonces actives (le filtrage fenêtre/audience fin
+-- se fait côté client ; ici on n'expose que les actives, jamais les brouillons).
+drop policy if exists announcements_read_active on public.announcements;
+create policy announcements_read_active on public.announcements
+  for select to anon, authenticated
+  using (active = true);
 

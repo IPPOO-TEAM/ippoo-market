@@ -69,10 +69,21 @@ export async function getCommissionRate(): Promise<number> {
   return Number.isFinite(pct) && pct >= 0 && pct <= 100 ? pct / 100 : COMMISSION_RATE;
 }
 
-export const supabase = createClient(
-  Deno.env.get("SUPABASE_URL")!,
-  Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
-);
+// Résolution robuste des variables Supabase. En self-hosted, `SUPABASE_URL`
+// peut être absent : on retombe sur l'URL interne de Kong (réseau Docker).
+const SUPA_URL =
+  Deno.env.get("SUPABASE_URL") ||
+  Deno.env.get("API_EXTERNAL_URL") ||
+  Deno.env.get("SUPABASE_PUBLIC_URL") ||
+  "http://supabase-kong:8000";
+const SUPA_SERVICE_KEY =
+  Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ||
+  Deno.env.get("SUPABASE_SERVICE_KEY") ||
+  Deno.env.get("SERVICE_ROLE_KEY") ||
+  Deno.env.get("SERVICE_KEY") ||
+  "";
+
+export const supabase = createClient(SUPA_URL, SUPA_SERVICE_KEY);
 
 export const ADMIN_EMAILS = new Set(
   (Deno.env.get("IPPOO_ADMIN_EMAILS") ?? "")
