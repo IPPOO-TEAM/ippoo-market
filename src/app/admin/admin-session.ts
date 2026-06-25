@@ -67,7 +67,8 @@ export function useAdminLogged(): boolean {
 export type LoginResult = { ok: true; email: string } | { ok: false; error: string };
 
 export async function loginAdminServer(email: string, password: string): Promise<LoginResult> {
-  if (isBackendOffline()) return { ok: false, error: "Serveur indisponible" };
+  // On tente toujours (action volontaire) — même si le breaker s'est déclenché
+  // plus tôt sur d'autres routes. Un succès réinitialise implicitement l'UX.
   try {
     const res = await fetch(`${FUNCTIONS_BASE}/admin/login`, {
       method: "POST",
@@ -113,10 +114,19 @@ export function useAdminWhoami(): { loading: boolean; isAdmin: boolean; email: s
   async function refresh() {
     const t = getAdminToken();
     if (!t) { setState({ loading: false, isAdmin: false, email: null, error: null }); return; }
+    // Backend déjà hors-ligne : on n'attend pas, on montre le formulaire.
+    if (isBackendOffline()) {
+      setState({ loading: false, isAdmin: false, email: null, error: null });
+      return;
+    }
     setState((s) => ({ ...s, loading: true, error: null }));
+    // Garde-fou : timeout 8s pour ne JAMAIS rester bloqué sur l'écran gris.
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 8000);
     try {
       const res = await fetch(`${FUNCTIONS_BASE}/admin/whoami`, {
         headers: { "x-admin-token": t },
+        signal: ctrl.signal,
       });
       const j = await res.json().catch(() => ({}));
       if (!res.ok || !j?.isAdmin) {
@@ -126,7 +136,12 @@ export function useAdminWhoami(): { loading: boolean; isAdmin: boolean; email: s
       }
       setState({ loading: false, isAdmin: true, email: j.email, error: null });
     } catch (e) {
-      setState({ loading: false, isAdmin: false, email: null, error: e instanceof Error ? e.message : "Erreur" });
+      // Timeout / réseau : on libère l'UI → le formulaire de connexion s'affiche.
+      if (isNetworkError(e) || (e as Error)?.name === "AbortError") markBackendOffline("admin/whoami", e);
+      clearAdminSession();
+      setState({ loading: false, isAdmin: false, email: null, error: null });
+    } finally {
+      clearTimeout(timer);
     }
   }
 
