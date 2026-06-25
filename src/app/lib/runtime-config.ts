@@ -25,9 +25,9 @@ function pick(key: string, fallback = ""): string {
    URL Kong + clé anonyme. Surchargeables par variables d'env Cloudflare
    (VITE_*) sans toucher au code. Les SECRETS (service-role, JWT secret,
    mot de passe Postgres) ne sont JAMAIS ici : ils restent côté serveur. */
-const SELF_HOSTED_URL = "https://essaisupabase.ippoo-aptdc.com";
+const SELF_HOSTED_URL = "https://ippoomarketdatabase.ippoo-aptdc.com";
 const SELF_HOSTED_ANON_KEY =
-  "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzdXBhYmFzZSIsImlhdCI6MTc4MjA3NzI4MCwiZXhwIjo0OTM3NzUwODgwLCJyb2xlIjoiYW5vbiJ9.TQVfTJykr8dQlE1yW6OM9_1t3VvO5AZWBypEhNFuvuI";
+  "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzdXBhYmFzZSIsImlhdCI6MTc4MjM0NDk0MCwiZXhwIjo0OTM4MDE4NTQwLCJyb2xlIjoiYW5vbiJ9.Z6jNjLS7oLdnCy8l827G7FdUoaElRJnCTYLpb6yGjsU";
 
 /** URL racine du projet Supabase (self-hosted ou cloud). */
 export const SUPABASE_URL = pick("VITE_SUPABASE_URL", SELF_HOSTED_URL);
