@@ -1,5 +1,9 @@
 import * as kv from "../kv_store.tsx";
-import { PREFIX, supabase, requireUser, requireAdmin, auditLog, isAdminEmail } from "../_shared.tsx";
+import {
+  PREFIX, supabase, requireAdmin, auditLog, isAdminEmail,
+  ADMIN_PASSWORD, issueAdminToken, verifyAdminToken,
+  rateLimit, clientKey, ADMIN_TOKEN_TTL_MS,
+} from "../_shared.tsx";
 import { tableReady, resetTableCache } from "../_db.tsx";
 
 // ─── Helpers table-aware pour les stats (orders/escrows/kyc migrés) ──
@@ -26,11 +30,48 @@ async function loadKycForStats(): Promise<any[]> {
 }
 
 export function registerAdmin(app: any) {
-  // ── whoami ──
+  /* ── Login admin AUTONOME (email+password serveur) ──
+     POST /admin/login { email, password }
+     → 200 { token, email, expiresAt } si email ∈ IPPOO_ADMIN_EMAILS et
+       password === IPPOO_ADMIN_PASSWORD.
+     → 401 sinon. Rate-limit 5 tentatives/min/IP. */
+  app.post(`${PREFIX}/admin/login`, async (c: any) => {
+    if (!rateLimit(clientKey(c, "admin-login"), 5, 60_000)) {
+      return c.json({ error: "Trop de tentatives, patientez une minute." }, 429);
+    }
+    try {
+      const body = await c.req.json().catch(() => ({}));
+      const email = String(body?.email ?? "").trim().toLowerCase();
+      const password = String(body?.password ?? "");
+      if (!email || !password) return c.json({ error: "Email et mot de passe requis" }, 400);
+      if (!isAdminEmail(email)) return c.json({ error: "Identifiants invalides" }, 401);
+      if (!ADMIN_PASSWORD || password !== ADMIN_PASSWORD) {
+        return c.json({ error: "Identifiants invalides" }, 401);
+      }
+      const token = await issueAdminToken(email);
+      await auditLog(`admin:${email}`, email, "admin.login");
+      return c.json({ token, email, expiresAt: Date.now() + ADMIN_TOKEN_TTL_MS });
+    } catch (e) {
+      console.log(`admin/login exception: ${e}`);
+      return c.json({ error: "Erreur serveur" }, 500);
+    }
+  });
+
+  /* ── whoami : valide le token admin courant ── */
   app.get(`${PREFIX}/admin/whoami`, async (c: any) => {
-    const u = await requireUser(c);
-    if ("error" in u) return c.json({ error: u.error, isAdmin: false }, u.status);
-    return c.json({ isAdmin: isAdminEmail(u.email), email: u.email ?? null, id: u.id });
+    const token = c.req.header("x-admin-token") || c.req.header("X-Admin-Token") ||
+                  c.req.header("Authorization")?.split(" ")[1];
+    const email = await verifyAdminToken(token);
+    if (!email) return c.json({ isAdmin: false, email: null }, 401);
+    return c.json({ isAdmin: true, email, id: `admin:${email}` });
+  });
+
+  /* ── logout (best-effort, le token est auto-portant donc côté client) ── */
+  app.post(`${PREFIX}/admin/logout`, async (c: any) => {
+    const token = c.req.header("x-admin-token") || c.req.header("Authorization")?.split(" ")[1];
+    const email = await verifyAdminToken(token);
+    if (email) await auditLog(`admin:${email}`, email, "admin.logout");
+    return c.json({ ok: true });
   });
 
   // ── Liste utilisateurs (Supabase Auth) ──

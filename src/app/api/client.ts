@@ -7,6 +7,7 @@
 import { getAccessToken } from "../auth/supabase";
 import { isBackendOffline, isNetworkError, markBackendOffline } from "../lib/backend-health";
 import { FUNCTIONS_BASE } from "../lib/runtime-config";
+import { getAdminToken } from "../admin/admin-session";
 
 export const API_BASE = FUNCTIONS_BASE;
 
@@ -32,7 +33,13 @@ export async function apiFetch<T = unknown>(path: string, opts: Options = {}): P
   if (isBackendOffline()) throw new ApiError("Backend hors-ligne", 0);
   const headers: Record<string, string> = {};
   if (body !== undefined) headers["Content-Type"] = "application/json; charset=utf-8";
-  if (auth) {
+  // Routes admin → token admin autonome (séparé du compte utilisateur Supabase)
+  const isAdminRoute = path.startsWith("/admin/");
+  if (isAdminRoute) {
+    const t = getAdminToken();
+    if (!t) throw new ApiError("Session administrateur requise", 401);
+    headers["x-admin-token"] = t;
+  } else if (auth) {
     const token = await getAccessToken();
     if (!token) throw new ApiError("Authentification requise", 401);
     headers["Authorization"] = `Bearer ${token}`;

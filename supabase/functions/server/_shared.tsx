@@ -154,14 +154,80 @@ export async function requireUser(c: any): Promise<{ id: string; email?: string 
   }
   return { id: data.user.id, email: data.user.email ?? undefined };
 }
-export async function requireAdmin(c: any) {
-  const u = await requireUser(c);
-  if ("error" in u) return u;
-  if (!u.email || !ADMIN_EMAILS.has(u.email.toLowerCase())) {
-    return { error: "Accès admin requis", status: 403 as const };
-  }
-  return u;
+/* ─── Auth admin AUTONOME (séparée des users Supabase) ─────────
+   Les admins NE sont PAS des utilisateurs Supabase. Ils s'authentifient
+   uniquement contre les variables d'environnement :
+     IPPOO_ADMIN_EMAILS    = liste blanche d'emails (csv, sans espace)
+     IPPOO_ADMIN_PASSWORD  = mot de passe partagé
+   Après login, un jeton HMAC-SHA256 signé est émis et utilisé par tous
+   les endpoints /admin/*. Aucun compte utilisateur n'est requis. */
+
+export const ADMIN_PASSWORD = (Deno.env.get("IPPOO_ADMIN_PASSWORD") || "").trim();
+const ADMIN_TOKEN_SECRET = Deno.env.get("IPPOO_ADMIN_TOKEN_SECRET")
+  || Deno.env.get("JWT_SECRET")
+  || Deno.env.get("SERVICE_PASSWORD_JWT")
+  || ADMIN_PASSWORD; // dernier repli (mieux que rien — à éviter en prod)
+export const ADMIN_TOKEN_TTL_MS = 4 * 60 * 60 * 1000; // 4 h
+
+function b64urlEncode(buf: Uint8Array | string): string {
+  const bin = typeof buf === "string"
+    ? new TextEncoder().encode(buf)
+    : buf;
+  let s = btoa(String.fromCharCode(...bin));
+  return s.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
+function b64urlDecodeStr(s: string): string {
+  const pad = "=".repeat((4 - (s.length % 4)) % 4);
+  const bin = atob(s.replace(/-/g, "+").replace(/_/g, "/") + pad);
+  return bin;
+}
+
+async function hmac(payload: string): Promise<string> {
+  const key = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(ADMIN_TOKEN_SECRET),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign", "verify"],
+  );
+  const sig = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(payload));
+  return b64urlEncode(new Uint8Array(sig));
+}
+
+/** Émet un jeton admin auto-portant (payload + signature). */
+export async function issueAdminToken(email: string): Promise<string> {
+  const body = JSON.stringify({ email: email.toLowerCase(), exp: Date.now() + ADMIN_TOKEN_TTL_MS });
+  const payload = b64urlEncode(body);
+  const sig = await hmac(payload);
+  return `${payload}.${sig}`;
+}
+
+/** Vérifie le jeton et renvoie l'email admin, ou null si invalide/expiré. */
+export async function verifyAdminToken(token: string | undefined | null): Promise<string | null> {
+  if (!token) return null;
+  const parts = token.split(".");
+  if (parts.length !== 2) return null;
+  const [payload, sig] = parts;
+  const expected = await hmac(payload);
+  if (expected !== sig) return null;
+  try {
+    const body = JSON.parse(b64urlDecodeStr(payload));
+    if (typeof body?.exp !== "number" || Date.now() > body.exp) return null;
+    if (typeof body?.email !== "string") return null;
+    if (!ADMIN_EMAILS.has(body.email)) return null; // email retiré de la liste après émission
+    return body.email;
+  } catch { return null; }
+}
+
+/** Middleware admin : exige un X-Admin-Token (ou Authorization Bearer) valide. */
+export async function requireAdmin(c: any): Promise<{ email: string; id: string } | { error: string; status: 401 | 403 }> {
+  const token = c.req.header("x-admin-token") || c.req.header("X-Admin-Token") ||
+                c.req.header("Authorization")?.split(" ")[1];
+  const email = await verifyAdminToken(token);
+  if (!email) return { error: "Authentification administrateur requise", status: 401 };
+  return { email, id: `admin:${email}` };
+}
+
 export function isAdminEmail(email: string | undefined | null): boolean {
   return !!email && ADMIN_EMAILS.has(String(email).toLowerCase());
 }
