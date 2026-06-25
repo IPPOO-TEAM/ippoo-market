@@ -19,12 +19,23 @@ import {
   PageHeader, Card, EmptyState,
 } from "./page-primitives";
 import { getAdminStats, listAuditLog, AdminStats, AuditEntry } from "../data/admin-server";
+import { syncAllToSupabase, type SeedProgress } from "./seed-sync";
+import { toast } from "sonner";
 
 export function AdminDashboardPage() {
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [audit, setAudit] = useState<AuditEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [sync, setSync] = useState<SeedProgress | null>(null);
+
+  const runSync = useCallback(async () => {
+    setSync({ total: 0, written: 0, phase: "Démarrage…", done: false });
+    const res = await syncAllToSupabase((p) => setSync(p));
+    if (res.error) toast.error(`Synchro: ${res.error}`);
+    else toast.success(`Synchronisé : ${res.written} enregistrements dans Supabase`);
+    setTimeout(() => setSync(null), 4000);
+  }, []);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -79,15 +90,35 @@ export function AdminDashboardPage() {
         title="Tableau de bord"
         subtitle={stats ? `Données actualisées ${fmtDate(stats.generatedAt)}` : "Vue d'ensemble de la marketplace IPPOO"}
         actions={
-          <button
-            onClick={() => { void load(); }}
-            className="px-3 py-2 rounded-xl bg-white border border-border flex items-center gap-1.5"
-            style={{ fontSize: 13, fontWeight: 600 }}
-          >
-            <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} /> Recharger
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => { void runSync(); }}
+              disabled={!!sync && !sync.done}
+              className="px-3 py-2 rounded-xl bg-[#16A34A] text-white flex items-center gap-1.5 disabled:opacity-60"
+              style={{ fontSize: 13, fontWeight: 700 }}
+            >
+              {sync && !sync.done
+                ? <Loader2 className="w-4 h-4 animate-spin" />
+                : <RefreshCw className="w-4 h-4" />}
+              Synchroniser vers Supabase
+            </button>
+            <button
+              onClick={() => { void load(); }}
+              className="px-3 py-2 rounded-xl bg-white border border-border flex items-center gap-1.5"
+              style={{ fontSize: 13, fontWeight: 600 }}
+            >
+              <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} /> Recharger
+            </button>
+          </div>
         }
       />
+
+      {sync && (
+        <div className="mb-4 p-3 rounded-xl bg-[#F0FDF4] border border-[#BBF7D0] text-[#166534] flex items-center gap-2" style={{ fontSize: 13 }}>
+          {!sync.done && <Loader2 className="w-4 h-4 animate-spin shrink-0" />}
+          <span>{sync.phase}{sync.total > 0 ? ` (${sync.written}/${sync.total})` : ""}</span>
+        </div>
+      )}
 
       {error && (
         <div className="mb-4 p-3 rounded-xl bg-[#FEF2F2] border border-[#FECACA] text-[#B91C1C]" style={{ fontSize: 12 }}>

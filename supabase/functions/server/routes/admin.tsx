@@ -475,4 +475,31 @@ export function registerAdmin(app: any) {
 
     return c.json({ ok: true, ...out });
   });
+
+  // ── Import en masse (seed catalogue + toutes données plateforme) ──
+  // Body : { items: [{ key: string, value: any }, ...] } (max 500 / appel).
+  // Écrit dans le KV (kv_store_cc347259) en upsert. Idempotent.
+  app.post(`${PREFIX}/admin/seed`, async (c: any) => {
+    const auth = await requireAdmin(c);
+    if ("error" in auth) return c.json({ error: auth.error }, auth.status);
+    try {
+      const body = await c.req.json().catch(() => ({}));
+      const items = Array.isArray(body?.items) ? body.items : [];
+      if (items.length === 0) return c.json({ ok: true, written: 0 });
+      if (items.length > 500) return c.json({ error: "Max 500 items par appel" }, 413);
+      const keys: string[] = [];
+      const values: any[] = [];
+      for (const it of items) {
+        if (!it || typeof it.key !== "string" || it.key.length === 0) continue;
+        keys.push(it.key);
+        values.push(it.value ?? null);
+      }
+      if (keys.length === 0) return c.json({ ok: true, written: 0 });
+      await kv.mset(keys, values);
+      return c.json({ ok: true, written: keys.length });
+    } catch (e: any) {
+      console.log(`admin/seed error: ${e?.message ?? e}`);
+      return c.json({ error: "Erreur d'import" }, 500);
+    }
+  });
 }
