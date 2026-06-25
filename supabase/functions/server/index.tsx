@@ -43,7 +43,9 @@ app.use(
   "/*",
   cors({
     origin: "*",
-    allowHeaders: ["Content-Type", "Authorization"],
+    // `x-admin-token` : session admin autonome (whoami/logout + pages admin).
+    // `apikey` / `x-client-info` : envoyés par supabase-js.
+    allowHeaders: ["Content-Type", "Authorization", "x-admin-token", "apikey", "x-client-info"],
     allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     exposeHeaders: ["Content-Length"],
     maxAge: 600,
