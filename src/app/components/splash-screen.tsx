@@ -185,6 +185,9 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
 export function useSplashScreen() {
   const [showSplash, setShowSplash] = useState(() => {
     if (typeof window === "undefined") return false;
+    // Pas de splash sur le back-office admin : il a son propre écran de
+    // connexion et le splash grand public le masquerait.
+    if (window.location.pathname.startsWith("/admin")) return false;
     const key = "ippoo:splash-shown";
     const shown = sessionStorage.getItem(key);
     return !shown;
