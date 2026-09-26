@@ -8,6 +8,9 @@ import {
   sendLoginAlertEmail,
   isEmailReady,
 } from "../_email.tsx";
+import { isValidRedirectUrl } from "../../../../src/app/auth/redirect-validator.ts";
+
+export { isValidRedirectUrl };
 
 const SignupSchema = z.object({
   email: z.string().email().max(255),
@@ -116,14 +119,15 @@ export function registerAuth(app: any) {
       const parsed = EmailOnlySchema.safeParse(await c.req.json().catch(() => ({})));
       if (!parsed.success) return c.json({ error: "Email invalide" }, 400);
       const email = parsed.data.email.toLowerCase();
-      const redirectTo = (await c.req.json().catch(() => ({})))?.redirectTo
-        ?? c.req.header("origin")
-        ?? undefined;
+      const reqBody = await c.req.json().catch(() => ({}));
+      const rawRedirectTo = reqBody?.redirectTo ?? c.req.header("origin") ?? undefined;
+      const safeRedirectTo = isValidRedirectUrl(rawRedirectTo, c.req.header("origin"));
+
       // Génère un lien de recovery via Supabase Admin puis l'envoie via Resend.
       const { data, error } = await supabase.auth.admin.generateLink({
         type: "recovery",
         email,
-        options: redirectTo ? { redirectTo } : undefined,
+        options: safeRedirectTo ? { redirectTo: safeRedirectTo } : undefined,
       });
       // On répond toujours ok (anti-énumération de comptes).
       if (!error && data?.properties?.action_link) {
