@@ -8,6 +8,53 @@ import {
   sendLoginAlertEmail,
   isEmailReady,
 } from "../_email.tsx";
+const ALLOWED_REDIRECT_HOSTS = new Set([
+  "ippoo.market",
+  "www.ippoo.market",
+  "localhost",
+  "127.0.0.1",
+]);
+
+/**
+ * Validates whether a redirect URL target is safe against Open Redirect vulnerabilities.
+ */
+export function isValidRedirectUrl(urlStr: string | undefined | null, requestOrigin?: string | null): string | undefined {
+  if (!urlStr || typeof urlStr !== "string") return undefined;
+  const trimmed = urlStr.trim();
+  if (!trimmed) return undefined;
+
+  // Relative path (e.g. /reset-password)
+  if (trimmed.startsWith("/") && !trimmed.startsWith("//") && !trimmed.startsWith("/\\")) {
+    return trimmed;
+  }
+
+  try {
+    const parsed = new URL(trimmed);
+    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+      return undefined;
+    }
+
+    const host = parsed.hostname.toLowerCase();
+    if (ALLOWED_REDIRECT_HOSTS.has(host) || host.endsWith(".ippoo.market")) {
+      return trimmed;
+    }
+
+    if (requestOrigin) {
+      try {
+        const originUrl = new URL(requestOrigin);
+        if (originUrl.hostname.toLowerCase() === host) {
+          return trimmed;
+        }
+      } catch {
+        // invalid origin header
+      }
+    }
+  } catch {
+    // Malformed URL
+  }
+
+  return undefined;
+}
 
 const SignupSchema = z.object({
   email: z.string().email().max(255),
@@ -116,14 +163,15 @@ export function registerAuth(app: any) {
       const parsed = EmailOnlySchema.safeParse(await c.req.json().catch(() => ({})));
       if (!parsed.success) return c.json({ error: "Email invalide" }, 400);
       const email = parsed.data.email.toLowerCase();
-      const redirectTo = (await c.req.json().catch(() => ({})))?.redirectTo
-        ?? c.req.header("origin")
-        ?? undefined;
+      const reqBody = await c.req.json().catch(() => ({}));
+      const rawRedirectTo = reqBody?.redirectTo ?? c.req.header("origin") ?? undefined;
+      const safeRedirectTo = isValidRedirectUrl(rawRedirectTo, c.req.header("origin"));
+
       // Génère un lien de recovery via Supabase Admin puis l'envoie via Resend.
       const { data, error } = await supabase.auth.admin.generateLink({
         type: "recovery",
         email,
-        options: redirectTo ? { redirectTo } : undefined,
+        options: safeRedirectTo ? { redirectTo: safeRedirectTo } : undefined,
       });
       // On répond toujours ok (anti-énumération de comptes).
       if (!error && data?.properties?.action_link) {
