@@ -12,7 +12,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { toast } from "sonner";
 import { ArrowLeft, ArrowRight, Check, Sparkles } from "lucide-react";
 import { signupAndSignIn } from "../auth/signup-server";
-import { validateEmail as vEmail, validatePhone as vPhone, validateMinLen, validateRequired } from "../lib/validators";
+import { validateEmail as vEmail, validatePhone as vPhone, validatePassword as vPassword, validateRequired } from "../lib/validators";
 import { publishMyVendor } from "../data/public-vendors";
 import ippooLogo from "../../imports/ippo_market.png";
 
@@ -131,7 +131,7 @@ export function SignupWizard() {
           validateRequired("Nom")(lastName),
           vEmail(email),
           vPhone(phone),
-          validateMinLen(6, "Mot de passe")(password),
+          vPassword(password),
         ];
         const first = checks.find((e) => e);
         if (first) return first;
