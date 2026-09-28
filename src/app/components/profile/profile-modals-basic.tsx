@@ -4,6 +4,7 @@ import { Trash2, Check } from "lucide-react";
 import { SUPPORTED_LANGUAGES, getLangCode } from "../../i18n";
 import { getSupabase } from "../../auth/supabase";
 import { ModalShell, Input, PrimaryBtn, validateEmail, validatePhone } from "./profile-primitives";
+import { validatePassword } from "../../lib/validators";
 import type { Address, TeamMember } from "./types";
 
 export function EditInfoModal({ info, onClose, onSave }: { info: { name: string; email: string; phone: string; company: string; city: string }; onClose: () => void; onSave: (v: typeof info) => void }) {
@@ -81,8 +82,9 @@ export function PasswordModal({ onClose }: { onClose: () => void }) {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (oldPwd.length < 6) return toast.error("Mot de passe actuel requis");
-    if (newPwd.length < 8) return toast.error("Le nouveau mot de passe doit faire au moins 8 caractères");
+    if (!oldPwd) return toast.error("Mot de passe actuel requis");
+    const pwdError = validatePassword(newPwd);
+    if (pwdError) return toast.error(pwdError);
     if (newPwd !== confirm) return toast.error("La confirmation ne correspond pas");
     if (oldPwd === newPwd) return toast.error("Choisis un mot de passe différent");
     setBusy(true);
