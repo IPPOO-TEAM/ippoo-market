@@ -1,6 +1,6 @@
 import { z } from "npm:zod@3.23.8";
 import * as kv from "../kv_store.tsx";
-import { PREFIX, requireUser, requireAdmin, getBalance, creditWallet, auditLog } from "../_shared.tsx";
+import { PREFIX, requireUser, requireAdmin, getBalance, creditWallet, auditLog, rateLimit, clientKey } from "../_shared.tsx";
 import { supabase, tableReady, resetTableCache } from "../_db.tsx";
 
 const WalletCreditSchema = z.object({
@@ -31,6 +31,9 @@ export function registerWallet(app: any) {
   });
 
   app.post(`${PREFIX}/wallet/credit`, async (c: any) => {
+    if (!rateLimit(clientKey(c, "wallet-credit"), 10, 60_000)) {
+      return c.json({ error: "Trop de tentatives, patientez une minute." }, 429);
+    }
     const auth = await requireAdmin(c);
     if ("error" in auth) return c.json({ error: auth.error }, auth.status);
     const parsed = WalletCreditSchema.safeParse(await c.req.json().catch(() => ({})));
