@@ -182,16 +182,38 @@ function b64urlDecodeStr(s: string): string {
   return bin;
 }
 
-async function hmac(payload: string): Promise<string> {
-  const key = await crypto.subtle.importKey(
+function b64urlToUint8Array(s: string): Uint8Array {
+  const pad = "=".repeat((4 - (s.length % 4)) % 4);
+  const bin = atob(s.replace(/-/g, "+").replace(/_/g, "/") + pad);
+  const buf = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) buf[i] = bin.charCodeAt(i);
+  return buf;
+}
+
+async function getAdminHmacKey(): Promise<CryptoKey> {
+  return await crypto.subtle.importKey(
     "raw",
     new TextEncoder().encode(ADMIN_TOKEN_SECRET),
     { name: "HMAC", hash: "SHA-256" },
     false,
     ["sign", "verify"],
   );
+}
+
+async function hmac(payload: string): Promise<string> {
+  const key = await getAdminHmacKey();
   const sig = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(payload));
   return b64urlEncode(new Uint8Array(sig));
+}
+
+async function verifyHmac(payload: string, sigB64Url: string): Promise<boolean> {
+  try {
+    const key = await getAdminHmacKey();
+    const sigBytes = b64urlToUint8Array(sigB64Url);
+    return await crypto.subtle.verify("HMAC", key, sigBytes.buffer as ArrayBuffer, new TextEncoder().encode(payload));
+  } catch {
+    return false;
+  }
 }
 
 /** Émet un jeton admin auto-portant (payload + signature). */
@@ -208,8 +230,8 @@ export async function verifyAdminToken(token: string | undefined | null): Promis
   const parts = token.split(".");
   if (parts.length !== 2) return null;
   const [payload, sig] = parts;
-  const expected = await hmac(payload);
-  if (expected !== sig) return null;
+  const validSig = await verifyHmac(payload, sig);
+  if (!validSig) return null;
   try {
     const body = JSON.parse(b64urlDecodeStr(payload));
     if (typeof body?.exp !== "number" || Date.now() > body.exp) return null;
