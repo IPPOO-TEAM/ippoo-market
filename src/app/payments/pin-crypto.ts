@@ -24,10 +24,13 @@ export function hexToBytes(hex: string): Uint8Array<ArrayBuffer> {
 
 export function randomSaltHex(byteLen = 16): string {
   const arr = new Uint8Array(byteLen);
-  if (typeof crypto !== "undefined" && crypto.getRandomValues) {
-    crypto.getRandomValues(arr);
+  // Security: Always use a cryptographically secure random number generator (CSPRNG).
+  // Do not fall back to Math.random() as it is PRNG and predictable.
+  const cryptoObj = typeof globalThis !== "undefined" ? globalThis.crypto : (typeof crypto !== "undefined" ? crypto : undefined);
+  if (cryptoObj && typeof cryptoObj.getRandomValues === "function") {
+    cryptoObj.getRandomValues(arr);
   } else {
-    for (let i = 0; i < byteLen; i++) arr[i] = Math.floor(Math.random() * 256);
+    throw new Error("Cryptographically secure random number generator (crypto.getRandomValues) unavailable");
   }
   return bytesToHex(arr);
 }
