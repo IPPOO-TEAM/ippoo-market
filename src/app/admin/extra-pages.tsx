@@ -33,7 +33,8 @@ import {
 import { toast } from "sonner";
 import { formatPrice } from "../components/mock-data";
 import { usePayments } from "../payments/usePayments";
-import { platformAccounting, VendorPeriod } from "../payments/store";
+import { platformAccounting } from "../payments/accounting";
+import { type VendorPeriod } from "../payments/store";
 import { useAdminSettings } from "./settings-store";
 import { useAdmin } from "./useAdmin";
 import { useCategories, upsertCategory, deleteCategory, toggleCategory, moveCategory, AdminCategory } from "./categories";

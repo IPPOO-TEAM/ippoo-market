@@ -4,7 +4,8 @@ import { TrendingUp, Package, Receipt, BarChart3, ArrowDownRight, ArrowUpRight, 
 import { openMyInvoicePdf } from "../data/my-invoice-pdf";
 import { computeMonthlyPnl, openMonthlyPnlPdf } from "../data/my-pnl-pdf";
 import { toast } from "sonner";
-import { vendorAccounting, type VendorPeriod } from "../payments/store";
+import { vendorAccounting } from "../payments/accounting";
+import { type VendorPeriod } from "../payments/store";
 import { usePayments } from "../payments/usePayments";
 import { VENDORS } from "../data/marketplace";
 import { formatPrice } from "./mock-data";
