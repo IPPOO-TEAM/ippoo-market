@@ -18,16 +18,21 @@ export function bytesToHex(bytes: Uint8Array): string {
 
 export function hexToBytes(hex: string): Uint8Array<ArrayBuffer> {
   const out = new Uint8Array(new ArrayBuffer(hex.length / 2));
-  for (let i = 0; i < out.length; i++) out[i] = parseInt(hex.substr(i * 2, 2), 16);
+  for (let i = 0; i < out.length; i++) out[i] = parseInt(hex.substring(i * 2, i * 2 + 2), 16);
   return out;
 }
 
+/**
+ * Generates a cryptographically secure random salt in hexadecimal format.
+ * Using Math.random() is insecure for cryptographic operations as PRNGs are predictable.
+ */
 export function randomSaltHex(byteLen = 16): string {
   const arr = new Uint8Array(byteLen);
   if (typeof crypto !== "undefined" && crypto.getRandomValues) {
     crypto.getRandomValues(arr);
   } else {
-    for (let i = 0; i < byteLen; i++) arr[i] = Math.floor(Math.random() * 256);
+    // SECURITY: Fail closed if Web Crypto CSPRNG is unavailable rather than falling back to Math.random()
+    throw new Error("Cryptographically secure random number generator is unavailable.");
   }
   return bytesToHex(arr);
 }
