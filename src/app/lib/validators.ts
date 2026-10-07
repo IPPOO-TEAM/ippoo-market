@@ -66,7 +66,15 @@ export const validateIFU: Validator = (v) => {
 export const validateURL: Validator = (v) => {
   const s = (v ?? "").trim();
   if (!s) return null;
-  try { new URL(s); return null; } catch { return "URL invalide."; }
+  try {
+    const url = new URL(s);
+    if (!["http:", "https:"].includes(url.protocol)) {
+      return "URL invalide (protocole non sécurisé).";
+    }
+    return null;
+  } catch {
+    return "URL invalide.";
+  }
 };
 
 export const validateDateRange = (start: string, end: string): string | null => {
