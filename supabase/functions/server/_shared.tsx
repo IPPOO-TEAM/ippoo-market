@@ -5,8 +5,8 @@
    le web-push et l'audit. Chaque module de domaine importe d'ici.
    ═══════════════════════════════════════════════════════════════ */
 
-import { createClient } from "jsr:@supabase/supabase-js@2";
-import webpush from "npm:web-push@3.6.7";
+import { createClient } from "@supabase/supabase-js";
+import webpush from "web-push";
 import * as kv from "./kv_store.tsx";
 
 // ─── Constantes globales ───────────────────────────────────────
@@ -69,24 +69,26 @@ export async function getCommissionRate(): Promise<number> {
   return Number.isFinite(pct) && pct >= 0 && pct <= 100 ? pct / 100 : COMMISSION_RATE;
 }
 
+const envGet = (key: string): string | undefined => typeof (globalThis as any).Deno !== "undefined" ? (globalThis as any).Deno.env.get(key) : process.env[key];
+
 // Résolution robuste des variables Supabase. En self-hosted, `SUPABASE_URL`
 // peut être absent : on retombe sur l'URL interne de Kong (réseau Docker).
 const SUPA_URL =
-  Deno.env.get("SUPABASE_URL") ||
-  Deno.env.get("API_EXTERNAL_URL") ||
-  Deno.env.get("SUPABASE_PUBLIC_URL") ||
+  envGet("SUPABASE_URL") ||
+  envGet("API_EXTERNAL_URL") ||
+  envGet("SUPABASE_PUBLIC_URL") ||
   "http://supabase-kong:8000";
 const SUPA_SERVICE_KEY =
-  Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ||
-  Deno.env.get("SUPABASE_SERVICE_KEY") ||
-  Deno.env.get("SERVICE_ROLE_KEY") ||
-  Deno.env.get("SERVICE_KEY") ||
-  "";
+  envGet("SUPABASE_SERVICE_ROLE_KEY") ||
+  envGet("SUPABASE_SERVICE_KEY") ||
+  envGet("SERVICE_ROLE_KEY") ||
+  envGet("SERVICE_KEY") ||
+  "placeholder-key";
 
 export const supabase = createClient(SUPA_URL, SUPA_SERVICE_KEY);
 
 export const ADMIN_EMAILS = new Set(
-  (Deno.env.get("IPPOO_ADMIN_EMAILS") ?? "")
+  (envGet("IPPOO_ADMIN_EMAILS") ?? "")
     .split(",")
     .map((s) => s.trim().toLowerCase())
     .filter(Boolean),
@@ -162,11 +164,12 @@ export async function requireUser(c: any): Promise<{ id: string; email?: string 
    Après login, un jeton HMAC-SHA256 signé est émis et utilisé par tous
    les endpoints /admin/*. Aucun compte utilisateur n'est requis. */
 
-export const ADMIN_PASSWORD = (Deno.env.get("IPPOO_ADMIN_PASSWORD") || "").trim();
-const ADMIN_TOKEN_SECRET = Deno.env.get("IPPOO_ADMIN_TOKEN_SECRET")
-  || Deno.env.get("JWT_SECRET")
-  || Deno.env.get("SERVICE_PASSWORD_JWT")
-  || ADMIN_PASSWORD; // dernier repli (mieux que rien — à éviter en prod)
+export const ADMIN_PASSWORD = (envGet("IPPOO_ADMIN_PASSWORD") || "").trim();
+const ADMIN_TOKEN_SECRET = envGet("IPPOO_ADMIN_TOKEN_SECRET")
+  || envGet("JWT_SECRET")
+  || envGet("SERVICE_PASSWORD_JWT")
+  || ADMIN_PASSWORD
+  || "ippoo_admin_default_secret_fallback";
 export const ADMIN_TOKEN_TTL_MS = 4 * 60 * 60 * 1000; // 4 h
 
 function b64urlEncode(buf: Uint8Array | string): string {
@@ -194,6 +197,26 @@ async function hmac(payload: string): Promise<string> {
   return b64urlEncode(new Uint8Array(sig));
 }
 
+/** Vérifie l'empreinte HMAC en temps constant via WebCrypto (protection contre attaques de timing). */
+async function verifyHmac(payload: string, sigB64Url: string): Promise<boolean> {
+  try {
+    const key = await crypto.subtle.importKey(
+      "raw",
+      new TextEncoder().encode(ADMIN_TOKEN_SECRET),
+      { name: "HMAC", hash: "SHA-256" },
+      false,
+      ["verify"],
+    );
+    const pad = "=".repeat((4 - (sigB64Url.length % 4)) % 4);
+    const binStr = atob(sigB64Url.replace(/-/g, "+").replace(/_/g, "/") + pad);
+    const sigBuf = new Uint8Array(binStr.length);
+    for (let i = 0; i < binStr.length; i++) sigBuf[i] = binStr.charCodeAt(i);
+    return await crypto.subtle.verify("HMAC", key, sigBuf, new TextEncoder().encode(payload));
+  } catch {
+    return false;
+  }
+}
+
 /** Émet un jeton admin auto-portant (payload + signature). */
 export async function issueAdminToken(email: string): Promise<string> {
   const body = JSON.stringify({ email: email.toLowerCase(), exp: Date.now() + ADMIN_TOKEN_TTL_MS });
@@ -208,8 +231,9 @@ export async function verifyAdminToken(token: string | undefined | null): Promis
   const parts = token.split(".");
   if (parts.length !== 2) return null;
   const [payload, sig] = parts;
-  const expected = await hmac(payload);
-  if (expected !== sig) return null;
+  // Vérification HMAC sécurisée en temps constant contre les attaques temporelles.
+  const validSig = await verifyHmac(payload, sig);
+  if (!validSig) return null;
   try {
     const body = JSON.parse(b64urlDecodeStr(payload));
     if (typeof body?.exp !== "number" || Date.now() > body.exp) return null;
@@ -328,9 +352,9 @@ export async function creditWallet(userId: string, amount: number, reason: strin
 }
 
 // ─── Web Push (VAPID) ──────────────────────────────────────────
-export const VAPID_PUBLIC = Deno.env.get("VAPID_PUBLIC_KEY") ?? "";
-const VAPID_PRIVATE = Deno.env.get("VAPID_PRIVATE_KEY") ?? "";
-const VAPID_SUBJECT = Deno.env.get("VAPID_SUBJECT") ?? "mailto:contact@ippoo.market";
+export const VAPID_PUBLIC = envGet("VAPID_PUBLIC_KEY") ?? "";
+const VAPID_PRIVATE = envGet("VAPID_PRIVATE_KEY") ?? "";
+const VAPID_SUBJECT = envGet("VAPID_SUBJECT") ?? "mailto:contact@ippoo.market";
 let vapidReady = false;
 
 if (VAPID_PUBLIC && VAPID_PRIVATE) {
