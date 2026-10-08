@@ -34,6 +34,9 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
+      'jsr:@supabase/supabase-js@2.49.8': '@supabase/supabase-js',
+      'jsr:@supabase/supabase-js@2': '@supabase/supabase-js',
+      'npm:web-push@3.6.7': 'web-push',
     },
   },
 });

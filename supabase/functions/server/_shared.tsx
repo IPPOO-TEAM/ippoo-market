@@ -5,8 +5,8 @@
    le web-push et l'audit. Chaque module de domaine importe d'ici.
    ═══════════════════════════════════════════════════════════════ */
 
-import { createClient } from "@supabase/supabase-js";
-import webpush from "web-push";
+import { createClient } from "jsr:@supabase/supabase-js@2";
+import webpush from "npm:web-push@3.6.7";
 import * as kv from "./kv_store.tsx";
 
 // ─── Constantes globales ───────────────────────────────────────

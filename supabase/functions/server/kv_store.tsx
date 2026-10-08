@@ -10,7 +10,7 @@ CREATE TABLE kv_store_cc347259 (
 // View at https://supabase.com/dashboard/project/fqngndkcwzxoggoabmgm/database/tables
 
 // This file provides a simple key-value interface for storing Figma Make data. It should be adequate for most small-scale use cases.
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from "jsr:@supabase/supabase-js@2.49.8";
 
 const envGet = (key: string): string | undefined => typeof (globalThis as any).Deno !== "undefined" ? (globalThis as any).Deno.env.get(key) : process.env[key];
 
