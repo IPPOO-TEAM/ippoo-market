@@ -194,6 +194,23 @@ async function hmac(payload: string): Promise<string> {
   return b64urlEncode(new Uint8Array(sig));
 }
 
+async function verifyAdminHmac(payload: string, sigB64Url: string): Promise<boolean> {
+  try {
+    const key = await crypto.subtle.importKey(
+      "raw",
+      new TextEncoder().encode(ADMIN_TOKEN_SECRET),
+      { name: "HMAC", hash: "SHA-256" },
+      false,
+      ["verify"],
+    );
+    const pad = "=".repeat((4 - (sigB64Url.length % 4)) % 4);
+    const sigBin = Uint8Array.from(atob(sigB64Url.replace(/-/g, "+").replace(/_/g, "/") + pad), (ch) => ch.charCodeAt(0));
+    return await crypto.subtle.verify("HMAC", key, sigBin, new TextEncoder().encode(payload));
+  } catch {
+    return false;
+  }
+}
+
 /** Émet un jeton admin auto-portant (payload + signature). */
 export async function issueAdminToken(email: string): Promise<string> {
   const body = JSON.stringify({ email: email.toLowerCase(), exp: Date.now() + ADMIN_TOKEN_TTL_MS });
@@ -208,8 +225,9 @@ export async function verifyAdminToken(token: string | undefined | null): Promis
   const parts = token.split(".");
   if (parts.length !== 2) return null;
   const [payload, sig] = parts;
-  const expected = await hmac(payload);
-  if (expected !== sig) return null;
+  // Constant-time HMAC verification via Web Crypto API to prevent timing side-channel attacks
+  const isValidSig = await verifyAdminHmac(payload, sig);
+  if (!isValidSig) return null;
   try {
     const body = JSON.parse(b64urlDecodeStr(payload));
     if (typeof body?.exp !== "number" || Date.now() > body.exp) return null;
