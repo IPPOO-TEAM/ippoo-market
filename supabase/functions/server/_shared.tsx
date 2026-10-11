@@ -143,6 +143,24 @@ export function clientKey(c: any, suffix: string): string {
   return `${ip}:${suffix}`;
 }
 
+// ─── Constant-time comparison helper ────────────────────────────
+/**
+ * Comparaison de chaînes en temps constant pour éviter les attaques par canal auxiliaire (timing attacks).
+ */
+export function safeCompareStrings(a: string, b: string): boolean {
+  if (typeof a !== "string" || typeof b !== "string") return false;
+  const lenA = a.length;
+  const lenB = b.length;
+  let diff = lenA ^ lenB;
+  const maxLen = Math.max(lenA, lenB);
+  for (let i = 0; i < maxLen; i++) {
+    const charA = i < lenA ? a.charCodeAt(i) : 0;
+    const charB = i < lenB ? b.charCodeAt(i) : 0;
+    diff |= charA ^ charB;
+  }
+  return diff === 0;
+}
+
 // ─── Auth ──────────────────────────────────────────────────────
 export async function requireUser(c: any): Promise<{ id: string; email?: string } | { error: string; status: 401 | 403 }> {
   const token = c.req.header("Authorization")?.split(" ")[1];
@@ -209,7 +227,7 @@ export async function verifyAdminToken(token: string | undefined | null): Promis
   if (parts.length !== 2) return null;
   const [payload, sig] = parts;
   const expected = await hmac(payload);
-  if (expected !== sig) return null;
+  if (!safeCompareStrings(expected, sig)) return null;
   try {
     const body = JSON.parse(b64urlDecodeStr(payload));
     if (typeof body?.exp !== "number" || Date.now() > body.exp) return null;

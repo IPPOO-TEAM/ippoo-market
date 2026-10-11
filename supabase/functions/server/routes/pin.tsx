@@ -1,6 +1,6 @@
 import { z } from "npm:zod@3.23.8";
 import * as kv from "../kv_store.tsx";
-import { PREFIX, requireUser, rateLimit } from "../_shared.tsx";
+import { PREFIX, requireUser, rateLimit, safeCompareStrings } from "../_shared.tsx";
 
 const PinSetSchema = z.object({ pin: z.string().regex(/^\d{4,6}$/) });
 const PinVerifySchema = z.object({ pin: z.string().regex(/^\d{4,6}$/) });
@@ -42,7 +42,7 @@ export function registerPin(app: any) {
       return c.json({ error: "PIN verrouillé", lockedUntil: rec.lockedUntil }, 423);
     }
     const hash = await hashPin(parsed.data.pin, rec.salt);
-    if (hash !== rec.hash) {
+    if (!safeCompareStrings(hash, rec.hash)) {
       const failures = (rec.failures ?? 0) + 1;
       const lockedUntil = failures >= 5 ? now + 15 * 60_000 : 0;
       await kv.set(`pin:${auth.id}`, { ...rec, failures, lockedUntil });

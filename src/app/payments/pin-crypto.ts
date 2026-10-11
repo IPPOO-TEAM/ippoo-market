@@ -22,12 +22,29 @@ export function hexToBytes(hex: string): Uint8Array<ArrayBuffer> {
   return out;
 }
 
+/**
+ * Comparaison de chaînes en temps constant pour éviter les attaques par canal auxiliaire (timing attacks).
+ */
+export function safeCompareStrings(a: string, b: string): boolean {
+  if (typeof a !== "string" || typeof b !== "string") return false;
+  const lenA = a.length;
+  const lenB = b.length;
+  let diff = lenA ^ lenB;
+  const maxLen = Math.max(lenA, lenB);
+  for (let i = 0; i < maxLen; i++) {
+    const charA = i < lenA ? a.charCodeAt(i) : 0;
+    const charB = i < lenB ? b.charCodeAt(i) : 0;
+    diff |= charA ^ charB;
+  }
+  return diff === 0;
+}
+
 export function randomSaltHex(byteLen = 16): string {
   const arr = new Uint8Array(byteLen);
   if (typeof crypto !== "undefined" && crypto.getRandomValues) {
     crypto.getRandomValues(arr);
   } else {
-    for (let i = 0; i < byteLen; i++) arr[i] = Math.floor(Math.random() * 256);
+    throw new Error("Cryptographically secure PRNG unavailable");
   }
   return bytesToHex(arr);
 }
@@ -64,7 +81,7 @@ export async function derivePin(pin: string, saltHex: string): Promise<string> {
 export async function pinMatches(pin: string, storedHash: string, saltHex: string): Promise<boolean> {
   if (storedHash.startsWith("v2:")) {
     const derived = await derivePin(pin, saltHex);
-    return derived === storedHash;
+    return safeCompareStrings(derived, storedHash);
   }
-  return legacyHashPin(pin) === storedHash;
+  return safeCompareStrings(legacyHashPin(pin), storedHash);
 }
