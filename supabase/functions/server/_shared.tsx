@@ -8,6 +8,8 @@
 import { createClient } from "jsr:@supabase/supabase-js@2";
 import webpush from "npm:web-push@3.6.7";
 import * as kv from "./kv_store.tsx";
+import { timingSafeEqual } from "./crypto_utils.ts";
+export { timingSafeEqual };
 
 // ─── Constantes globales ───────────────────────────────────────
 export const BUCKET = "make-cc347259-shop-assets";
@@ -121,6 +123,7 @@ export async function logSafe(label: string, value: string | undefined | null) {
   return `${label}=${await sha256(value)}`;
 }
 
+
 // ─── Rate limit en mémoire (par instance) ──────────────────────
 const RL_BUCKETS = new Map<string, { count: number; reset: number }>();
 export function rateLimit(key: string, max: number, windowMs: number): boolean {
@@ -209,7 +212,7 @@ export async function verifyAdminToken(token: string | undefined | null): Promis
   if (parts.length !== 2) return null;
   const [payload, sig] = parts;
   const expected = await hmac(payload);
-  if (expected !== sig) return null;
+  if (!timingSafeEqual(expected, sig)) return null;
   try {
     const body = JSON.parse(b64urlDecodeStr(payload));
     if (typeof body?.exp !== "number" || Date.now() > body.exp) return null;
