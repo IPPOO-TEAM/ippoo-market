@@ -47,6 +47,21 @@ export function registerSupport(app: any) {
     return c.json({ ticket });
   });
 
+  app.get(`${PREFIX}/support/tickets`, async (c: any) => {
+    const auth = await requireUser(c);
+    if ("error" in auth) return c.json({ error: auth.error }, auth.status);
+    let items: any[];
+    if (await tableReady(TABLE)) {
+      const { data } = await supabase.from(TABLE).select("*").eq("user_id", auth.id).order("updated_at", { ascending: false });
+      items = (data ?? []).map(fromRow);
+    } else {
+      const all = (await kv.getByPrefix("ticket:")) ?? [];
+      items = all.filter((t: any) => t?.userId === auth.id);
+      items.sort((a: any, b: any) => (b?.updatedAt ?? 0) - (a?.updatedAt ?? 0));
+    }
+    return c.json({ items });
+  });
+
   app.get(`${PREFIX}/admin/tickets`, async (c: any) => {
     const auth = await requireAdmin(c);
     if ("error" in auth) return c.json({ error: auth.error }, auth.status);
