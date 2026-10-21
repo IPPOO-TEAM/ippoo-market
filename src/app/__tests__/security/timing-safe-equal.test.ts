@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { timingSafeEqual } from "../../../../supabase/functions/server/_shared";
+import { timingSafeEqual } from "../../../../supabase/functions/server/crypto";
 
 describe("timingSafeEqual", () => {
   it("returns true for identical strings", () => {
