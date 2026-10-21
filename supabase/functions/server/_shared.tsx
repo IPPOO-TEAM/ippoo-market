@@ -116,6 +116,21 @@ export async function sha256(input: string): Promise<string> {
     .map((b) => b.toString(16).padStart(2, "0"))
     .join("");
 }
+
+/** Timing-safe string comparison to mitigate side-channel timing attacks. */
+export function timingSafeEqual(a: string, b: string): boolean {
+  const enc = new TextEncoder();
+  const bufA = enc.encode(a);
+  const bufB = enc.encode(b);
+  let mismatch = bufA.length ^ bufB.length;
+  const len = Math.max(bufA.length, bufB.length);
+  for (let i = 0; i < len; i++) {
+    const byteA = i < bufA.length ? bufA[i] : 0;
+    const byteB = i < bufB.length ? bufB[i] : 0;
+    mismatch |= byteA ^ byteB;
+  }
+  return mismatch === 0;
+}
 export async function logSafe(label: string, value: string | undefined | null) {
   if (!value) return label;
   return `${label}=${await sha256(value)}`;
@@ -209,7 +224,7 @@ export async function verifyAdminToken(token: string | undefined | null): Promis
   if (parts.length !== 2) return null;
   const [payload, sig] = parts;
   const expected = await hmac(payload);
-  if (expected !== sig) return null;
+  if (!timingSafeEqual(expected, sig)) return null;
   try {
     const body = JSON.parse(b64urlDecodeStr(payload));
     if (typeof body?.exp !== "number" || Date.now() > body.exp) return null;
