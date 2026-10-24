@@ -144,9 +144,9 @@ export function AdminGate() {
   /* ─── 3. Connecté serveur → 2ᵉ facteur PIN local ─── */
   if (!pinAuthorized) {
     const locked = lockoutMs > 0;
-    const submitPin = (e: React.FormEvent) => {
+    const submitPin = async (e: React.FormEvent) => {
       e.preventDefault();
-      const r = validatePin(pin);
+      const r = await validatePin(pin);
       if (!r.ok) { setError(r.error); setPin(""); return; }
       setError(null);
       toast.success("Bienvenue dans le back-office");

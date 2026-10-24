@@ -179,9 +179,9 @@ function PinChanger() {
   const [next, setNext] = useState("");
   const [confirmPin, setConfirmPin] = useState("");
 
-  const submit = () => {
+  const submit = async () => {
     if (next !== confirmPin) { toast.error("Les nouveaux PIN ne correspondent pas"); return; }
-    const r = changeAdminPin(current, next);
+    const r = await changeAdminPin(current, next);
     if (!r.ok) { toast.error(r.error); return; }
     toast.success("PIN administrateur mis à jour");
     setCurrent(""); setNext(""); setConfirmPin("");

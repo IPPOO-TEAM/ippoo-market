@@ -11,9 +11,11 @@ import { useEffect, useState, useSyncExternalStore } from "react";
 import { logAudit } from "./audit";
 import { safeGetItem, safeSetItem, safeRemoveItem } from "../lib/safe-storage";
 import { adminWhoami } from "../data/admin-server";
+import { derivePin, pinMatches, randomSaltHex } from "../payments/pin-crypto";
 
 const SESSION_KEY = "ippoo:admin-session";
 const PIN_KEY = "ippoo:admin-pin";
+const PIN_SALT_KEY = "ippoo:admin-pin-salt";
 const LOCKOUT_KEY = "ippoo:admin-lockout";
 const WHOAMI_CACHE_KEY = "ippoo:admin-whoami";
 const TTL_MS = 4 * 60 * 60 * 1000;
@@ -64,7 +66,16 @@ function readSession(): Session | null {
   }
 }
 
-function getPin(): string {
+function getSalt(): string {
+  let salt = safeGetItem(PIN_SALT_KEY);
+  if (!salt) {
+    salt = randomSaltHex();
+    safeSetItem(PIN_SALT_KEY, salt);
+  }
+  return salt;
+}
+
+function getStoredPinHash(): string {
   return safeGetItem(PIN_KEY) || DEFAULT_PIN;
 }
 
@@ -99,12 +110,26 @@ export function useAdminAuth(): boolean {
   return useSyncExternalStore(subscribeAdminAuth, isAdminPinAuthed, () => false);
 }
 
-export function loginAdmin(pin: string): { ok: true } | { ok: false; error: string } {
+export async function verifyAdminPin(pin: string): Promise<boolean> {
+  const salt = getSalt();
+  const stored = getStoredPinHash();
+  const match = stored === pin || (await pinMatches(pin, stored, salt));
+
+  // Migration transparente : si le PIN stocké était non haché, on le remplace par un hash PBKDF2
+  if (match && !stored.startsWith("v2:")) {
+    const hashed = await derivePin(pin, salt);
+    safeSetItem(PIN_KEY, hashed);
+  }
+  return match;
+}
+
+export async function loginAdmin(pin: string): Promise<{ ok: true } | { ok: false; error: string }> {
   const remaining = getLockoutRemaining();
   if (remaining > 0) {
     return { ok: false, error: `Trop de tentatives. Réessayez dans ${Math.ceil(remaining / 60000)} min.` };
   }
-  if (pin !== getPin()) {
+  const match = await verifyAdminPin(pin);
+  if (!match) {
     const l = readLockout();
     const fails = l.fails + 1;
     if (fails >= MAX_ATTEMPTS) {
@@ -128,10 +153,13 @@ export function logoutAdmin() {
   logAudit("auth.logout", "Session admin");
 }
 
-export function changeAdminPin(currentPin: string, newPin: string): { ok: true } | { ok: false; error: string } {
-  if (currentPin !== getPin()) return { ok: false, error: "PIN actuel incorrect" };
+export async function changeAdminPin(currentPin: string, newPin: string): Promise<{ ok: true } | { ok: false; error: string }> {
+  const match = await verifyAdminPin(currentPin);
+  if (!match) return { ok: false, error: "PIN actuel incorrect" };
   if (!/^\d{4,8}$/.test(newPin)) return { ok: false, error: "Le nouveau PIN doit contenir 4 à 8 chiffres" };
-  safeSetItem(PIN_KEY, newPin);
+  const salt = getSalt();
+  const hashed = await derivePin(newPin, salt);
+  safeSetItem(PIN_KEY, hashed);
   logAudit("auth.pin_change", "PIN admin modifié");
   return { ok: true };
 }
