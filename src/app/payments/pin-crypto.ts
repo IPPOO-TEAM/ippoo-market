@@ -24,10 +24,10 @@ export function hexToBytes(hex: string): Uint8Array<ArrayBuffer> {
 
 export function randomSaltHex(byteLen = 16): string {
   const arr = new Uint8Array(byteLen);
-  if (typeof crypto !== "undefined" && crypto.getRandomValues) {
+  if (typeof crypto !== "undefined" && typeof crypto.getRandomValues === "function") {
     crypto.getRandomValues(arr);
   } else {
-    for (let i = 0; i < byteLen; i++) arr[i] = Math.floor(Math.random() * 256);
+    throw new Error("Cryptographically secure random number generation (crypto.getRandomValues) is not supported in this environment.");
   }
   return bytesToHex(arr);
 }
