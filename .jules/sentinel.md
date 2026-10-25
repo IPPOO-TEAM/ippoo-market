@@ -1,0 +1,4 @@
+## 2025-05-18 - IDOR Protection in Order Invoicing Endpoints
+**Vulnerability:** The invoice number generation route (`POST /invoices/number`) allowed any authenticated user to supply an `orderId` and read the corresponding invoice number without validating order ownership or vendor/admin role.
+**Learning:** Helper functions like `getOrderById(orderId)` retrieve orders globally without enforcing tenant isolation. Whenever accessing resources by ID in utility or sequence-generation endpoints, explicitly verify whether the caller is the resource owner (`userId`), an involved vendor (`vendorShares`), or an administrator (`isAdminEmail`).
+**Prevention:** Always perform explicit `isOwner || isVendor || isAdmin` authorization checks before exposing order data or metadata retrieved via global lookup functions.

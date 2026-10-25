@@ -322,10 +322,18 @@ export function registerOrders(app: any) {
     const scope = String(body?.scope || "").trim().slice(0, 80);
     const orderId = String(body?.orderId || "").trim().slice(0, 80);
     if (!scope) return c.json({ error: "scope requis" }, 400);
-    // Si la commande a déjà un numéro, le retourner (idempotence).
+    // Si la commande a déjà un numéro, vérifier les autorisations avant de le retourner (sécurité IDOR).
     if (orderId) {
       const existing = await getOrderById(orderId);
-      if (existing?.invoiceNumber) return c.json({ number: existing.invoiceNumber });
+      if (existing) {
+        const isOwner = existing.userId === auth.id;
+        const isVendor = !!existing.vendorShares && Object.keys(existing.vendorShares).includes(auth.id);
+        const isAdmin = isAdminEmail(auth.email);
+        if (!isOwner && !isVendor && !isAdmin) {
+          return c.json({ error: "Accès refusé" }, 403);
+        }
+        if (existing.invoiceNumber) return c.json({ number: existing.invoiceNumber });
+      }
     }
     const year = new Date().getFullYear();
     const key = `invoice-seq:${scope}:${year}`;
