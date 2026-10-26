@@ -22,12 +22,18 @@ export function hexToBytes(hex: string): Uint8Array<ArrayBuffer> {
   return out;
 }
 
+/**
+ * Génère un sel cryptographique aléatoire (CSPRNG via crypto.getRandomValues).
+ * Ne retombe JAMAIS sur Math.random() afin d'éviter les sels prévisibles.
+ */
 export function randomSaltHex(byteLen = 16): string {
   const arr = new Uint8Array(byteLen);
-  if (typeof crypto !== "undefined" && crypto.getRandomValues) {
-    crypto.getRandomValues(arr);
+  const cryptoObj = typeof globalThis !== "undefined" ? globalThis.crypto : (typeof crypto !== "undefined" ? crypto : null);
+  if (cryptoObj && typeof cryptoObj.getRandomValues === "function") {
+    cryptoObj.getRandomValues(arr);
   } else {
-    for (let i = 0; i < byteLen; i++) arr[i] = Math.floor(Math.random() * 256);
+    // Fail securely: do not generate predictable PRNG salts for PIN cryptographic derivation
+    throw new Error("Environnement cryptographique sécurisé indisponible (crypto.getRandomValues requis)");
   }
   return bytesToHex(arr);
 }
