@@ -75,6 +75,20 @@ export const validateDateRange = (start: string, end: string): string | null => 
   return null;
 };
 
+/**
+ * Constant-time string comparison helper to mitigate side-channel timing attacks.
+ */
+export function timingSafeEqual(a: string, b: string): boolean {
+  if (a.length !== b.length) {
+    return false;
+  }
+  let result = 0;
+  for (let i = 0; i < a.length; i++) {
+    result |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  return result === 0;
+}
+
 /** Compose plusieurs validateurs, retourne la première erreur. */
 export function compose<T>(...vs: Validator<T>[]): Validator<T> {
   return (v) => {
