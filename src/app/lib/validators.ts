@@ -66,7 +66,16 @@ export const validateIFU: Validator = (v) => {
 export const validateURL: Validator = (v) => {
   const s = (v ?? "").trim();
   if (!s) return null;
-  try { new URL(s); return null; } catch { return "URL invalide."; }
+  try {
+    const parsed = new URL(s);
+    // Security: Only allow http and https protocols to prevent XSS via javascript: or data: schemes
+    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+      return "URL invalide (http ou https uniquement).";
+    }
+    return null;
+  } catch {
+    return "URL invalide.";
+  }
 };
 
 export const validateDateRange = (start: string, end: string): string | null => {
