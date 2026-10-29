@@ -1,0 +1,2 @@
+function i(c,e){let n;if(e.length>0&&!Array.isArray(e[0])){const t=Object.keys(e[0]);n=[t,...e.map(o=>t.map(d=>o[d]))]}else n=e;const l=n.map(t=>t.map(o=>`"${String(o??"").replace(/"/g,'""')}"`).join(",")).join(`
+`),r=new Blob(["\uFEFF"+l],{type:"text/csv;charset=utf-8"}),s=URL.createObjectURL(r),a=document.createElement("a");a.href=s,a.download=c.endsWith(".csv")?c:`${c}.csv`,a.click(),URL.revokeObjectURL(s)}export{i as d};
