@@ -2,7 +2,7 @@ import * as kv from "../kv_store.tsx";
 import {
   PREFIX, supabase, requireAdmin, auditLog, isAdminEmail,
   ADMIN_PASSWORD, issueAdminToken, verifyAdminToken,
-  rateLimit, clientKey, ADMIN_TOKEN_TTL_MS, timingSafeEqual,
+  rateLimit, clientKey, ADMIN_TOKEN_TTL_MS, timingSafeEqualAsync,
 } from "../_shared.tsx";
 import { tableReady, resetTableCache } from "../_db.tsx";
 
@@ -45,7 +45,7 @@ export function registerAdmin(app: any) {
       const password = String(body?.password ?? "");
       if (!email || !password) return c.json({ error: "Email et mot de passe requis" }, 400);
       if (!isAdminEmail(email)) return c.json({ error: "Identifiants invalides" }, 401);
-      if (!ADMIN_PASSWORD || !timingSafeEqual(password, ADMIN_PASSWORD)) {
+      if (!ADMIN_PASSWORD || !(await timingSafeEqualAsync(password, ADMIN_PASSWORD))) {
         return c.json({ error: "Identifiants invalides" }, 401);
       }
       const token = await issueAdminToken(email);

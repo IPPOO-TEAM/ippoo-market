@@ -109,8 +109,33 @@ export function bootstrapBucket() {
 }
 
 // ─── Security Helpers ──────────────────────────────────────────
-import { timingSafeEqual } from "../../../src/app/lib/validators.ts";
-export { timingSafeEqual };
+/** Constant-time string comparison to prevent timing side-channel attacks. */
+export function timingSafeEqual(a: string, b: string): boolean {
+  if (typeof a !== "string" || typeof b !== "string") return false;
+  const lenA = a.length;
+  const lenB = b.length;
+  let diff = lenA ^ lenB;
+  const maxLen = Math.max(lenA, lenB);
+  for (let i = 0; i < maxLen; i++) {
+    const charA = i < lenA ? a.charCodeAt(i) : 0;
+    const charB = i < lenB ? b.charCodeAt(i) : 0;
+    diff |= charA ^ charB;
+  }
+  return diff === 0;
+}
+
+/** Constant-time comparison using SHA-256 digest to mitigate timing attacks and length leakage. */
+export async function timingSafeEqualAsync(a: string, b: string): Promise<boolean> {
+  if (typeof a !== "string" || typeof b !== "string") return false;
+  const enc = new TextEncoder();
+  const bufA = new Uint8Array(await crypto.subtle.digest("SHA-256", enc.encode(a)));
+  const bufB = new Uint8Array(await crypto.subtle.digest("SHA-256", enc.encode(b)));
+  let diff = 0;
+  for (let i = 0; i < 32; i++) {
+    diff |= bufA[i] ^ bufB[i];
+  }
+  return diff === 0;
+}
 
 // ─── Log sanitization ──────────────────────────────────────────
 export async function sha256(input: string): Promise<string> {
