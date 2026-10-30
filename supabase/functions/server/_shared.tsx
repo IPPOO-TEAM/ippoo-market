@@ -108,6 +108,10 @@ export function bootstrapBucket() {
   })();
 }
 
+// ─── Security Helpers ──────────────────────────────────────────
+import { timingSafeEqual } from "../../../src/app/lib/validators.ts";
+export { timingSafeEqual };
+
 // ─── Log sanitization ──────────────────────────────────────────
 export async function sha256(input: string): Promise<string> {
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(input));
@@ -209,7 +213,7 @@ export async function verifyAdminToken(token: string | undefined | null): Promis
   if (parts.length !== 2) return null;
   const [payload, sig] = parts;
   const expected = await hmac(payload);
-  if (expected !== sig) return null;
+  if (!timingSafeEqual(expected, sig)) return null;
   try {
     const body = JSON.parse(b64urlDecodeStr(payload));
     if (typeof body?.exp !== "number" || Date.now() > body.exp) return null;

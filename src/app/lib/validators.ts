@@ -86,6 +86,21 @@ export function compose<T>(...vs: Validator<T>[]): Validator<T> {
   };
 }
 
+/** Constant-time string comparison to prevent timing side-channel attacks. */
+export function timingSafeEqual(a: string, b: string): boolean {
+  if (typeof a !== "string" || typeof b !== "string") return false;
+  const lenA = a.length;
+  const lenB = b.length;
+  let diff = lenA ^ lenB;
+  const safeLenB = lenB > 0 ? lenB : 1;
+  for (let i = 0; i < lenA; i++) {
+    const charA = a.charCodeAt(i);
+    const charB = lenB > 0 ? b.charCodeAt(i % safeLenB) : 0;
+    diff |= charA ^ charB;
+  }
+  return diff === 0;
+}
+
 /** Valide un objet champ par champ, retourne `{ champ: erreur }`. */
 export function validateForm<T extends Record<string, unknown>>(
   values: T,
