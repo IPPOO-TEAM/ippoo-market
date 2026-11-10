@@ -66,8 +66,33 @@ export const validateIFU: Validator = (v) => {
 export const validateURL: Validator = (v) => {
   const s = (v ?? "").trim();
   if (!s) return null;
-  try { new URL(s); return null; } catch { return "URL invalide."; }
+  try {
+    const parsed = new URL(s);
+    // Security: Only allow safe http/https schemes to prevent javascript: or data: XSS payloads
+    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+      return "Protocole URL non sécurisé (http ou https requis).";
+    }
+    return null;
+  } catch {
+    return "URL invalide.";
+  }
 };
+
+/**
+ * Constant-time string comparison to protect against timing attacks
+ * when comparing sensitive values (tokens, OTPs, PINs, secrets).
+ */
+export function safeCompare(a: string, b: string): boolean {
+  if (typeof a !== "string" || typeof b !== "string") return false;
+  let result = a.length === b.length ? 0 : 1;
+  const maxLen = Math.max(a.length, b.length);
+  for (let i = 0; i < maxLen; i++) {
+    const charA = a.charCodeAt(i % (a.length || 1));
+    const charB = b.charCodeAt(i % (b.length || 1));
+    result |= charA ^ charB;
+  }
+  return result === 0;
+}
 
 export const validateDateRange = (start: string, end: string): string | null => {
   if (!start || !end) return null;
